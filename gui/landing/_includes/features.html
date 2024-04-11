@@ -1,9 +1,11 @@
 {% assign features = page.features %}
 
-<div class="features">
+<div class="features features--{{ features.class }}">
   <div class="features__header">
     <h2 class="features__title">{{ features.title }}</h2>
+    {% if features.pretitle %}
     <strong class="features__subtitle">{{ features.subtitle }}</strong>
+    {%- endif -%}
   </div>
   <div class="features__body">
     <ul class="features__list">
@@ -24,7 +26,13 @@
             {%- endif -%}
           </div>
           <div class="features-entry__header">
-            <h3 class="features-entry__title">{{ item.title }}</h3>
+            <h3 class="features-entry__title">
+              {% if item.pretitle %}
+              <strong class="features-entry__pretitle"
+                >{{ item.pretitle }}</strong
+              >
+              {%- endif -%} {{ item.title }}
+            </h3>
           </div>
           <div class="features-entry__body">{{ item.text }}</div>
         </a>
@@ -36,7 +44,13 @@
             {%- endif -%}
           </div>
           <div class="features-entry__header">
-            <h3 class="features-entry__title">{{ item.title }}</h3>
+            <h3 class="features-entry__title">
+              {% if item.pretitle %}
+              <strong class="features-entry__pretitle"
+                >{{ item.pretitle }}</strong
+              >
+              {%- endif -%} {{ item.title }}
+            </h3>
           </div>
           <div class="features-entry__body">{{ item.text }}</div>
         </div>

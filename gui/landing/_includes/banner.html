@@ -1,6 +1,6 @@
 {% assign banner = page.banner %}
 
-<div class="banner">
+<div class="banner banner--{{ banner.type }}">
   {%- if banner.type -%}
   <div class="banner__illustration">
     {%- include banner/{{ banner.type }}.html -%}

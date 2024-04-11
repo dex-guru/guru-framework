@@ -1,0 +1,29 @@
+<div class="banner-network"></div>
+
+<script>
+  (() => {
+    const bannerInit = () => {
+      const banner = document.querySelector(".banner-network");
+      if (!banner) {
+        return;
+      }
+
+      const rect = banner.getBoundingClientRect();
+      const cols = Math.ceil(rect.width / 140);
+      const rows = Math.ceil(rect.height / 140);
+
+      banner.innerHTML = Array(cols * rows)
+        .fill(`<span></span>`)
+        .join("");
+
+      const cells = banner.querySelectorAll("span");
+      Array.from(cells).forEach((cell) => {
+        cell.style = `--speed: ${Math.random() * 100 + 10}s`;
+      });
+    };
+    window.addEventListener("resize", () => {
+      bannerInit();
+    });
+    bannerInit();
+  })();
+</script>

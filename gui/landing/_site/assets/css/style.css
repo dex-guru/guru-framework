@@ -126,6 +126,20 @@ h1 {
   }
 }
 
+h2 {
+  margin: 0;
+  font-family: Sora;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 52px;
+  text-align: center;
+  color: #9488f0;
+  margin: 0 0 40px;
+}
+h2:not(:first-child) {
+  margin-top: 80px;
+}
+
 .text > :first-child {
   margin-top: 0;
 }
@@ -145,6 +159,14 @@ p:first-child {
 
 p:last-child {
   margin-bottom: 0;
+}
+
+p > img {
+  max-width: 100%;
+}
+p > img:only-child {
+  display: block;
+  margin: 0 auto;
 }
 
 .page {
@@ -481,6 +503,11 @@ html.open-menu {
   color: #6b7a8a;
 }
 
+@property --_angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
 .logo {
   height: 40px;
   display: flex;
@@ -489,9 +516,27 @@ html.open-menu {
   width: max-content;
 }
 .logo__img {
+  background: linear-gradient(#0b0f14, #0b0f14) padding-box, linear-gradient(var(--_angle, 0deg), rgb(96, 70, 255) 0%, rgb(34, 212, 159) 100%) border-box;
+  border: 2px transparent solid;
   flex: 0 0 auto;
   width: 40px;
   height: 40px;
+  padding: 5px 9px;
+  border-radius: 50%;
+  animation: logo-img 1s linear infinite;
+}
+.logo__img-logo {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+@keyframes logo-img {
+  from {
+    --_angle: 0deg;
+  }
+  to {
+    --_angle: 360deg;
+  }
 }
 .logo__title {
   flex: 0 0 auto;
@@ -1032,6 +1077,34 @@ html.open-menu {
     height: var(--to, var(--from));
   }
 }
+.banner-network {
+  position: absolute;
+  left: 0;
+  top: -64px;
+  right: 0;
+  min-height: 100vh;
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(120px, 1fr));
+}
+.banner-network > span {
+  background: #1e242c;
+  border-radius: 8px;
+  aspect-ratio: 1;
+  animation: squeeze var(--speed) alternate infinite;
+}
+@keyframes squeeze {
+  0% {
+    transform: none;
+  }
+  75% {
+    transform: scale(0.35);
+  }
+  100% {
+    transform: none;
+  }
+}
 
 .cta {
   background: #0b0f14;
@@ -1255,15 +1328,12 @@ html.open-menu {
   margin: 0;
   padding: 0;
   list-style: none;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
+  display: grid;
   gap: 32px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
 }
 .features__item {
-  flex: 0 0 100%;
   min-width: 320px;
-  max-width: 428px;
 }
 .features-entry {
   height: 100%;
@@ -1283,6 +1353,11 @@ html.open-menu {
 }
 .features-entry:hover {
   color: #6b7a8a;
+}
+.features-entry__pretitle {
+  color: #8d9eb0;
+  display: block;
+  font-weight: inherit;
 }
 .features-entry__title {
   font-family: Sora, sans-serif;
@@ -1343,6 +1418,10 @@ html.open-menu {
   object-fit: cover;
   pointer-events: none;
   z-index: 0;
+}
+.features--network .features-entry__illustration {
+  order: 3;
+  margin: auto -24px -24px;
 }
 
 .partners {

@@ -15,6 +15,21 @@ h1 {
   }
 }
 
+h2 {
+  margin: 0;
+  font-family: Sora;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 52px;
+  text-align: center;
+  color: #9488f0;
+  margin: 0 0 40px;
+
+  &:not(:first-child) {
+    margin-top: 80px;
+  }
+}
+
 .text {
   & > :first-child {
     margin-top: 0;
@@ -39,4 +54,15 @@ p:first-child {
 
 p:last-child {
   margin-bottom: 0;
+}
+
+p {
+  & > img {
+    max-width: 100%;
+
+    &:only-child {
+      display: block;
+      margin: 0 auto;
+    }
+  }
 }

@@ -42,16 +42,13 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
+    display: grid;
     gap: 32px;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   }
 
   &__item {
-    flex: 0 0 100%;
     min-width: 320px;
-    max-width: 428px;
   }
 
   &-entry {
@@ -73,6 +70,12 @@
 
     &:hover {
       color: $color-text-light;
+    }
+
+    &__pretitle {
+      color: $color-text-ultralight;
+      display: block;
+      font-weight: inherit;
     }
 
     &__title {
@@ -144,5 +147,10 @@
       pointer-events: none;
       z-index: 0;
     }
+  }
+
+  &--network &-entry__illustration {
+    order: 3;
+    margin: auto -24px -24px;
   }
 }

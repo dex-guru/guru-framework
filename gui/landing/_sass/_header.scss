@@ -30,7 +30,7 @@
   }
 
   &-menu {
-    animation: menuInit .25s;
+    animation: menuInit 0.25s;
 
     @keyframes menuInit {
       from {
@@ -197,18 +197,17 @@
     &__link:focus ~ &__submenu {
       display: block;
       z-index: 2;
-      animation: submenuDrop .25s ease;
+      animation: submenuDrop 0.25s ease;
 
       @keyframes submenuDrop {
         from {
           opacity: 0;
         }
 
-        to{
+        to {
           opacity: 1;
         }
       }
-
     }
 
     &__item:hover,
@@ -319,6 +318,12 @@
   }
 }
 
+@property --_angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
 .logo {
   height: 40px;
   display: flex;
@@ -327,9 +332,36 @@
   width: max-content;
 
   &__img {
+    background: linear-gradient(#0b0f14, #0b0f14) padding-box,
+      linear-gradient(
+          var(--_angle, 0deg),
+          rgba(96, 70, 255, 1) 0%,
+          rgba(34, 212, 159, 1) 100%
+        )
+        border-box;
+    border: 2px transparent solid;
     flex: 0 0 auto;
     width: 40px;
     height: 40px;
+    padding: 5px 9px;
+    border-radius: 50%;
+    animation: logo-img 1s linear infinite;
+
+    &-logo {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+
+    @keyframes logo-img {
+      from {
+        --_angle: 0deg;
+      }
+
+      to {
+        --_angle: 360deg;
+      }
+    }
   }
 
   &__title {

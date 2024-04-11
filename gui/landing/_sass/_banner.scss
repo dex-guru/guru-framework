@@ -461,4 +461,37 @@
       }
     }
   }
+
+  &-network {
+    position: absolute;
+    left: 0;
+    top: -64px;
+    right: 0;
+    min-height: 100vh;
+    display: grid;
+    gap: 4px;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(120px, 1fr));
+
+    & > span {
+      background: $color-bg-90;
+      border-radius: 8px;
+      aspect-ratio: 1;
+      animation: squeeze var(--speed) alternate infinite;
+
+      @keyframes squeeze {
+        0% {
+          transform: none;
+        }
+
+        75% {
+          transform: scale(0.35);
+        }
+
+        100% {
+          transform: none;
+        }
+      }
+    }
+  }
 }

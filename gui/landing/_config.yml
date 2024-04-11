@@ -1,4 +1,4 @@
-title: GURU Network - Unleashing the Future of AI Focused Decentralized Applications
+title: GURU Network – Unleashing the Future of AI Focused Decentralized Applications
 author:
   name: guru_network
   email: team@chanflow.dexguru.biz
@@ -33,19 +33,56 @@ partners:
 
 menu:
   - {
-      title: Home,
-      url: /
+      title: Solutions,
+      dropdown:
+        [
+          {
+            title: Open-source Tools,
+            items:
+              [
+                {
+                  icon: roadsign,
+                  title: Meta-aggregation,
+                  description: Meta Aggregation API finds the best price and route for market orders between quotes from supported aggregators,
+                  url: https://github.com/dex-guru/meta-aggregation-api,
+                },
+
+                {
+                  icon: clickhouse,
+                  title: ClickHouse Web3,
+                  description: ClickHouse Fork with web3 flavor,
+                  url: https://github.com/dex-guru/ClickHouse,
+                },
+                {
+                  icon: plug,
+                  title: Data Sources Repo,
+                  description: Here you can find(or add a new one!) configs for blockchains and AMMs we support at DexGuru,
+                  url: https://github.com/dex-guru/data-sources,
+                },
+
+                {
+                  icon: files,
+                  title: Assets Repo,
+                  description: Tokens and Exchanges Logos. This repo is a primary source of token images we use at DexGuru.,
+                  url: https://github.com/dex-guru/assets,
+                },
+                {
+                  icon: tags,
+                  title: Tags Repo,
+                  description: A tag can really be anything. It unites multiple tokens with similar qualities into one set. Here you can find list of tags we use at DexGuru,
+                  url: https://github.com/dex-guru/tags,
+                },
+              ],
+          },
+        ],
     }
   - {
       title: Contact Us,
-      url: "https://webforms.pipedrive.com/f/6rExdWpdC4j2tsyB09LRGHr6990s7NqeLfhIpT4vPjJOmddqhyIMu7dyvJFAjABNHd"
+      url: "https://webforms.pipedrive.com/f/6rExdWpdC4j2tsyB09LRGHr6990s7NqeLfhIpT4vPjJOmddqhyIMu7dyvJFAjABNHd",
     }
 
 aside:
-  - {
-      title: Dashboard,
-      url: /dashboard,
-    }
+  - { title: Dashboard, url: /dashboard }
 
 # Generate social links in footer.
 social_links:

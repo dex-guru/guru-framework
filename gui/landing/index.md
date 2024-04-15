@@ -2,14 +2,14 @@
 layout: base
 permalink: /
 type: network
-title: Flow Orchestrator
+title: GURU Network
 description: "At DexGuru, we're not just building a platform; we're shaping the future of blockchain technology. From our origins as a pioneering Dex Aggregator to our evolution into a comprehensive AI-enhanced blockchain ecosystem, DexGuru stands at the forefront of innovation, ready to unlock the full potential of decentralized applications for developers, AI enthusiasts, and blockchain believers alike."
 # --------------------------
 # start: Banner config
 banner:
   type: network
   title: GURU Network
-  subtitle: Unleashing the <br />Future ofAI Focused Decentralized Applications
+  subtitle: Orchestrating Multi-Step <b>Ai Processors</b> and <br /><b>RAG</b>(Retrieval-Augmented Generation) Applications OnChain
 
   actions:
     - {
@@ -17,9 +17,9 @@ banner:
         url: https://webforms.pipedrive.com/f/c6vRxuvEjYqAxWSu1hN3xF2Cm5KyUtB66yKiko2wxKvPIs2J5R6mPJUV3oMdjnoHpF,
         type: book,
       }
-    - { title: Participate in LBP, url: https://warehouse.dex.guru, type: book }
+    - { title: Participate in LBP, url: https://dex.guru, type: book }
 
-  text: "GURU Orchestration platform and Network is the culmination of our vision, integrating our existing services with a revolutionary new execution layer that enhances dApp capabilities through smart contract execution and AI-driven data insights. With the unique FlowOrchestrator system, GURU Orchestrator and Network enables seamless on-chain/off-chain interactions, transforming how decentralized applications interact with blockchain and AI technologies."
+  text: "The GURU Network provides a transformative platform for startup innovators and dApp builders, integrating AI and blockchain technologies to simplify the development process and operations of startup as a business."
 
 partners:
   subtitle: We secured a total of $6 million through two successful venture capital rounds to develop a sophisticated trading terminal and deliver dependable market data.
@@ -43,7 +43,7 @@ For Application developers it’s became expected that they embed GPT mechanics,
 
 <!-- / REVOLUTION SECTION -->
 
-{% include section.html pretitle="New Vision:" title="Scaling That Works" img="/assets/img/content/scaling.svg" %}
+{% include section.html pretitle="GURU Platform and Network" title="Scaling dApps Ecosystem" img="/assets/img/content/scaling.svg" %}
 
 {% include vision.html %}
 
@@ -81,19 +81,19 @@ GURU Wallet and Wallet SDK serves as a window into GURU Network participation, a
 
 {% endcapture %}
 
-{% include section.html pretitle="GURU Wallet SDK: Gateway To Participate" text=content img="/assets/img/content/sdk.svg" align="right"  %}
+{% include section.html pretitle="GURU Wallet SDK" title="Gateway To Participate" text=content img="/assets/img/content/sdk.svg" align="right"  %}
 
 <!-- / SDK SECTION -->
 
 {% include network.html  %}
 
-{% include section.html title="GURU Network Tokenomics" img="/assets/img/content/tokenomics.svg" bg="dark" %}
+{% include section.html pretitle="GURU Network" title="Tokenomics" img="/assets/img/content/tokenomics.svg" bg="dark" %}
 
 {% include distribution.html  %}
 
 {% include section.html title="Roadmap" img="/assets/img/content/roadmap.svg" bg="light"   %}
 
-{% include section.html title="GURU Network Ecosystem Markets" img="/assets/img/content/market.svg" bg="dark" %}
+{% include section.html pretitle="GURU Network" title="Ecosystem Markets" img="/assets/img/content/market.svg" bg="dark" %}
 
 {% include adopters.html %}
 

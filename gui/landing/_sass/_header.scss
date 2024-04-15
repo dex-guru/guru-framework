@@ -142,6 +142,8 @@
     }
 
     &__link {
+      margin: -16px;
+      padding: 16px;
       font-weight: 500;
       font-size: 18px;
       line-height: 23px;
@@ -197,15 +199,18 @@
     &__link:focus ~ &__submenu {
       display: block;
       z-index: 2;
-      animation: submenuDrop 0.25s ease;
 
-      @keyframes submenuDrop {
-        from {
-          opacity: 0;
-        }
+      @media (min-width: 960.1px) {
+        animation: submenuDrop 0.25s ease;
 
-        to {
-          opacity: 1;
+        @keyframes submenuDrop {
+          from {
+            opacity: 0;
+          }
+
+          to {
+            opacity: 1;
+          }
         }
       }
     }
@@ -318,7 +323,7 @@
   }
 }
 
-@property --_angle {
+@property --color {
   syntax: "<angle>";
   initial-value: 0deg;
   inherits: false;
@@ -334,7 +339,7 @@
   &__img {
     background: linear-gradient(#0b0f14, #0b0f14) padding-box,
       linear-gradient(
-          var(--_angle, 0deg),
+          104deg,
           rgba(96, 70, 255, 1) 0%,
           rgba(34, 212, 159, 1) 100%
         )

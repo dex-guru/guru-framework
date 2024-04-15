@@ -1,0 +1,51 @@
+.section--vision {
+  background: #0b0f14;
+}
+
+.vision {
+  &__title {
+    background: #232a32;
+    border-radius: 32px;
+
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 32px;
+    text-align: center;
+
+    width: max-content;
+    max-width: 100%;
+    margin: 0 auto 48px;
+    padding: 16px 32px;
+
+    .ai {
+      color: #6046ff;
+    }
+
+    .apps {
+      color: #12b886;
+    }
+  }
+
+  &__list {
+    display: grid;
+    gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(234px, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    padding: 0 0 0 22px;
+
+    &::before {
+      content: "";
+      float: left;
+      width: 6px;
+      height: 6px;
+      background: #9488f0;
+      border-radius: 3px;
+      margin: 0.55em 16px 0 -22px;
+    }
+  }
+}

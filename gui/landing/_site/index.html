@@ -19,7 +19,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","author":{"@type":"Person","name":"guru_network"},"description":"At DexGuru, we’re not just building a platform; we’re shaping the future of blockchain technology. From our origins as a pioneering Dex Aggregator to our evolution into a comprehensive AI-enhanced blockchain ecosystem, DexGuru stands at the forefront of innovation, ready to unlock the full potential of decentralized applications for developers, AI enthusiasts, and blockchain believers alike.","headline":"Flow Orchestrator","name":"GURU Network – Unleashing the Future of AI Focused Decentralized Applications","url":"http://localhost:4000/"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/style.css?v=20240411175921"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="GURU Network – Unleashing the Future of AI Focused Decentralized Applications" />
+<link rel="stylesheet" href="/assets/css/style.css?v=20240415173326"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="GURU Network – Unleashing the Future of AI Focused Decentralized Applications" />
 </head>
 <body>
     <div class="page" aria-label="Content">
@@ -241,8 +241,17 @@
         cell.style = `--speed: ${Math.random() * 100 + 10}s`;
       });
     };
+
+    let resizingTimer = null;
+
     window.addEventListener("resize", () => {
-      bannerInit();
+      if (resizingTimer) {
+        clearTimeout(resizingTimer);
+      }
+
+      resizingTimer = setTimeout(() => {
+        bannerInit();
+      }, 500);
     });
     bannerInit();
   })();
@@ -271,79 +280,34 @@
 </div>
       </div>
     </div></div></div>
+<div class="page__content"><!-- REVOLUTION SECTION -->
 
-
-<div class="features features--network">
-  <div class="features__header">
-    <h2 class="features__title">Key Features</h2>
-    </div>
-  <div class="features__body">
-    <ul class="features__list"><li class="features__item">
-        
-        <div class="features-entry">
-          <div class="features-entry__illustration">
-            
-            <img src="/assets/img/features/warehouse/collaboration.svg" alt="" class="features-entry__image" /></div>
-          <div class="features-entry__header">
-            <h3 class="features-entry__title">
-              
-              <strong class="features-entry__pretitle"
-                >For Developers:</strong
-              >Monetize Your Innovation
-            </h3>
-          </div>
-          <div class="features-entry__body">Unlock new revenue streams by publishing your APIs and AI models within our ecosystem. GURU Orchestrator and Network's execution layer allows you to embed blockchain data dashboards directly into dApp front-ends, offering no-code solutions that redefine dApp functionality.</div>
-        </div></li><li class="features__item">
-        
-        <div class="features-entry">
-          <div class="features-entry__illustration">
-            
-            <img src="/assets/img/features/warehouse/community-api.svg" alt="" class="features-entry__image" /></div>
-          <div class="features-entry__header">
-            <h3 class="features-entry__title">
-              
-              <strong class="features-entry__pretitle"
-                >For AI Enthusiasts:</strong
-              >Push the Boundaries of Technology
-            </h3>
-          </div>
-          <div class="features-entry__body">Publish AI models for distributed computing and interact with them through smart contracts. Use our WYSIWYG Flow Orchestration Modeler to create complex flows that integrate on-chain and off-chain processes with business logic. </div>
-        </div></li><li class="features__item">
-        
-        <div class="features-entry">
-          <div class="features-entry__illustration">
-            
-            <img src="/assets/img/features/warehouse/data-streaming.svg" alt="" class="features-entry__image" /></div>
-          <div class="features-entry__header">
-            <h3 class="features-entry__title">
-              Tasklist Management
-            </h3>
-          </div>
-          <div class="features-entry__body">Organize and manage tasks efficiently. Assign tasks to users, set priorities, and track progress to ensure timely completion. Empower users with the ability to claim tasks, update their status, and complete them, fostering a collaborative and efficient work environment.</div>
-        </div></li><li class="features__item">
-        
-        <div class="features-entry">
-          <div class="features-entry__illustration">
-            
-            <img src="/assets/img/features/warehouse/community-api.svg" alt="" class="features-entry__image" /></div>
-          <div class="features-entry__header">
-            <h3 class="features-entry__title">
-              
-              <strong class="features-entry__pretitle"
-                >For The Community</strong
-              >Earn and Participate
-            </h3>
-          </div>
-          <div class="features-entry__body">Run Compute Nodes and earn through Content Subscription Revenue (CSR), getting rewarded for your contributions to the ecosystem. Your participation helps fuel the continuous growth and innovation within the DexGuru community.</div>
-        </div></li></ul>
+<section class="section section--left section--light section--animate">
+  <div class="section__header">
+    
+    <h2 class="section__title">
+      
+      <span class="section__pretitle">GPT Revolution</span>
+      Happened Now What?
+    </h2>
+    
   </div>
-</div>
-<div class="page__content"><h2 id="roadmap">Roadmap</h2>
+  <div class="section__body">
+    
+    <div class="section__illustration">
+      
+      <div class="section-animate">
+        <div class="section-animate__ripples">
+          <span class="section-animate__ripple"></span><span class="section-animate__ripple"></span><span class="section-animate__ripple"></span><span class="section-animate__ripple"></span><span class="section-animate__ripple"></span><span class="section-animate__ripple"></span>
+        </div>
+      </div>
 
-<p><img src="/assets/img/roadmap.svg" alt="The San Juan Mountains are beautiful!" /></p>
-
-<h2 id="gpt-revolution-happened-now-what">GPT Revolution Happened Now What?</h2>
-
+      
+      <img class="section__img" src="/assets/img/content/revolution.svg" />
+    </div>
+     
+    <div class="section__content">
+      
 <p>For Application developers it’s became expected that they embed GPT mechanics, and market is growing as well as workforce is forced to use AI Processors more in more in daily routines, points:</p>
 
 <ul>
@@ -354,33 +318,136 @@
   <li>We believe projects driving GTP Revolution towards utilization of financial tooling of Web3 World would prevail in this cycle.</li>
 </ul>
 
-<h2 id="new-vision-scaling-what-works">New Vision: Scaling What Works</h2>
+ 
+    </div>
+    
+  </div>
+</section>
 
-<h2 id="our-vision">Our Vision</h2>
+<!-- / REVOLUTION SECTION -->
 
-<p>We simplify AI Focused Applications Development</p>
+<section class="section   ">
+  <div class="section__header">
+    
+    <h2 class="section__title">
+      
+      <span class="section__pretitle">New Vision:</span>
+      Scaling That Works
+    </h2>
+    
+  </div>
+  <div class="section__body">
+    
+    <div class="section__illustration">
+      
+      <img class="section__img" src="/assets/img/content/scaling.svg" />
+    </div>
+     
+  </div>
+</section>
 
-<ul>
-  <li>Easy to use and embed BPA (Blockchain Process Automation) AI, Transactions and User Flow orchestration snippets and data views.</li>
-  <li>Orchestration layer for on-chain/off-chain/user and AI interactions why it’s crucial dApps Developers and RAG Developers and AI Models providers?</li>
-  <li>We’ve built Dex Guru Platform with idea of boosting up development process while keeping maintenance loses in control.</li>
-  <li>We run half a dozen complex projects deployed over 18 chains with lean team, GPT Integrations and OnChain/OffChain actions orchestrated and that’s why we think everyone can do it with our tooling.</li>
-</ul>
+<section class="section section--vision">
+  <div class="section__header">
+    <h2 class="section__title">Our Vision</h2>
+  </div>
+  <div class="section__body">
+    <div class="vision">
+      <div class="vision__title">
+        We simplify <span class="ai">AI Focused</span>
+        <span class="apps">Applications</span> Development
+      </div>
 
-<h2 id="how-guru-platform-works">How GURU Platform Works?</h2>
+      <ul class="vision__list">
+        <li class="vision__item">
+          Easy to use and embed BPA (Blockchain Process Automation) AI,
+          Transactions and User Flow orchestration snippets and data views.
+        </li>
+        <li class="vision__item">
+          Orchestration layer for on-chain/off-chain/user and AI interactions.
+          Why it’s crucial dApps Developers and RAG Developers and AI Models
+          providers?
+        </li>
+        <li class="vision__item">
+          We’ve built Dex Guru Platform with idea of boosting up development
+          process while keeping maintenance loses in control.
+        </li>
+        <li class="vision__item">
+          We run half a dozen complex projects deployed over 18 chains with lean
+          team, GPT Integrations and OnChain/OffChain actions orchestrated and
+          that’s why we think everyone can do it with our tooling.
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-<h3 id="orchestrated-execution">Orchestrated Execution</h3>
+<section class="section section--howworks section--light">
+  <div class="section__header">
+    <h2 class="section__title">How GURU Platform Works?</h2>
+  </div>
+  <div class="section__body">
+    <div class="howworks">
+      <div class="howworks-entry">
+        <img class="howworks-entry__img" src="/assets/img/instruments/anytokenanychain.svg" alt="" />
 
-<p>On-chain/Off-chain/User/AI Business Process Automation (BPA) through FlowOrchestrator</p>
+        <h3 class="howworks-entry__title howworks-entry__title--orchestrated">
+          Orchestrated Execution
+        </h3>
 
-<p>Automation instructions are designed as BPMN(Business Process Model and Notation). Deployed as on-chain smart contract and off-chain orchestration node.</p>
+        <div class="howworks-entry__text text">
+          <p>
+            On-chain/Off-chain/User/AI Business Process Automation (BPA) through
+            FlowOrchestrator.
+          </p>
+          <p>
+            Automation instructions are designed as BPMN(Business Process Model
+            and Notation). Deployed as on-chain smart contract and off-chain
+            orchestration node.
+          </p>
+        </div>
+      </div>
 
-<h3 id="embeddable-insights">Embeddable insights</h3>
+      <div class="howworks-entry">
+        <img class="howworks-entry__img" src="/assets/img/instruments/marketstate.svg" alt="" />
 
-<p>Platform also serves as CMS for DexGuru and Ecosystem products where insights are embedded in different forms. They already working for us, and can work for you. Allowing for fast features testing and roll outs.</p>
+        <h3 class="howworks-entry__title howworks-entry__title--embeddable">
+          Embeddable insights
+        </h3>
 
-<h2 id="flow-orchestrator">Flow Orchestrator</h2>
+        <div class="howworks-entry__text text">
+          <p>
+            Platform also serves as CMS for DexGuru and Ecosystem products where
+            insights are embedded in different forms. They already working for
+            us, and can work for you. Allowing for fast features testing and
+            roll outs.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- ORCHESTRATOR SECTION -->
+
+<section class="section section--left section--dark ">
+  <div class="section__header">
+    
+    <h2 class="section__title">
+      
+      <span class="section__pretitle">Flow Orchestrator</span>
+      Processes as a service
+    </h2>
+    
+  </div>
+  <div class="section__body">
+    
+    <div class="section__illustration">
+      
+      <img class="section__img" src="/assets/img/content/revolution.svg" />
+    </div>
+     
+    <div class="section__content">
+      
 <p>Orchestrator is in a core of GURU Platform Ecosystem powering up all connection and financial means of GURU Network:</p>
 
 <ul>
@@ -391,60 +458,248 @@
   <li>EventBus exposed on GURU Network as an Oracle</li>
 </ul>
 
-<h2 id="guru-network-ai-as-a-service">GURU Network: AI as a Service</h2>
+ 
+    </div>
+    
+  </div>
+</section>
 
-<h3 id="available-today">Available Today</h3>
+<!-- / ORCHESTRATOR SECTION -->
+
+<!-- SDK SECTION -->
+
+<section class="section section--right  ">
+  <div class="section__header">
+    
+    <h2 class="section__title">
+      
+      <span class="section__pretitle">GURU Wallet SDK: Gateway To Participate</span>
+      
+    </h2>
+    
+  </div>
+  <div class="section__body">
+    
+    <div class="section__illustration">
+      
+      <img class="section__img" src="/assets/img/content/sdk.svg" />
+    </div>
+     
+    <div class="section__content">
+      
+<p>GURU Wallet and Wallet SDK serves as a window into GURU Network participation, as a builder, user or compute node runner. Wallet SDK is the main interface to communicate with Network and control all the processes/projects attached to the account. Same time it serves as a view into GURU Network Ecosystem, like and Ecosystem App Store if you want.</p>
 
 <ul>
-  <li>Data Driven GPT as a Service based of particular chain or protocol data presented on Data Warehouse dashboards</li>
-  <li>AI Assistant with context of dAPP data and protocol insides working off the dashboards and queries created in Guru Warehouse and embedded in dAPPS</li>
+  <li>GURU Wallet SDK: Acts as an Eternal Worker for process orchestration within the GURU Network. Allowing users to orchestrate non-custodial trading mechanics.</li>
+  <li>Orchestrated Process Execution: Seamlessly trigger actions and manage smart contracts through FlowOrchestrator integration.</li>
+  <li>Personalized AI Processors: Deploy and control BPAs from applications catalog, as Personal Assistants for enhanced productivity across the ecosystem.</li>
+  <li>Earn When Idle: Users contribute computational power to run AI models, selected based on device performance to fulfill SLA. Devices answer GPT Model questions during idle times, like overnight charging, earning rewards for users.</li>
+  <li>GURU Ecosystem role: Cornerstone component in realizing Guru Labs’ vision for a decentralized, efficient, and user-centric digital world.</li>
 </ul>
 
-<h3 id="in-development">In Development</h3>
+ 
+    </div>
+    
+  </div>
+</section>
 
-<ul>
-  <li>Blockchain data Science Research assistant</li>
-  <li>AI-powered time-series forecasting &amp; anomaly detection (Inflow, Outflows, smart contract risks).</li>
-  <li>Behavioral analytics and P&amp;L analysis.</li>
-  <li>ERC-20/NFT Sniping Bot AI</li>
-</ul>
+<!-- / SDK SECTION -->
 
-<h2 id="guru-network-tokenomics">GURU Network Tokenomics</h2>
-
-<h2 id="allocation-and-distribution">Allocation and Distribution</h2>
-
-<ul>
-  <li>1B Total Supply, $50M FDV</li>
-  <li>About ~20%-30% Initial circulating supply</li>
-  <li>Vesting terms: 6 months cliff, 24 month total duration.</li>
-</ul>
-
-<h2 id="guru-network-early-adopters">GURU Network Early Adopters</h2>
-
-<p>Early adopters projects who opted in to use of Dex Guru Warehouse and later GURU FlowOrchestrator as a Framework for their services launch.</p>
-
-<ul>
-  <li>Art Fusion Tees (@artfusion_bot)</li>
-  <li>Pixelpact.ai</li>
-  <li>NiftNet MemeCoin (Launch Platform)</li>
-  <li>RealityCraft (Launch Platform)</li>
-</ul></div>
-
-<div class="cta">
-  <div class="cta__body">The $GURU token is the backbone of our ecosystem, facilitating transactions, rewarding contributions, and driving innovation. As we expand the GURU Orchestrator and Network platform, the $GURU token ensures a vibrant, self-sustaining blockchain community.</div><div class="cta__footer">
-    <nav class="cta-actions">
-      <div class="actions">
-        <ul class="actions__list"><li class="actions__item">
-            <a
-              href="https://webforms.pipedrive.com/f/c6vRxuvEjYqAxWSu1hN3xF2Cm5KyUtB66yKiko2wxKvPIs2J5R6mPJUV3oMdjnoHpF"
-              class="actions__link actions__link--book"
-              ><span class="caption"> Participate in LBP </span></a
-            >
-          </li></ul>
+<section class="section section--network">
+  <div class="section__header">
+    <h2 class="section__title">
+      <span class="section__pretitle">GURU Network: </span>
+      AI Processor as a Service
+    </h2>
+  </div>
+  <div class="section__body">
+    <div class="section__content">
+      <div class="section__illustration">
+        <img class="section__img" src="/assets/img/content/aipaas.png" />
       </div>
-    </nav>
-  </div></div>
-<div class="partners">
+
+      <div class="network">
+        <div class="network-entry">
+          <h3 class="network-entry__title">Available Today</h3>
+          <div class="network-entry__content text">
+            <ul>
+              <li>
+                Data Driven GPT as a Service based of particular chain or
+                protocol data presented on Data Warehouse dashboards. Currently
+                embedded in Block Explorer and Data Warehouse as research
+                assistant which is aware of data dashboards context.
+              </li>
+              <li>
+                AI Assistant with context of dAPP data and protocol insides
+                working off the dashboards and queries created in Guru Warehouse
+                and embedded in dAPPS. Deployed by GURU Team as part of Data
+                Warehouse as GPT SQL Helper when composing the queries.
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="network-entry">
+          <h3 class="network-entry__title">In Development</h3>
+          <div class="network-entry__content text">
+            <ul>
+              <li>
+                Blockchain data Science Research assistant productized and
+                available for Ecosystem to consume as a service.
+              </li>
+              <li>
+                AI-powered time-series forecasting &amp; anomaly detection (Inflow,
+                Outflows, smart contract risks).
+              </li>
+              <li>Behavioral analytics and P&amp;L analysis.</li>
+              <li>ERC-20/NFT Sniping Bot AI</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section  section--dark ">
+  <div class="section__header">
+    
+    <h2 class="section__title">
+      GURU Network Tokenomics
+    </h2>
+    
+  </div>
+  <div class="section__body">
+    
+    <div class="section__illustration">
+      
+      <img class="section__img" src="/assets/img/content/tokenomics.svg" />
+    </div>
+     
+  </div>
+</section>
+
+<section class="section section--distribution">
+  <div class="section__header">
+    <h2 class="section__title">Allocation and Distribution</h2>
+  </div>
+  <div class="section__content">
+    <figure class="allocation">
+      <img src="/assets/img/content/allocation.svg" class="allocation__img" alt="Allocation" />
+      <div class="allocation__text text">
+        <ul>
+          <li>1B Total Supply, $50M FDV.</li>
+          <li>About ~20%-30% Initial circulating supply.</li>
+          <li>Vesting terms: 6 months cliff, 24 month total duration.</li>
+        </ul>
+      </div>
+    </figure>
+    <img src="/assets/img/content/distribution.svg" class="distribution" alt="Distribution" />
+  </div>
+</section>
+
+<section class="section  section--light ">
+  <div class="section__header">
+    
+    <h2 class="section__title">
+      Roadmap
+    </h2>
+    
+  </div>
+  <div class="section__body">
+    
+    <div class="section__illustration">
+      
+      <img class="section__img" src="/assets/img/content/roadmap.svg" />
+    </div>
+     
+  </div>
+</section>
+
+<section class="section  section--dark ">
+  <div class="section__header">
+    
+    <h2 class="section__title">
+      GURU Network Ecosystem Markets
+    </h2>
+    
+  </div>
+  <div class="section__body">
+    
+    <div class="section__illustration">
+      
+      <img class="section__img" src="/assets/img/content/market.svg" />
+    </div>
+     
+  </div>
+</section>
+
+<section class="section section--adopters">
+  <div class="section__header">
+    <h2 class="section__title">GURU Network Early Adopters</h2>
+    <span class="section__subtitle">Early adopters projects who opted in to use of Dex Guru Warehouse and
+      later GURU FlowOrchestrator as a Framework for their services launch.
+    </span>
+  </div>
+  <div class="section__body">
+    <div class="adopters">
+      <ul class="adopters__list">
+        <li class="adopters__item">
+          <div class="adopters-entry">
+            <img class="adopters-entry__img" src="/assets/img/adopters/artfusiontees.webp" alt="Art Fusion Tees" />
+
+            <strong class="adopters-entry__title">Art Fusion Tees</strong>
+
+            <span class="adopters-entry__comment"><a href="https://t.me/artfusion_bot">@artfusion_bot</a></span>
+          </div>
+        </li>
+
+        <li class="adopters__item">
+          <div class="adopters-entry">
+            <img class="adopters-entry__img adopters-entry__img--logo" src="/assets/img/adopters/pixelpact.svg" alt="Pixelpact.ai" />
+
+            <strong class="adopters-entry__title">Pixelpact.ai</strong>
+          </div>
+        </li>
+
+        <li class="adopters__item">
+          <div class="adopters-entry">
+            <img class="adopters-entry__img" src="/assets/img/adopters/niftnet.webp" alt="NiftNet MemeCoin" />
+
+            <strong class="adopters-entry__title">NiftNet MemeCoin</strong>
+            <span class="adopters-entry__comment"> Launch Platform</span>
+          </div>
+        </li>
+
+        <li class="adopters__item">
+          <div class="adopters-entry">
+            <img class="adopters-entry__img" src="/assets/img/adopters/realitycraft.webp" alt="RealityCraft" />
+
+            <strong class="adopters-entry__title">RealityCraft</strong>
+            <span class="adopters-entry__comment"> Launch Platform</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section  section--light ">
+  <div class="section__header">
+    
+    <h2 class="section__title">
+      Go to Market Strategy
+    </h2>
+    
+  </div>
+  <div class="section__body">
+    
+    <div class="section__illustration">
+      
+      <img class="section__img" src="/assets/img/content/strategy.svg" />
+    </div>
+     
+  </div>
+</section></div><div class="partners">
   <div class="partners__header">
     <h2 class="partners__title">
       We have the support and backing of prominent
@@ -856,6 +1111,6 @@
 </div>
     </div>
 
-    <script src="/assets/js/main.js?v=20240411175921"></script>
+    <script src="/assets/js/main.js?v=20240415173326"></script>
   </body>
 </html>

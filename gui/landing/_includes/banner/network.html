@@ -21,8 +21,17 @@
         cell.style = `--speed: ${Math.random() * 100 + 10}s`;
       });
     };
+
+    let resizingTimer = null;
+
     window.addEventListener("resize", () => {
-      bannerInit();
+      if (resizingTimer) {
+        clearTimeout(resizingTimer);
+      }
+
+      resizingTimer = setTimeout(() => {
+        bannerInit();
+      }, 500);
     });
     bannerInit();
   })();

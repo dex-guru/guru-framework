@@ -41,10 +41,24 @@ h2 {
 
   ul {
     line-height: 1.4;
+    margin: 0;
+    padding: 0 0 0 32px;
+    list-style: none;
   }
 
   li {
-    margin: 0.5em;
+    margin: 1.5em 0;
+    padding: 0 0 0 22px;
+
+    &::before {
+      content: "";
+      float: left;
+      width: 6px;
+      height: 6px;
+      background: #9488f0;
+      border-radius: 3px;
+      margin: 0.55em 16px 0 -22px;
+    }
   }
 }
 

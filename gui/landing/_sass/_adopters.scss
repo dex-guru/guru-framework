@@ -1,0 +1,50 @@
+.adopters {
+  flex: 0 0 100%;
+
+  &__list {
+    display: grid;
+    gap: 40px;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+  }
+
+  &-entry {
+    &__img {
+      display: block;
+      border-radius: 24px;
+      background: #01061d;
+      overflow: hidden;
+      object-fit: cover;
+      aspect-ratio: 1;
+
+      &:not(:last-child) {
+        margin-bottom: 32px;
+      }
+
+      &--logo {
+        padding: 32px;
+        display: grid;
+        place-items: center;
+        object-fit: contain;
+      }
+    }
+
+    &__title {
+      display: block;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 32px;
+    }
+
+    &__comment {
+      display: block;
+      margin-top: 8px;
+      color: #6b7a8a;
+    }
+  }
+}

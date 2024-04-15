@@ -9,7 +9,7 @@ description: "At DexGuru, we're not just building a platform; we're shaping the 
 banner:
   type: network
   title: GURU Network
-  subtitle:  Unleashing the <br />Future ofAI Focused Decentralized Applications
+  subtitle: Unleashing the <br />Future ofAI Focused Decentralized Applications
 
   actions:
     - {
@@ -17,63 +17,17 @@ banner:
         url: https://webforms.pipedrive.com/f/c6vRxuvEjYqAxWSu1hN3xF2Cm5KyUtB66yKiko2wxKvPIs2J5R6mPJUV3oMdjnoHpF,
         type: book,
       }
-    - {
-        title: Participate in LBP,
-        url: https://warehouse.dex.guru,
-        type: book,
-    }
+    - { title: Participate in LBP, url: https://warehouse.dex.guru, type: book }
 
   text: "GURU Orchestration platform and Network is the culmination of our vision, integrating our existing services with a revolutionary new execution layer that enhances dApp capabilities through smart contract execution and AI-driven data insights. With the unique FlowOrchestrator system, GURU Orchestrator and Network enables seamless on-chain/off-chain interactions, transforming how decentralized applications interact with blockchain and AI technologies."
 
-features:
-  class: network
-  title: Key Features
-  items:
-    - {
-        pretitle: 'For Developers:',
-        title: "Monetize Your Innovation",
-        text: "Unlock new revenue streams by publishing your APIs and AI models within our ecosystem. GURU Orchestrator and Network's execution layer allows you to embed blockchain data dashboards directly into dApp front-ends, offering no-code solutions that redefine dApp functionality.",
-        img: "/assets/img/features/warehouse/collaboration.svg",
-      }
-    - {
-        pretitle: 'For AI Enthusiasts:',
-        title: "Push the Boundaries of Technology",
-        text: "Publish AI models for distributed computing and interact with them through smart contracts. Use our WYSIWYG Flow Orchestration Modeler to create complex flows that integrate on-chain and off-chain processes with business logic. ",
-        img: "/assets/img/features/warehouse/community-api.svg",
-      }
-    - {
-        title: "Tasklist Management",
-        text: "Organize and manage tasks efficiently. Assign tasks to users, set priorities, and track progress to ensure timely completion. Empower users with the ability to claim tasks, update their status, and complete them, fostering a collaborative and efficient work environment.",
-        img: "/assets/img/features/warehouse/data-streaming.svg",
-      }
-    - {
-        pretitle: 'For The Community',
-        title: "Earn and Participate",
-        text: "Run Compute Nodes and earn through Content Subscription Revenue (CSR), getting rewarded for your contributions to the ecosystem. Your participation helps fuel the continuous growth and innovation within the DexGuru community.",
-        img: "/assets/img/features/warehouse/community-api.svg",
-}
-
-cta:
-  text: The $GURU token is the backbone of our ecosystem, facilitating transactions, rewarding contributions, and driving innovation. As we expand the GURU Orchestrator and Network platform, the $GURU token ensures a vibrant, self-sustaining blockchain community.
-  actions:
-    - {
-        title: Participate in LBP,
-        url: https://webforms.pipedrive.com/f/c6vRxuvEjYqAxWSu1hN3xF2Cm5KyUtB66yKiko2wxKvPIs2J5R6mPJUV3oMdjnoHpF,
-        type: book,
-      }
-
-
 partners:
   subtitle: We secured a total of $6 million through two successful venture capital rounds to develop a sophisticated trading terminal and deliver dependable market data.
-
-
 ---
 
-## Roadmap
+<!-- REVOLUTION SECTION -->
 
-![The San Juan Mountains are beautiful!](/assets/img/roadmap.svg)
-
-## GPT Revolution Happened Now What?
+{% capture content %}
 
 For Application developers it’s became expected that they embed GPT mechanics, and market is growing as well as workforce is forced to use AI Processors more in more in daily routines, points:
 
@@ -83,30 +37,21 @@ For Application developers it’s became expected that they embed GPT mechanics,
 - Multi-step AI Processors are used by professional GPT users in their daily activities and work life.
 - We believe projects driving GTP Revolution towards utilization of financial tooling of Web3 World would prevail in this cycle.
 
-## New Vision: Scaling What Works
+{% endcapture %}
 
-## Our Vision
+{% include section.html pretitle="GPT Revolution" title="Happened Now What?" text=content  img="/assets/img/content/revolution.svg" align="left" bg="light" animate=true %}
 
-We simplify AI Focused Applications Development
+<!-- / REVOLUTION SECTION -->
 
-- Easy to use and embed BPA (Blockchain Process Automation) AI, Transactions and User Flow orchestration snippets and data views.
-- Orchestration layer for on-chain/off-chain/user and AI interactions why it’s crucial dApps Developers and RAG Developers and AI Models providers?
-- We’ve built Dex Guru Platform with idea of boosting up development process while keeping maintenance loses in control.
-- We run half a dozen complex projects deployed over 18 chains with lean team, GPT Integrations and OnChain/OffChain actions orchestrated and that’s why we think everyone can do it with our tooling.
+{% include section.html pretitle="New Vision:" title="Scaling That Works" img="/assets/img/content/scaling.svg" %}
 
-## How GURU Platform Works?
+{% include vision.html %}
 
-### Orchestrated Execution
+{% include howworks.html %}
 
-On-chain/Off-chain/User/AI Business Process Automation (BPA) through FlowOrchestrator
+<!-- ORCHESTRATOR SECTION -->
 
-Automation instructions are designed as BPMN(Business Process Model and Notation). Deployed as on-chain smart contract and off-chain orchestration node.
-
-### Embeddable insights
-
-Platform also serves as CMS for DexGuru and Ecosystem products where insights are embedded in different forms. They already working for us, and can work for you. Allowing for fast features testing and roll outs.
-
-## Flow Orchestrator
+{% capture content %}
 
 Orchestrator is in a core of GURU Platform Ecosystem powering up all connection and financial means of GURU Network:
 
@@ -116,33 +61,40 @@ Orchestrator is in a core of GURU Platform Ecosystem powering up all connection 
 - Distribute Execution when working in pair with GURU Wallet, which allows remote execution from FlowOrchestration on particular actions.
 - EventBus exposed on GURU Network as an Oracle
 
-## GURU Network: AI as a Service
+{% endcapture %}
 
-### Available Today
+{% include section.html pretitle="Flow Orchestrator" title="Processes as a service" text=content  img="/assets/img/content/revolution.svg" align="left" bg="dark" %}
 
-- Data Driven GPT as a Service based of particular chain or protocol data presented on Data Warehouse dashboards
-- AI Assistant with context of dAPP data and protocol insides working off the dashboards and queries created in Guru Warehouse and embedded in dAPPS
+<!-- / ORCHESTRATOR SECTION -->
 
-### In Development
+<!-- SDK SECTION -->
 
-- Blockchain data Science Research assistant
-- AI-powered time-series forecasting & anomaly detection (Inflow, Outflows, smart contract risks).
-- Behavioral analytics and P&L analysis.
-- ERC-20/NFT Sniping Bot AI
+{% capture content %}
 
-## GURU Network Tokenomics
+GURU Wallet and Wallet SDK serves as a window into GURU Network participation, as a builder, user or compute node runner. Wallet SDK is the main interface to communicate with Network and control all the processes/projects attached to the account. Same time it serves as a view into GURU Network Ecosystem, like and Ecosystem App Store if you want.
 
-## Allocation and Distribution
+- GURU Wallet SDK: Acts as an Eternal Worker for process orchestration within the GURU Network. Allowing users to orchestrate non-custodial trading mechanics.
+- Orchestrated Process Execution: Seamlessly trigger actions and manage smart contracts through FlowOrchestrator integration.
+- Personalized AI Processors: Deploy and control BPAs from applications catalog, as Personal Assistants for enhanced productivity across the ecosystem.
+- Earn When Idle: Users contribute computational power to run AI models, selected based on device performance to fulfill SLA. Devices answer GPT Model questions during idle times, like overnight charging, earning rewards for users.
+- GURU Ecosystem role: Cornerstone component in realizing Guru Labs' vision for a decentralized, efficient, and user-centric digital world.
 
-- 1B Total Supply, $50M FDV
-- About ~20%-30% Initial circulating supply
-- Vesting terms: 6 months cliff, 24 month total duration.
+{% endcapture %}
 
-## GURU Network Early Adopters
+{% include section.html pretitle="GURU Wallet SDK: Gateway To Participate" text=content img="/assets/img/content/sdk.svg" align="right"  %}
 
-Early adopters projects who opted in to use of Dex Guru Warehouse and later GURU FlowOrchestrator as a Framework for their services launch.
+<!-- / SDK SECTION -->
 
-- Art Fusion Tees (@artfusion_bot)
-- Pixelpact.ai
-- NiftNet MemeCoin (Launch Platform)
-- RealityCraft (Launch Platform)
+{% include network.html  %}
+
+{% include section.html title="GURU Network Tokenomics" img="/assets/img/content/tokenomics.svg" bg="dark" %}
+
+{% include distribution.html  %}
+
+{% include section.html title="Roadmap" img="/assets/img/content/roadmap.svg" bg="light"   %}
+
+{% include section.html title="GURU Network Ecosystem Markets" img="/assets/img/content/market.svg" bg="dark" %}
+
+{% include adopters.html %}
+
+{% include section.html title="Go to Market Strategy" img="/assets/img/content/strategy.svg" bg="light" %}

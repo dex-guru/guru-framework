@@ -40,6 +40,7 @@ for applications, enhancing user engagement and process management.
 
 ## Project Structure
 
+```
 guru-framework/
 │
 ├── contracts/ # Smart contracts for blockchain interactions
@@ -47,7 +48,7 @@ guru-framework/
 ├── external_workers/ # Individual agents for non-custodial execution and compute
 ├── gui/ # User interface components
 └── README.md # This file
-
+```
 
 ## Getting Started
 

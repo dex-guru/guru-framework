@@ -1,139 +1,131 @@
-"use client";
+'use client'
 
-import { FC, useEffect, useState } from "react";
-import clsx from "clsx";
-import styles from "./Tasks.module.scss";
-import { ProcessDefinition, ProcessInstance } from "@/app/processes/types";
-import { ProcessTask, TaskVariables } from "@/app/tasks/types";
+import { FC, useEffect, useState } from 'react'
+
+import { AbiFunction } from 'abitype'
+import clsx from 'clsx'
+import { useForm } from 'react-hook-form'
 import {
+  useAccount,
+  useEstimateGas,
+  useSendTransaction,
+  useWaitForTransactionReceipt,
+} from 'wagmi'
+
+import { ProcessDefinition, ProcessInstance } from '@/app/processes/types'
+import { ProcessTask, TaskVariables } from '@/app/tasks/types'
+import {
+  completeTask,
   getDefinitions,
   getInstances,
-  getTasks,
   getTaskVariables,
-  completeTask,
-  setTaskVariables,
-} from "@/src/utils/processUtils";
-import { useForm } from "react-hook-form";
-import { AbiFunction } from "abitype";
-import {
-  usePrepareSendTransaction,
-  useSendTransaction,
-  useWaitForTransaction,
-  useAccount,
-} from "wagmi";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
-import Button from "../Button";
+  getTasks,
+} from '@/src/utils/processUtils'
+
+import Button from '../Button'
+
+import styles from './Tasks.module.scss'
 
 export const Tasks: FC<{ className?: string }> = ({ className }) => {
-  const { address } = useAccount();
-  const { openConnectModal } = useConnectModal();
-  const [currentProcess, setCurrentProcess] = useState<string | null>(null);
-  const [currentInstance, setCurrentInstance] = useState<string | null>(null);
-  const [currentTask, setCurrentTask] = useState<string | null>(null);
-  const [processes, setProcesses] = useState<ProcessDefinition[]>([]);
-  const [instances, setInstances] = useState<ProcessInstance[]>([]);
-  const [tasks, setTasks] = useState<ProcessTask[]>([]);
+  const { address } = useAccount()
+  const [currentProcess, setCurrentProcess] = useState<string | null>(null)
+  const [currentInstance, setCurrentInstance] = useState<string | null>(null)
+  const [currentTask, setCurrentTask] = useState<string | null>(null)
+  const [processes, setProcesses] = useState<ProcessDefinition[]>([])
+  const [instances, setInstances] = useState<ProcessInstance[]>([])
+  const [tasks, setTasks] = useState<ProcessTask[]>([])
 
-  const [formVars, setFormVars] = useState<TaskVariables | undefined>(
-    undefined
-  );
-  const [abi, setAbi] = useState<AbiFunction | undefined>(undefined);
+  const [formVars, setFormVars] = useState<TaskVariables | undefined>(undefined)
+  const [abi, setAbi] = useState<AbiFunction | undefined>(undefined)
 
-  const { register, handleSubmit, formState, watch, reset } = useForm();
-  const to = watch("_to");
-  const value = watch("_value");
+  const { register, handleSubmit, formState, watch, reset } = useForm()
+  const to = watch('_to')
+  const value = watch('_value')
 
-  useEffect(() => {
-    if (!address && openConnectModal) {
-      openConnectModal();
-    }
-  }, [address]);
-
-  const { config } = usePrepareSendTransaction({
+  const { data: gas } = useEstimateGas({
     to: to,
     value: value,
     account: address,
-  });
+  })
 
-  const { data, sendTransaction } = useSendTransaction(config);
+  const { data: hash, sendTransaction } = useSendTransaction()
 
-  const { isLoading, isSuccess } = useWaitForTransaction({
-    hash: data?.hash,
-  });
+  const { isLoading, } = useWaitForTransactionReceipt({
+    hash
+  })
 
   useEffect(() => {
-    if (!currentTask || !data?.hash) {
-      return;
+    if (!currentTask || !hash) {
+      return
     }
-    const transactionHash = data.hash;
-    const transactionInput = config.data || "0x";
-    const value = config.value;
+    const transactionHash = hash
+    const transactionInput = '0x'
     const variables = {
       transactionHash: {
         value: transactionHash,
-        type: "String",
+        type: 'String',
         valueInfo: {},
       },
       transactionInput: {
         value: transactionInput,
-        type: "String",
+        type: 'String',
         valueInfo: {},
       },
       value: {
         value: value,
-        type: "String",
+        type: 'String',
         valueInfo: {},
       },
-    };
+    }
     completeTask(currentTask, variables).then((res) => {
       if (res === 204) {
-        reset();
+        reset()
       }
-    });
-  }, [data?.hash]);
+    })
+  }, [currentTask, hash, reset, value])
   useEffect(() => {
     const getData = async () => {
-      setProcesses(await getDefinitions());
-      setInstances(await getInstances());
-    };
+      setProcesses(await getDefinitions())
+      setInstances(await getInstances())
+    }
 
-    getData();
-  }, []);
-
-  useEffect(() => {
-    const getData = async () => {
-      setCurrentInstance(null);
-      setCurrentTask(null);
-    };
-
-    getData();
-  }, [currentProcess]);
+    getData()
+  }, [])
 
   useEffect(() => {
     const getData = async () => {
-      setTasks(await getTasks(null, currentProcess, currentInstance));
-    };
+      setCurrentInstance(null)
+      setCurrentTask(null)
+    }
 
-    getData();
-  }, [currentInstance, currentProcess]);
+    getData()
+  }, [currentProcess])
+
+  useEffect(() => {
+    const getData = async () => {
+      setTasks(await getTasks(null, currentProcess, currentInstance))
+    }
+
+    getData()
+  }, [currentInstance, currentProcess])
 
   useEffect(() => {
     if (!currentTask) {
-      return;
+      return
     }
 
     const getData = async () => {
-      const formVars = await getTaskVariables(currentTask);
-      setFormVars(formVars);
+      const formVars = await getTaskVariables(currentTask)
+      setFormVars(formVars)
       if (formVars.abi) {
-        setAbi(JSON.parse(formVars.abi.value));
+        setAbi(JSON.parse(`${formVars.abi.value}`))
       }
-    };
+    }
 
-    getData();
-  }, [currentTask]);
+    getData()
+  }, [currentTask])
 
-  const task = tasks.find((task) => currentTask === task.id);
+  const task = tasks.find((task) => currentTask === task.id)
 
   return (
     <div className={clsx(styles.container, className)}>
@@ -145,19 +137,16 @@ export const Tasks: FC<{ className?: string }> = ({ className }) => {
                 <strong
                   className={styles.processesEntry}
                   onClick={() => {
-                    setCurrentProcess(process.id);
-                    setCurrentInstance(null);
-                  }}
-                >
+                    setCurrentProcess(process.id)
+                    setCurrentInstance(null)
+                  }}>
                   {process.name}
                 </strong>
 
                 <div className={styles.instances}>
                   <ul className={styles.instancesList}>
                     {instances
-                      .filter(
-                        (instance) => instance.definitionId === process.id
-                      )
+                      .filter((instance) => instance.definitionId === process.id)
                       ?.map((instance) => {
                         return (
                           <li
@@ -166,18 +155,17 @@ export const Tasks: FC<{ className?: string }> = ({ className }) => {
                               active: currentInstance === instance.id,
                             })}
                             onClick={() => {
-                              setCurrentProcess(process.id);
-                              setCurrentInstance(instance.id);
-                            }}
-                          >
+                              setCurrentProcess(process.id)
+                              setCurrentInstance(instance.id)
+                            }}>
                             {instance.id}
                           </li>
-                        );
+                        )
                       })}
                   </ul>
                 </div>
               </li>
-            );
+            )
           })}
         </ul>
       </div>
@@ -191,12 +179,11 @@ export const Tasks: FC<{ className?: string }> = ({ className }) => {
                   active: currentTask === task.id,
                 })}
                 onClick={() => {
-                  setCurrentTask(task.id);
-                }}
-              >
+                  setCurrentTask(task.id)
+                }}>
                 {task.name}
               </li>
-            );
+            )
           })}
         </ul>
       </div>
@@ -212,7 +199,7 @@ export const Tasks: FC<{ className?: string }> = ({ className }) => {
                     <th className={styles.propsTH}>{key}</th>
                     <td className={styles.propsTD}>{value}</td>
                   </tr>
-                );
+                )
               })}
             </tbody>
           </table>
@@ -223,11 +210,18 @@ export const Tasks: FC<{ className?: string }> = ({ className }) => {
         {!!formVars && abi && (
           <form
             onSubmit={handleSubmit(
-              () =>
-                sendTransaction?.() ||
-                console.log("sendTransaction is not defined")
-            )}
-          >
+              () => {
+                if (!sendTransaction) {
+                  throw new Error('sendTransaction is not defined')
+                }
+                sendTransaction({
+                  gas: gas || undefined,
+                  to: to,
+                  value: value,
+                }
+                )
+              }
+            )}>
             {abi.inputs.map((abiParam, idx) => {
               return (
                 <>
@@ -238,15 +232,13 @@ export const Tasks: FC<{ className?: string }> = ({ className }) => {
                       required: true,
                     })}
                   />
-                  {formState.errors.exampleRequired && (
-                    <span>This field is required</span>
-                  )}
+                  {formState.errors.exampleRequired && <span>This field is required</span>}
                 </>
-              );
+              )
             })}
 
             <Button
-              caption={isLoading ? "Sending..." : "Send"}
+              caption={isLoading ? 'Sending...' : 'Send'}
               buttonType="submit"
               disabled={isLoading || !sendTransaction || !to || !value}
             />
@@ -254,5 +246,5 @@ export const Tasks: FC<{ className?: string }> = ({ className }) => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}

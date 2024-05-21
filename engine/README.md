@@ -5,7 +5,7 @@ ChainFlow Engine
 ### Build docker:
 
 ```
-docker buildx build --push --tag docker-registry.dexguru.biz/dex.guru/chainflow_engine/chainflow_engine:1 --platform=linux/arm64,linux/amd64 .
+docker-compose up -d
 ```
 
 ### Deploy using helm
@@ -17,5 +17,5 @@ If you downloaded config from rancher
 ```
 Available at:
 
-Application: https://chainflow-engine.dexguru.biz/camunda/app/welcome/default/
-API: https://chainflow-engine.dexguru.biz/engine-rest
+Application: http://localhost:8080/camunda/app/welcome/default/
+API: http://localhost:8080/engine-rest

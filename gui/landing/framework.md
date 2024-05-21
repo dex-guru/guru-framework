@@ -1,42 +1,40 @@
 ---
 layout: base
-permalink: /framework
+permalink: /framework.html
 type: network
-title: GURU Enlightenment Network - Multi-Chain AI Compute Layer
-description: Base Layer 3 allows dApps and retail users to natively embed orchestrated AI Agents into their routines and earn Network participant rewards.
+title: Guru Framework
+description: Empowering Seamless AI and Blockchain Integration
 # --------------------------
 # start: Banner config
-# banner:
-#   type: network
-#   title: Building a Multi-Chain AI Compute Layer
-#   subtitle: GURU L3  allows dApps and retail Operators to natively embed orchestrated AI Agents and earn Network participant rewards.
+banner:
+  type: network
+  title: Empowering Seamless AI and Blockchain Integration
+  subtitle: The Guru Framework is a powerful toolkit designed to seamlessly integrate AI and blockchain technologies, enhancing automation and efficiency in decentralized applications. It provides developers with robust tools to build, deploy, and manage sophisticated Web3 and Web2 processes effortlessly.
 
-#   actions:
-#     - {
-#         title: Book a Demo,
-#         url: https://webforms.pipedrive.com/f/c6vRxuvEjYqAxWSu1hN3xF2Cm5KyUtB66yKiko2wxKvPIs2J5R6mPJUV3oMdjnoHpF,
-#         type: book,
-#       }
-#     - { title: Participate in LBP, url: https://dex.guru, type: secondary }
+  actions:
+    - {
+        title: Github,
+        url: https://github.com/dex-guru/guru-framework.git,
+        type: book,
+      }
+    - {
+        title: Documentation,
+        url: https://docs.gurunetwork.ai/framework,
+        type: secondary,
+      }
 
-# partners:
-#   show: true
+partners:
+  show: false
 ---
 
 <!-- ORCHESTRATOR SECTION -->
 
 {% capture content %}
 
-Orchestrator is in a core of GURU Framework Ecosystem powering up all connection and financial means of GURU Network:
-
-- Provides single execution context for variety of environments (on-chain/off-chain/user/AI interactions)
-- Seamlessly orchestrate multi-steps LLM/AI models using orchestration snippets catalog
-- Reuse Published BPA Definitions
-- Distribute Execution when working in pair with GURU Wallet, which allows remote execution from FlowOrchestration on particular actions.
-- EventBus exposed on GURU Network as an Oracle
+The Guru Framework is a critical part of the Guru Network ecosystem, providing a comprehensive toolkit for integrating AI and blockchain technologies. It features components like the Flow Orchestrator and BBPA Engines, which enable seamless orchestration of complex Web3 and Web2 processes. The framework supports both on-chain and off-chain interactions, enhancing the efficiency and scalability of decentralized applications by offering a unified API and robust process automation capabilities. This makes it essential for developers looking to build and manage sophisticated multi-platform applications within the Guru Network.
 
 {% endcapture %}
 
-{% include section.html pretitle="Flow Orchestrator" title="Processes as a service" text=content  img="/assets/img/content/revolution.svg" align="left" bg="dark" %}
+{% include section.html pretitle="Guru Framework" title="Empowering Seamless AI and Blockchain Integration" text=content  img="/assets/img/content/revolution.svg" align="left"  %}
 
 <!-- / ORCHESTRATOR SECTION -->

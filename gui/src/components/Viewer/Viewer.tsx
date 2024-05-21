@@ -1,50 +1,50 @@
-"use client";
+'use client'
 
-import { FC, useRef, useEffect } from "react";
+import { FC, useEffect, useRef } from 'react'
 
-import "camunda-bpmn-js/dist/assets/camunda-platform-viewer.css";
-import BpmnViewer from "bpmn-js/lib/Viewer";
+import BpmnViewer from 'bpmn-js/lib/Viewer'
+import clsx from 'clsx'
 
-import styles from "./Viewer.module.scss";
-import clsx from "clsx";
-import { fetchEngine } from "@/src/utils/processUtils";
+import { fetchEngine } from '@/src/utils/processUtils'
 
-export const Viewer: FC<{ process: string; className?: string }> = ({
-  process,
-  className,
-}) => {
-  const refCanvas = useRef<HTMLDivElement>(null);
-  const refViewer = useRef<BpmnViewer | null>(null);
+import styles from './Viewer.module.scss'
+
+import 'camunda-bpmn-js/dist/assets/camunda-platform-viewer.css'
+import Canvas from '@node_modules/diagram-js/lib/core/Canvas'
+
+export const Viewer: FC<{ process: string; className?: string }> = ({ process, className }) => {
+  const refCanvas = useRef<HTMLDivElement>(null)
+  const refViewer = useRef<BpmnViewer | null>(null)
 
   useEffect(() => {
     if (!refCanvas.current || refViewer.current) {
-      return;
+      return
     }
 
     const viewer = new BpmnViewer({
-      container: refCanvas.current || "",
-    });
-    refViewer.current = viewer;
+      container: refCanvas.current || '',
+    })
+    refViewer.current = viewer
 
     const getXml = async () => {
       try {
-        const res = await fetchEngine(`process-definition/${process}/xml`);
+        const res = await fetchEngine(`process-definition/${process}/xml`)
 
         if (!res.ok) {
-          return;
+          return
         }
 
-        const { bpmn20Xml } = await res.json();
-        await viewer?.importXML(bpmn20Xml);
-        const canvas = viewer.get("canvas") as any;
-        canvas.zoom("fit-viewport");
+        const { bpmn20Xml } = await res.json()
+        await viewer?.importXML(bpmn20Xml)
+        const canvas = refViewer.current?.get<Canvas>('canvas')
+        canvas?.zoom('fit-viewport')
       } catch (e) {
-        console.error(e);
+        console.error(e)
       }
-    };
+    }
 
-    getXml();
-  }, [refCanvas]);
+    getXml()
+  }, [process, refCanvas])
 
-  return <div className={clsx(styles.container, className)} ref={refCanvas} />;
-};
+  return <div className={clsx(styles.container, className)} ref={refCanvas} />
+}

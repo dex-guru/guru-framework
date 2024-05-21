@@ -1,24 +1,21 @@
-import { getTaskVariables, getTasks } from "@/src/utils/processUtils";
-import styles from "./page.module.scss";
-import { Tasks } from "@/src/components/Tasks/Tasks";
-import Panel from "@/src/components/Panel";
-import { TaskForm } from "./taskForm";
+import Panel from '@/src/components/Panel'
+import { getTaskVariables, getTasks } from '@/src/utils/processUtils'
 
-export default async function TaskPage({
-  params: { id },
-}: {
-  params: { id: string };
-}) {
-  const tasks = await getData(id);
+import { TaskForm } from './taskForm'
+
+import styles from './page.module.scss'
+
+export default async function TaskPage({ params: { id } }: { params: { id: string } }) {
+  const tasks = await getData(id)
 
   if (!tasks.length) {
-    return null;
+    return null
   }
 
-  const task = tasks[0];
+  const task = tasks[0]
 
-  const formVars = await getTaskVariables(task.id);
-  const abi = JSON.parse(formVars?.abi?.value || "{}");
+  const formVars = await getTaskVariables(task.id)
+  const abi = formVars?.abi?.value && JSON.parse(`${formVars?.abi?.value}`)
 
   return (
     <div className={styles.container}>
@@ -37,7 +34,7 @@ export default async function TaskPage({
                       <th className={styles.propsTH}>{key}</th>
                       <td className={styles.propsTD}>{value}</td>
                     </tr>
-                  );
+                  )
                 })}
               </tbody>
             </table>
@@ -52,9 +49,9 @@ export default async function TaskPage({
         </main>
       </div>
     </div>
-  );
+  )
 }
 
 async function getData(id: string) {
-  return await getTasks(id);
+  return await getTasks(id)
 }

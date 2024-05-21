@@ -1,10 +1,11 @@
-import List from "@/src/components/List";
-import styles from "./page.module.scss";
-import ProcessCard from "@/src/components/ProcessCard";
-import { getDefinitions } from "@/src/utils/processUtils";
+import List from '@/src/components/List'
+import ProcessCard from '@/src/components/ProcessCard'
+import { getDefinitions } from '@/src/utils/processUtils'
+
+import styles from './page.module.scss'
 
 export default async function ProjectsPage() {
-  const processes = await getData();
+  const processes = await getData()
 
   return (
     <div className={styles.container}>
@@ -15,20 +16,14 @@ export default async function ProjectsPage() {
       <div className={styles.body}>
         <List className={styles.list}>
           {processes?.map((process) => {
-            return (
-              <ProcessCard
-                process={process}
-                className={styles.card}
-                key={process.key}
-              />
-            );
+            return <ProcessCard process={process} className={styles.card} key={process.key} />
           })}
         </List>
       </div>
     </div>
-  );
+  )
 }
 
 async function getData() {
-  return await getDefinitions();
+  return await getDefinitions()
 }

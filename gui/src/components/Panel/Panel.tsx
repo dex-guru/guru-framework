@@ -1,20 +1,17 @@
-import { FC, ReactNode } from "react";
-import styles from "./Panel.module.scss";
-import clsx from "clsx";
+import { FC, ReactNode } from 'react'
+
+import clsx from 'clsx'
+
+import styles from './Panel.module.scss'
 
 type PanelProps = {
-  className?: string;
-  title: ReactNode;
-  tools?: ReactNode | ReactNode[];
-  children?: ReactNode | ReactNode[];
-};
+  className?: string
+  title: ReactNode
+  tools?: ReactNode | ReactNode[]
+  children?: ReactNode | ReactNode[]
+}
 
-export const Panel: FC<PanelProps> = ({
-  title,
-  tools,
-  className,
-  children,
-}) => {
+export const Panel: FC<PanelProps> = ({ title, tools, className, children }) => {
   return (
     <div className={clsx(styles.container, className)}>
       <div className={styles.header}>
@@ -23,5 +20,5 @@ export const Panel: FC<PanelProps> = ({
       </div>
       <div className={styles.body}>{children}</div>
     </div>
-  );
-};
+  )
+}

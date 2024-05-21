@@ -1,0 +1,27 @@
+{
+    "arrowParens": "always",
+    "bracketSpacing": true,
+    "endOfLine": "auto",
+    "bracketSameLine": true,
+    "jsxSingleQuote": false,
+    "printWidth": 100,
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "importOrder": [
+        "^next(\/.*)?$",
+        "^react$",
+        "<THIRD_PARTY_MODULES>",
+        "^@telekomconsalting/.*$",
+        "^@/(.*)$",
+        "^[./].*(?<!\\.(c|le|sc)ss)$",
+        "^[.]/[-a-zA-Z0-9_]+[.](module)[.](css|scss|less)$",
+        "^.*[.](css|scss|less)$"
+    ],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
+    "plugins": [
+        "@trivago/prettier-plugin-sort-imports"
+    ]
+}

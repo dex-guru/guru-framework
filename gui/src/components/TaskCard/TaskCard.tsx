@@ -1,12 +1,16 @@
-import styles from "./TaskCard.module.scss";
-import { FC } from "react";
-import Link from "next/link";
-import clsx from "clsx";
-import { ProcessTask } from "@/app/tasks/types";
+import Link from 'next/link'
+
+import { FC } from 'react'
+
+import clsx from 'clsx'
+
+import { ProcessTask } from '@/app/tasks/types'
+
+import styles from './TaskCard.module.scss'
 
 export const TaskCard: FC<{
-  task: ProcessTask;
-  className?: string;
+  task: ProcessTask
+  className?: string
 }> = ({ task, className }) => {
   return (
     <div className={clsx(styles.container, className)}>
@@ -16,11 +20,10 @@ export const TaskCard: FC<{
       <div className={styles.footer}>
         <Link
           href={`/processes/${task.processDefinitionId}/${task.processInstanceId}`}
-          className={styles.title}
-        >
+          className={styles.title}>
           <small>{task.processInstanceId}</small>
         </Link>
       </div>
     </div>
-  );
-};
+  )
+}

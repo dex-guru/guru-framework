@@ -1,3 +1,3 @@
-import { Modeler } from "./Modeler";
+import { Modeler } from './Modeler'
 
-export default Modeler;
+export default Modeler

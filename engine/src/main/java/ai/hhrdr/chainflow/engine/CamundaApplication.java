@@ -11,6 +11,25 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 
+import org.camunda.bpm.engine.rest.security.auth.ProcessEngineAuthenticationFilter;
+import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.servlet.Filter;
+import javax.sql.DataSource;
 
 @SpringBootApplication
 @EnableScheduling
@@ -41,18 +60,31 @@ public class CamundaApplication extends SpringBootServletInitializer {
   public static PropertySourcesPlaceholderConfigurer propertyConfigurer() {
     return new PropertySourcesPlaceholderConfigurer();
   }
-//
-//  @Bean
-//  public FilterRegistrationBean authenticationFilter() {
-//    FilterRegistrationBean registration = new FilterRegistrationBean();
-//    Filter myFilter = new ProcessEngineAuthenticationFilter();
-//    registration.setFilter(myFilter);
-//    registration.addUrlPatterns("/engine-rest/*");
-//    registration.addInitParameter("authentication-provider",
-//            "org.camunda.bpm.engine.rest.security.auth.impl.HttpBasicAuthenticationProvider");
-//    registration.setName("camunda-auth");
-//    registration.setOrder(1);
-//    return registration;
-//  }
+
+
+  @Bean
+  public PlatformTransactionManager transactionManager() {
+    return new DataSourceTransactionManager(camundaDataSource());
+  }
+  @Bean(name="camundaBpmDataSource")
+  @Primary
+  @ConfigurationProperties(prefix="camunda.bpm.datasource")
+  public DataSource camundaDataSource() {
+    System.out.println("camunda.bpm.datasource");
+    return DataSourceBuilder.create().build();
+  }
+
+  @Bean
+  public FilterRegistrationBean authenticationFilter() {
+    FilterRegistrationBean registration = new FilterRegistrationBean();
+    Filter myFilter = new ProcessEngineAuthenticationFilter();
+    registration.setFilter(myFilter);
+    registration.addUrlPatterns("/engine-rest/*");
+    registration.addInitParameter("authentication-provider",
+            "org.camunda.bpm.engine.rest.security.auth.impl.HttpBasicAuthenticationProvider");
+    registration.setName("camunda-auth");
+    registration.setOrder(1);
+    return registration;
+  }
 
 }

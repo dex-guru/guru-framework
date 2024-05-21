@@ -1,14 +1,13 @@
-import { FC, Suspense } from "react";
-import styles from "./page.module.scss";
-import dynamic from "next/dynamic";
+import dynamic from 'next/dynamic'
 
-const ModelerPage = dynamic(
-  () => import("@/src/components/ModelerPage/ModelerPage"),
-  {
-    loading: () => <p>Loading...</p>,
-    ssr: false,
-  }
-);
+import { Suspense } from 'react'
+
+import styles from './page.module.scss'
+
+const ModelerPage = dynamic(() => import('@/src/components/ModelerPage/ModelerPage'), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+})
 
 export default function ModelerStaticPage() {
   return (
@@ -16,5 +15,5 @@ export default function ModelerStaticPage() {
       {/* @ts-expect-error Server Component */}
       <ModelerPage className={styles.container} />
     </Suspense>
-  );
+  )
 }

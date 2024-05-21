@@ -1,6 +1,6 @@
 ---
 layout: base
-permalink: /network
+permalink: /network.html
 type: network
 title: GURU - The AI Orchestration Network
 description: "Base Layer 3 allows dApps and retail users to natively embed orchestrated AI Agents into their routines and earn Network participant rewards."

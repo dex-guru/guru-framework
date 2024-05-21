@@ -1,18 +1,20 @@
-import { getInstance, getTasks, getVariables } from "@/src/utils/processUtils";
-import styles from "./page.module.scss";
-import Viewer from "@/src/components/Viewer";
-import Panel from "@/src/components/Panel";
-import List from "@/src/components/List";
-import Link from "next/link";
+import Link from 'next/link'
 
-export const dynamic = "force-dynamic";
+import List from '@/src/components/List'
+import Panel from '@/src/components/Panel'
+import Viewer from '@/src/components/Viewer'
+import { getInstance, getTasks, getVariables } from '@/src/utils/processUtils'
+
+import styles from './page.module.scss'
+
+export const dynamic = 'force-dynamic'
 
 export default async function InstancePage({
   params: { instanceId },
 }: {
-  params: { instanceId: string };
+  params: { instanceId: string }
 }) {
-  const { instance, variables, tasks } = await getData(instanceId);
+  const { instance, variables, tasks } = await getData(instanceId)
 
   return (
     <div className={styles.container}>
@@ -34,7 +36,7 @@ export default async function InstancePage({
                       <th className={styles.propsTH}>{key}</th>
                       <td className={styles.propsTD}>{value}</td>
                     </tr>
-                  );
+                  )
                 })}
               </tbody>
             </table>
@@ -60,11 +62,9 @@ export default async function InstancePage({
                     <tr className={styles.variablesTBody} key={varKey}>
                       <th className={styles.variablesTH}>{varKey}</th>
                       <td className={styles.variablesTD}>{varValue.type}</td>
-                      <td className={styles.variablesTD}>
-                        {JSON.stringify(varValue.value)}
-                      </td>
+                      <td className={styles.variablesTD}>{JSON.stringify(varValue.value)}</td>
                     </tr>
-                  );
+                  )
                 })}
               </tbody>
             </table>
@@ -72,7 +72,7 @@ export default async function InstancePage({
         </main>
       </div>
     </div>
-  );
+  )
 }
 
 async function getData(id: string) {
@@ -80,5 +80,5 @@ async function getData(id: string) {
     instance: await getInstance(id),
     variables: await getVariables(id),
     tasks: await getTasks(null, null, id),
-  };
+  }
 }

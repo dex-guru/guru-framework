@@ -130,10 +130,6 @@
         height: 100%;
         overflow: auto;
       }
-
-      @media (max-width: 640px) {
-        margin: 0 calc(0px - var(--page-side-padding));
-      }
     }
 
     &__item {

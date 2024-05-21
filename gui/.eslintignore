@@ -1,0 +1,9 @@
+node_modules
+build
+dist
+
+next.config.js
+
+
+# // NEXT API routes
+**/route.ts 

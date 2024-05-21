@@ -1,21 +1,19 @@
-"use client";
+import Link from 'next/link'
 
-import { ProcessDefinition } from "@/app/processes/types";
-import styles from "./ProcessCard.module.scss";
-import { FC } from "react";
-import { FaPlay } from "react-icons/fa6";
-import Link from "next/link";
-import clsx from "clsx";
-import Button from "../Button";
+import { FC } from 'react'
+
+import clsx from 'clsx'
+
+import { ProcessDefinition } from '@/app/processes/types'
+
+import InstanceStarter from '../InstanceStarter'
+
+import styles from './ProcessCard.module.scss'
 
 export const ProcessCard: FC<{
-  process: ProcessDefinition;
-  className?: string;
+  process: ProcessDefinition
+  className?: string
 }> = ({ process, className }) => {
-  const handleNewInstance = () => {
-    //
-  };
-
   return (
     <div className={clsx(styles.container, className)}>
       <Link href={`/processes/${process.id}`} className={styles.title}>
@@ -23,18 +21,13 @@ export const ProcessCard: FC<{
       </Link>
       <div className={styles.footer}>
         <div className={styles.entryInstances}>
-          {process.instanceCount || "No"} instance
-          {!process?.instanceCount || process?.instanceCount > 1 ? "s" : ""}
+          {process.instanceCount || 'No'} instance
+          {!process?.instanceCount || process?.instanceCount > 1 ? 's' : ''}
         </div>
         <div className={styles.actions}>
-          <Button
-            icon={<FaPlay />}
-            caption="New Instance"
-            disabled
-            onClick={handleNewInstance}
-          />
+          <InstanceStarter process={process} />
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

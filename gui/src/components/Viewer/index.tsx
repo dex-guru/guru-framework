@@ -1,3 +1,3 @@
-import { Viewer } from "./Viewer";
+import { Viewer } from './Viewer'
 
-export default Viewer;
+export default Viewer

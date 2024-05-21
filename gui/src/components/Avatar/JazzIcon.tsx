@@ -1,5 +1,7 @@
 import * as React from 'react'
+
 import MersenneTwister from 'mersenne-twister'
+
 import { colorRotate, colors } from './utils'
 
 // constants
@@ -32,26 +34,17 @@ const JazzIcon: React.FC<JazzIconProps> = ({
     return color
   }
 
-  const hueShift = (
-    colors: Colors,
-    generator: MersenneTwister
-  ): Array<string> => {
+  const hueShift = (colors: Colors, generator: MersenneTwister): Array<string> => {
     const amount = generator.random() * 30 - wobble / 2
     const rotate = (hex: string) => colorRotate(hex, amount)
     return colors.map(rotate)
   }
 
-  const genShape = (
-    remainingColors: Colors,
-    diameter: number,
-    i: number,
-    total: number
-  ) => {
+  const genShape = (remainingColors: Colors, diameter: number, i: number, total: number) => {
     const center = diameter / 2
     const firstRot = generator.random()
     const angle = Math.PI * 2 * firstRot
-    const velocity =
-      (diameter / total) * generator.random() + (i * diameter) / total
+    const velocity = (diameter / total) * generator.random() + (i * diameter) / total
     const tx = Math.cos(angle) * velocity
     const ty = Math.sin(angle) * velocity
     const translate = 'translate(' + tx + ' ' + ty + ')'
@@ -59,8 +52,7 @@ const JazzIcon: React.FC<JazzIconProps> = ({
     // Third random is a shape rotation on top of all of that.
     const secondRot = generator.random()
     const rot = firstRot * 360 + secondRot * 180
-    const rotate =
-      'rotate(' + rot.toFixed(1) + ' ' + center + ' ' + center + ')'
+    const rotate = 'rotate(' + rot.toFixed(1) + ' ' + center + ' ' + center + ')'
     const transform = translate + ' ' + rotate
     const fill = genColor(remainingColors)
 
@@ -90,11 +82,8 @@ const JazzIcon: React.FC<JazzIconProps> = ({
       height={size}
       width={size}
       className={className}
-      style={{ ...style, background: genColor(remainingColors) }}
-    >
-      {shapesArr.map((s, i) =>
-        genShape(remainingColors, size, i, shapeCount - 1)
-      )}
+      style={{ ...style, background: genColor(remainingColors) }}>
+      {shapesArr.map((s, i) => genShape(remainingColors, size, i, shapeCount - 1))}
     </svg>
   )
 }

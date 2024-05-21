@@ -17,3 +17,36 @@ chainflow-transaction-status-worker:
     TOPIC_NAME: "CheckTransactionConfirmed"
     WEB3_URL: "https://rpc.ankr.com/polygon_mumbai"
     CAMUNDA_URL: "https://chainflow-engine.dexguru.biz/engine-rest"
+
+
+trading-bot-strategy-worker:
+  replicas:
+    default: 1
+  limitsCpu: 1
+  limitsMemory: 500Mi
+  requestsCpu: 0.05
+  requestsMemory: 150Mi
+  strategyType: 'Recreate'
+  command: '[ "python", "./web3_workers/trading_bot_strategy.py" ]'
+  env:
+    ENVIRONMENT: "stage"
+    TOPIC_NAME: "strategy_execution"
+    CAMUNDA_URL: "https://chainflow-engine.dexguru.biz/engine-rest"
+    WAREHOUSE_API_KEY: "LcpfV5xdJ3Cw5o4SF3vWzXTC9HJFkrRCztg3Riov"
+    WAREHOUSE_REST_URL: "https://api.dev.dex.guru/wh/copy_of_202_candles_for_token_in_pool"
+
+
+web3-transaction-executing-worker:
+  replicas:
+    default: 1
+  limitsCpu: 1
+  limitsMemory: 500Mi
+  requestsCpu: 0.05
+  requestsMemory: 150Mi
+  strategyType: 'Recreate'
+  command: '[ "python", "./web3_workers/transaction_executing.py" ]'
+  env:
+    ENVIRONMENT: "stage"
+    TOPIC_NAME: "web3_execution")
+    CAMUNDA_URL: "https://chainflow-engine.dexguru.biz/engine-rest"
+    WEB3_URL: "https://rpc.ankr.com/polygon_mumbai"

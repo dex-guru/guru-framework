@@ -1,6 +1,6 @@
 .container {
   padding: 8px;
-  width: 80px;
+  width: 180px;
   transition: 0.1s ease;
   background: #1e242c;
   color: #8d9eb0;
@@ -14,17 +14,21 @@
 
 .logo {
   flex: 0 0 auto;
+
   &Icon {
     font-size: 32px;
   }
 }
 
 .list {
-  margin: 0 -8px;
   padding: 0;
   list-style: none;
   display: flex;
   flex-flow: column;
+}
+
+.item {
+  margin: 0 auto
 }
 
 .icon {

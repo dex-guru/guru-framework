@@ -63,6 +63,11 @@
     </dependency>
     <!-- required to use H2 as a file based database  (otherwise it's in-memory) -->
     <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.2.23</version>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-jdbc</artifactId>
     </dependency>
@@ -142,6 +147,19 @@
       <artifactId>core</artifactId>
       <version>4.8.7</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.graalvm.js</groupId>
+      <artifactId>js-scriptengine</artifactId>
+      <version>22.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.graalvm.js</groupId>
+      <artifactId>js</artifactId>
+      <version>22.0.0</version>
+      <scope>runtime</scope>
+    </dependency>
+
   </dependencies>
 
   <repositories>

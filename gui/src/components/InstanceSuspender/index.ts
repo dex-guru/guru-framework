@@ -1,3 +1,3 @@
-import { InstanceSuspender } from "./InstanceSuspender";
+import { InstanceSuspender } from './InstanceSuspender'
 
-export default InstanceSuspender;
+export default InstanceSuspender

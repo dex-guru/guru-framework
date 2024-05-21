@@ -1,3 +1,4 @@
-camunda-external-task-client-python3
-pydantic
-web3
+camunda-external-task-client-python3==4.4.0
+pydantic==2.7.0
+web3==6.17.2
+ta==0.11.0

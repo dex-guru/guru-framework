@@ -1,20 +1,17 @@
-import { getDefinition, getInstances } from "@/src/utils/processUtils";
-import styles from "./page.module.scss";
-import Viewer from "@/src/components/Viewer";
-import Link from "next/link";
-import { FaPlay } from "react-icons/fa6";
-import InstanceSuspender from "@/src/components/InstanceSuspender";
-import Button from "@/src/components/Button";
-import Panel from "@/src/components/Panel";
+import Link from 'next/link'
 
-export const dynamic = "force-dynamic";
+import InstanceRemover from '@/src/components/InstanceRemover'
+import InstanceStarter from '@/src/components/InstanceStarter'
+import Panel from '@/src/components/Panel'
+import Viewer from '@/src/components/Viewer'
+import { getDefinition, getInstances } from '@/src/utils/processUtils'
 
-export default async function InstancesPage({
-  params: { id },
-}: {
-  params: { id: string };
-}) {
-  const { process, instances } = await getData(id);
+import styles from './page.module.scss'
+
+export const dynamic = 'force-dynamic'
+
+export default async function InstancesPage({ params: { id } }: { params: { id: string } }) {
+  const { process, instances } = await getData(id)
 
   return (
     <div className={styles.container}>
@@ -37,17 +34,14 @@ export default async function InstancesPage({
                         <th className={styles.propsTH}>{key}</th>
                         <td className={styles.propsTD}>{value}</td>
                       </tr>
-                    );
+                    )
                   })}
                 </tbody>
               </table>
             </div>
           </Panel>
 
-          <Panel
-            title="Instances"
-            tools={<Button caption="New Instance" icon={<FaPlay />} disabled />}
-          >
+          <Panel title="Instances" tools={<InstanceStarter process={process} />}>
             <div className={styles.instances}>
               <table className={styles.instancesTable}>
                 <tbody className={styles.instancesTBody}>
@@ -55,23 +49,21 @@ export default async function InstancesPage({
                     return (
                       <tr className={styles.instancesTBody} key={instance.id}>
                         <th className={styles.instancesTH}>
-                          <Link
-                            href={`/processes/${process.id}/${instance.id}`}
-                          >
+                          <Link href={`/processes/${process.id}/${instance.id}`}>
                             {instance.id}
                           </Link>
                         </th>
                         <td className={styles.instancesTD}>
-                          {instance.ended ? "Ended" : "In progress"}{" "}
+                          {instance.ended ? 'Ended' : 'In progress'}{' '}
                         </td>
                         <td className={styles.instancesTD}>
-                          {instance.suspended ? "Suspended" : "Active"}
+                          {instance.suspended ? 'Suspended' : 'Active'}
                         </td>
                         <td className={styles.instancesTD}>
-                          <InstanceSuspender instance={instance} />
+                          <InstanceRemover instance={instance} />
                         </td>
                       </tr>
-                    );
+                    )
                   })}
                 </tbody>
               </table>
@@ -84,12 +76,12 @@ export default async function InstancesPage({
         </main>
       </div>
     </div>
-  );
+  )
 }
 
 async function getData(id: string) {
   return {
     process: await getDefinition(id),
     instances: await getInstances(id),
-  };
+  }
 }

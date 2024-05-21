@@ -24,6 +24,10 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+
+ARG CAMUNDA_URL
+ENV CAMUNDA_URL=$CAMUNDA_URL
+
 RUN yarn build
 
 # If using npm comment out above and use below instead

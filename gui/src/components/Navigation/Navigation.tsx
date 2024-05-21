@@ -1,10 +1,10 @@
-import { FC } from "react";
-import styles from "./Navigation.module.scss";
-import Link from "next/link";
-import { FaDatabase, FaHome, FaProjectDiagram, FaList } from "react-icons/fa";
-import { FaCodeBranch, FaUser } from "react-icons/fa6";
-import clsx from "clsx";
-import ConnectButton from "@/src/components/ConnectButton";
+import Link from 'next/link'
+
+import { FC } from 'react'
+
+import { FaDatabase, FaHome, FaList, FaProjectDiagram } from 'react-icons/fa'
+
+import styles from './Navigation.module.scss'
 
 export const Navigation: FC = () => {
   return (
@@ -45,10 +45,10 @@ export const Navigation: FC = () => {
       <nav className={styles.personal}>
         <ul className={styles.list}>
           <li className={styles.item}>
-            <ConnectButton />
+            <w3m-button balance="hide" size="sm" />
           </li>
         </ul>
       </nav>
     </div>
-  );
-};
+  )
+}

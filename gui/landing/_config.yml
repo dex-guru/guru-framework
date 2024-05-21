@@ -83,7 +83,8 @@ menu:
                 },
 
                 {
-                  title: $GURU Tokenomics, Allocation and Distribution,
+                  title: $GURU Tokenomics,
+                  Allocation and Distribution,
                   description: "$GURU Token Network Utility",
                   url: /distribution.html,
                 },
@@ -108,7 +109,6 @@ menu:
     }
   - {
       title: Resources,
-      url: "/resources",
       dropdown:
         [
           {
@@ -128,13 +128,13 @@ menu:
         ],
     }
   - { title: Ecosytem, url: "#ecosystem" }
-  - { title: Docs, url: https://docs.dex.guru/ }
+  - { title: Docs, url: https://docs.gurunetwork.ai/ }
 
 aside:
   - { title: Flow Orchestraror App, url: https://warehouse.dex.guru }
 
 # Generate social links in footer.
 social_links:
-  - { platform: twitter, user_url: "https://twitter.com/dexguru" }
+  - { platform: twitter, user_url: "https://twitter.com/xgurunetwork" }
   - { platform: telegram, user_url: "https://t.me/dexguru" }
   - { platform: discord, user_url: "https://discord.gg/dPW8fzwzz9" }

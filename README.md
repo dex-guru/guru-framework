@@ -55,7 +55,7 @@ guru-framework/
 To begin using the Guru Framework, clone the repository and follow the setup instructions provided in each component's directory.
 
 ```bash
-git clone https://github.com/your-guru-framework-repo.git
+git clone https://github.com/dex-guru/guru-framework.git
 cd guru-framework
 ```
 ## Prerequisites

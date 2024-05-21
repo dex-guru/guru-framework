@@ -1,3 +1,3 @@
-import { ProcessCard } from "./ProcessCard";
+import { ProcessCard } from './ProcessCard'
 
-export default ProcessCard;
+export default ProcessCard

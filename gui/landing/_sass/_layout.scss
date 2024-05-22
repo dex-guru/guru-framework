@@ -30,30 +30,33 @@
 
   &__body {
     flex: 1 0 auto;
-    display: flex;
-    flex-flow: column;
-    align-items: stretch;
-    gap: 108px;
     width: 100%;
-
-    @media (max-width: 768px) {
-      gap: 60px;
-    }
+    position: relative;
+    z-index: 1;
   }
 
   &__content {
-    padding: 0 var(--page-side-padding, 16px);
-    max-width: 1440px;
-    margin: 0 auto;
     width: 100%;
+    display: grid;
+
+    grid-template-columns:
+      [fullwidth-start] minmax(16px, 1fr) [content-start] min(
+        100% - 32px,
+        1440px
+      )
+      [content-end] minmax(16px, 1fr) [fullwidth-end];
+    background: #181d23;
 
     &:empty {
       display: none;
     }
+
+    & > * {
+      grid-column: content;
+    }
   }
 
   &__footer {
-    margin-top: 120px;
     flex: 0 0 auto;
     background: #0b0f14;
     color: #fff;

@@ -1,0 +1,39 @@
+{{- $root := . }}
+{{- $appName := index .Values "appName" }}
+{{- $appValues := index .Values $appName }}
+{{- range $appValues.ingressHosts }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $root.Release.Name }}-{{ .name }}
+  namespace: {{ $root.Release.Namespace }}
+  annotations:
+    nginx.org/lb-method: "round_robin"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    {{- if index $root.Values $appName "letsencrypt" "issuer" }}
+    cert-manager.io/cluster-issuer: {{ index $root.Values $appName "letsencrypt" "issuer" }}
+    {{- end }}
+spec:
+  ingressClassName: "nginx"
+  {{- if index $root.Values $appName "letsencrypt" "issuer" }}
+  tls:
+    - hosts:
+        - {{ .host }}
+      secretName: {{ .host }}-tls
+  {{- end }}
+  rules:
+    - host: {{ .host }}
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ $root.Release.Name }}
+                port:
+                  number: {{ index $root.Values $appName "port" }}
+{{- end }}

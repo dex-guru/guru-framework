@@ -4,7 +4,7 @@ console.log('process.env.CAMUNDA_URL', process.env.CAMUNDA_URL)
 const CAMUNDA_URL = process.env.CAMUNDA_URL
 
 const nextConfig = {
-  basePath: '/dashboard',
+  basePath: "/dashboard",
   experimental: {
     serverComponentsExternalPackages: ['hammerjs'],
   },

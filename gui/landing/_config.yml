@@ -1,7 +1,7 @@
-title: Web3 Automation - Orchestrating Multi Chain Web3
+title: GURU Network – The AI Orchestration Network
 author:
-  name: chainflow
-  email: team@chanflow.dexguru.biz
+  name: guru_network
+  email: evgeny@dex.guru
 
 # The `>` after `description:` means to ignore line-breaks until next key.
 # If you want to omit the line-break after the end of text, use `>-` instead.
@@ -33,37 +33,108 @@ partners:
 
 menu:
   - {
-      title: Home,
-      url: /
+      title: Products,
+      dropdown:
+        [
+          {
+            items:
+              [
+                {
+                  icon: dna,
+                  title: Guru Block Explorer,
+                  description: Analitics Driven Block Explorer for GEN,
+                  url: https://b2b.dex.guru/explorer,
+                },
+
+                {
+                  icon: floppy,
+                  title: GEN Data Warehouse,
+                  description: "For most data-intensive
+                    applications like analytics,
+                    AI,
+                    ML,
+                    etc.",
+                  url: https://warehouse.dex.guru,
+                },
+
+                {
+                  icon: yoga,
+                  title: GEN DeFi Trading Terminal,
+                  description: We provide users with real-time data,
+                  trading charts,
+                  and various features to help them make informed decisions when trading cryptocurrencies.,
+                  url: https://dex.guru,
+                },
+              ],
+          },
+          {
+            items:
+              [
+                {
+                  title: "GEN AI Processor as a Service",
+                  description: We provide users with real-time data,
+                  url: /network.html,
+                },
+
+                {
+                  title: GEN Wallet,
+                  description: "Gateway To Participate",
+                  url: /sdk.html,
+                },
+
+                {
+                  title: $GURU Tokenomics,
+                  Allocation and Distribution,
+                  description: "$GURU Token Network Utility",
+                  url: /distribution.html,
+                },
+              ],
+          },
+        ],
     }
   - {
-      title: Contact Us,
-      url: "https://webforms.pipedrive.com/f/6rExdWpdC4j2tsyB09LRGHr6990s7NqeLfhIpT4vPjJOmddqhyIMu7dyvJFAjABNHd"
+      title: Community,
+      url: "https://webforms.pipedrive.com/f/6rExdWpdC4j2tsyB09LRGHr6990s7NqeLfhIpT4vPjJOmddqhyIMu7dyvJFAjABNHd",
+      dropdown:
+        [
+          {
+            items:
+              [
+                { title: "Twitter", url: "https://twitter.com/dexguru" },
+                { title: "Telegram", url: "https://t.me/dexguru" },
+                { title: "Discord", url: "https://discord.gg/dPW8fzwzz9" },
+              ],
+          },
+        ],
     }
+  - {
+      title: Resources,
+      dropdown:
+        [
+          {
+            title: "Guru Multi-Chain AI Compute Layer",
+            items:
+              [
+                {
+                  title: "Litepaper",
+                  url: "/assets/img/litepapper_dexguru_network.pdf",
+                },
+                {
+                  title: "Interoperability Architecture Whitepaper",
+                  url: "/assets/img/guru_network_architecture_whitepaper.pdf",
+                },
+              ],
+          },
+        ],
+    }
+  - { title: Ecosytem, url: "#ecosystem" }
+  - { title: Docs, url: https://docs.gurunetwork.ai/ }
 
 aside:
-  - {
-      title: Dashboard,
-      url: /dashboard,
-    }
+  - { title: Flow Orchestraror App, url: https://warehouse.dex.guru }
 
 # Generate social links in footer.
 social_links:
-  - { platform: twitter, user_url: "https://twitter.com/dexguru" }
+  - { platform: twitter, user_url: "https://twitter.com/xgurunetwork" }
   - { platform: telegram, user_url: "https://t.me/dexguru" }
   - { platform: discord, user_url: "https://discord.gg/dPW8fzwzz9" }
-#   - { platform: devto,          user_url: "https://dev.to/jekyll" }
-#   - { platform: dribbble,       user_url: "https://dribbble.com/jekyll" }
-#   - { platform: facebook,       user_url: "https://www.facebook.com/jekyll" }
-#   - { platform: flickr,         user_url: "https://www.flickr.com/photos/jekyll" }
-#   - { platform: github,         user_url: "https://github.com/jekyll/minima" }
-#   - { platform: google_scholar, user_url: "https://scholar.google.com/citations?user=qc6CJjYAAAAJ" }
-#   - { platform: instagram,      user_url: "https://www.instagram.com/jekyll" }
-#   - { platform: keybase,        user_url: "https://keybase.io/jekyll" }
-#   - { platform: linkedin,       user_url: "https://www.linkedin.com/in/jekyll" }
-#   - { platform: microdotblog,   user_url: "https://micro.blog/jekyll" }
-#   - { platform: pinterest,      user_url: "https://www.pinterest.com/jekyll" }
-#   - { platform: stackoverflow,  user_url: "https://stackoverflow.com/users/1234567/jekyll" }
-#   - { platform: youtube,        user_url: "https://www.youtube.com/jekyll" }
-# If you want to link only specific pages in your header, uncomment this and add the path to the pages in
-# order as they should show up.

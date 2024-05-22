@@ -6,6 +6,7 @@
   text-align: center;
   padding: 0 var(--page-side-padding, 16px);
   width: 100%;
+  margin: 0 0 80px;
 
   &__header {
     display: flex;
@@ -109,6 +110,7 @@
     margin: 0px calc(0px - var(--page-side-padding, 16px));
   }
 
+  &-network,
   &-guru {
     --pulse-diff: 150px;
 
@@ -131,6 +133,23 @@
       }
     }
 
+    &__image {
+      width: 244px;
+      height: 220px;
+      animation: bannerImageWave 5s infinite alternate ease both;
+
+      @keyframes bannerImageWave {
+        0% {
+          transform: translateY(-15px);
+        }
+
+        100% {
+          transform: translateY(15px);
+        }
+      }
+    }
+
+    &__particles,
     &__ripples {
       overflow: hidden;
 
@@ -173,46 +192,85 @@
       }
 
       &:nth-child(1) {
-        --pulse-color: #343d48;
-        --pulse-color-to: #343d48;
+        --pulse-color: #232a33;
+        --pulse-color-to: #232a33;
         --pulse-size: calc(var(--pulse-diff) * 2);
         transform: translate(-50%, -50%) scale(0.5);
         z-index: 6;
       }
 
       &:nth-child(2) {
-        --pulse-color: #343d48;
-        --pulse-color-to: #323a45;
+        --pulse-color: #232a33;
+        --pulse-color-to: #1b232b;
         --pulse-size: calc(var(--pulse-diff) * 2);
         z-index: 5;
       }
 
       &:nth-child(3) {
-        --pulse-color: #323a45;
-        --pulse-color-to: #2c333d;
+        --pulse-color: #1b232b;
+        --pulse-color-to: #171d24;
         --pulse-size: calc(var(--pulse-diff) * 4);
         z-index: 4;
       }
 
       &:nth-child(4) {
-        --pulse-color: #2c333d;
-        --pulse-color-to: #232931;
+        --pulse-color: #171d24;
+        --pulse-color-to: #13181f;
         --pulse-size: calc(var(--pulse-diff) * 6);
         z-index: 3;
       }
 
       &:nth-child(5) {
-        --pulse-color: #232931;
-        --pulse-color-to: #1b2027;
+        --pulse-color: #13181f;
+        --pulse-color-to: #0e1217;
         --pulse-size: calc(var(--pulse-diff) * 8);
         z-index: 2;
       }
 
       &:nth-child(6) {
-        --pulse-color: #1b2027;
-        --pulse-color-to: #{$color-bg-100};
+        --pulse-color: #0e1217;
+        --pulse-color-to: #{$color-bg-120};
         --pulse-size: calc(var(--pulse-diff) * 10);
         z-index: 1;
+      }
+    }
+
+    &__particle {
+      z-index: 10;
+      position: absolute;
+      width: var(--_size);
+      height: var(--_size);
+      border-radius: 50%;
+      background: var(--_color);
+      left: var(--_left);
+      top: var(--_top);
+      --_shift: calc(var(--_size) / -2);
+      margin: var(--_shift) 0 0 var(--_shift);
+      animation: bannerParticleMove 4s ease forwards;
+
+      @keyframes bannerParticleMove {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+
+        15% {
+          opacity: 1;
+        }
+
+        75% {
+          opacity: 1;
+        }
+
+        90% {
+          opacity: 0;
+        }
+
+        100% {
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(-200%);
+        }
       }
     }
 

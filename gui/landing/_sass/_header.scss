@@ -6,31 +6,31 @@
   align-items: center;
 
   &__logo {
-    flex: 0 0 200px;
+    flex: 0 0 auto;
     position: relative;
     z-index: 101;
   }
 
   &__menu {
-    @media (min-width: 960.1px) {
+    @media (min-width: 1200.1px) {
       flex: 5 0 auto;
     }
 
-    @media (max-width: 960px) {
+    @media (max-width: 1200px) {
       margin-left: auto;
     }
   }
 
   &__aside {
-    flex: 0 0 200px;
+    flex: 0 0 auto;
 
-    @media (max-width: 960px) {
+    @media (max-width: 1200px) {
       display: none;
     }
   }
 
   &-menu {
-    animation: menuInit .25s;
+    animation: menuInit 0.25s;
 
     @keyframes menuInit {
       from {
@@ -80,7 +80,7 @@
         overflow: hidden;
       }
 
-      @media (min-width: 960.1px) {
+      @media (min-width: 1200.1px) {
         display: none;
       }
 
@@ -97,7 +97,7 @@
     }
 
     &__body {
-      @media (max-width: 960px) {
+      @media (max-width: 1200px) {
         display: none;
         position: fixed;
         z-index: 99;
@@ -107,7 +107,7 @@
         bottom: 0;
         overflow: auto;
         background: $color-style-black;
-        padding: 64px var(--page-side-padding) 0;
+        padding: 64px 0 0;
 
         .show > & {
           display: block;
@@ -117,31 +117,30 @@
 
     &__list {
       margin: 0;
-      padding: 0;
+      padding: 0 var(--page-side-padding);
       list-style: none;
       display: flex;
       gap: 32px;
       justify-content: center;
       position: relative;
 
-      @media (max-width: 960px) {
+      @media (max-width: 1200px) {
         flex-flow: column;
         justify-content: flex-start;
         height: 100%;
         overflow: auto;
-      }
-
-      @media (max-width: 640px) {
-        margin: 0 calc(0px - var(--page-side-padding));
       }
     }
 
     &__item {
       margin: 0;
       padding: 0;
+      position: relative;
     }
 
     &__link {
+      margin: -16px;
+      padding: 16px;
       font-weight: 500;
       font-size: 18px;
       line-height: 23px;
@@ -155,7 +154,7 @@
       }
 
       &--dropdown {
-        @media (max-width: 960px) {
+        @media (max-width: 1200px) {
           display: none;
         }
       }
@@ -176,12 +175,11 @@
     }
 
     &__submenu {
-      @media (min-width: 960.1px) {
+      @media (min-width: 1200.1px) {
         display: none;
         position: absolute;
-        left: 50%;
+        left: 0;
         top: 100%;
-        transform: translateX(-50%);
         padding-top: 20px;
         width: max-content;
         z-index: 1;
@@ -197,18 +195,20 @@
     &__link:focus ~ &__submenu {
       display: block;
       z-index: 2;
-      animation: submenuDrop .25s ease;
 
-      @keyframes submenuDrop {
-        from {
-          opacity: 0;
-        }
+      @media (min-width: 1200.1px) {
+        animation: submenuDrop 0.25s ease;
 
-        to{
-          opacity: 1;
+        @keyframes submenuDrop {
+          from {
+            opacity: 0;
+          }
+
+          to {
+            opacity: 1;
+          }
         }
       }
-
     }
 
     &__item:hover,
@@ -228,18 +228,18 @@
     flex-flow: row wrap;
     gap: 32px;
 
-    @media (min-width: 960.1px) {
-      padding: 40px;
+    @media (min-width: 1200.1px) {
+      padding: 32px 40px;
       background: $color-style-black;
       border-radius: 16px;
     }
   }
 
   &-links {
-    flex: 1 0 280px;
+    flex: 1 0 auto;
 
     &__header {
-      margin-bottom: 24px;
+      margin-bottom: 8px;
     }
 
     &__title {
@@ -252,6 +252,10 @@
       @media (max-width: 640px) {
         margin: 0 var(--page-side-padding);
       }
+    }
+
+    &__body {
+      margin: 0 -16px;
     }
 
     &__list {
@@ -273,6 +277,10 @@
     border-radius: 8px;
     background: none;
     transition: 0.25s ease;
+
+    &::before {
+      margin: 0;
+    }
 
     @media (max-width: 640px) {
       border-radius: 0;
@@ -319,6 +327,18 @@
   }
 }
 
+@property --color-1 {
+  syntax: "<color>";
+  initial-value: rgba(96, 70, 255, 1);
+  inherits: false;
+}
+
+@property --color-2 {
+  syntax: "<color>";
+  initial-value: rgba(34, 212, 159, 1);
+  inherits: false;
+}
+
 .logo {
   height: 40px;
   display: flex;
@@ -327,9 +347,52 @@
   width: max-content;
 
   &__img {
+    --color-1: rgba(96, 70, 255, 1);
+    --color-2: rgba(34, 212, 159, 1);
+
+    background: linear-gradient(#0b0f14, #0b0f14) padding-box,
+      linear-gradient(104deg, var(--color-1) 0%, var(--color-2) 100%) border-box;
+    background-size: 100%, 200%;
+    border: 2px transparent solid;
     flex: 0 0 auto;
     width: 40px;
     height: 40px;
+    padding: 5px 9px;
+    border-radius: 50%;
+    animation: logo-img 2s linear infinite;
+
+    &-logo {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+
+    @keyframes logo-img {
+      0% {
+        --color-1: rgba(96, 70, 255, 1);
+        --color-2: rgba(34, 212, 159, 1);
+      }
+
+      25% {
+        --color-1: rgba(70, 166, 255, 1);
+        --color-2: rgba(96, 70, 255, 1);
+      }
+
+      50% {
+        --color-1: rgba(241, 190, 62, 1);
+        --color-2: rgba(70, 166, 255, 1);
+      }
+
+      50% {
+        --color-1: rgba(34, 212, 159, 1);
+        --color-2: rgba(241, 190, 62, 1);
+      }
+
+      100% {
+        --color-1: rgba(96, 70, 255, 1);
+        --color-2: rgba(34, 212, 159, 1);
+      }
+    }
   }
 
   &__title {

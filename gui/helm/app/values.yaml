@@ -1,0 +1,32 @@
+---
+image: 'docker-registry.dexguru.biz/dex.guru/chainflow-deployment/chainflow-deployment/landing'
+imageTag: ''
+registrySecretName: registry-harbor
+
+app:
+  replicas:
+    default: 1
+  port: 80
+  serviceType: NodePort
+  limitsCpu: 1
+  limitsMemory: 1G
+  requestsCpu: 100m
+  requestsMemory: 250M
+  strategyType: 'RollingUpdate'
+  baseEnv:
+    APM_SERVER_URL: "http://apm-server-apm-server.logging.svc.cluster.local:8200"
+    APM_ENABLED: 'True'
+    APM_RECORDING: 'True'
+    APM_CAPTURE_HEADERS: 'False'
+    LOGGING_LEVEL: 'INFO'
+    LOG_HANDLERS: '["console", "logstash"]'
+    LOGSTASH: "logstash-logstash.logging.svc.cluster.local"
+  env:
+    SERVICE_NAME: "landing"
+    ENVIRONMENT: "stage"
+    WORKERS: '5'
+  ingressHosts:
+    - name: "dexguru-net"
+      host: "dexguru.net"
+  letsencrypt:
+    issuer: "letsencrypt-prod"

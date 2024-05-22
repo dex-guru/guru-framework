@@ -20,6 +20,6 @@ chainflow-landing:
 #    port: '8000'
   env:
     ENVIRONMENT: "stage"
-  ingressHost1: "chainflow.dexguru.biz"
+  ingressHost1: "dexguru.net"
   letsencrypt:
     issuer: "letsencrypt-prod"

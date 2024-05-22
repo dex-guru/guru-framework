@@ -6,7 +6,9 @@ else -%} {% assign partners = site.partners %} {%- endif -%}
       We have the support and backing of prominent
       <span class="accent">industry leaders.</span>
     </h2>
-    <strong class="partners__subtitle">{{ page.partners.subtitle}}</strong>
+    {%- if page.partners.subtitle -%}
+    <strong class="partners__subtitle">{{ page.partners.subtitle }}</strong>
+    {%- endif -%}
   </div>
   <div class="partners__body">
     <ul class="partners__list">

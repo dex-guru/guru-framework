@@ -1,0 +1,183 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Release.Name }}
+    {{- if .Values.chainName }}
+    chain: {{ .Values.chainName }}
+    {{- end }}
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  progressDeadlineSeconds: 600
+  {{- if .Values.chainName }}
+  replicas: {{ (index .Values .Values.appName "replicas" .Values.chainName) | default (index .Values .Values.appName "replicas").default }}
+  {{- else }}
+  replicas: {{ (index .Values .Values.appName "replicas").default }}
+  {{- end }}
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+      {{- if .Values.chainName }}
+      chainName: {{ .Values.chainName }}
+      {{- end }}
+  strategy:
+    type: {{ index .Values .Values.appName "strategyType" }}
+    {{- if eq (index .Values .Values.appName "strategyType") "RollingUpdate" }}
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
+    {{- end }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+        {{- if .Values.chainName }}
+        chainName: {{ .Values.chainName }}
+        {{- end }}
+    spec:
+      containers:
+      - name: {{ .Release.Name }}
+        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        args:
+           {{- range $value := (index .Values .Values.appName "args") }}
+           - {{ $value | quote }}
+           {{- end }}
+        {{- if index .Values .Values.appName "workDir" }}
+        workingDir: {{ index .Values .Values.appName "workDir" | quote }}
+        {{- end }}
+        {{- if index .Values .Values.appName "env" }}
+        env:
+          {{- range $key, $value := (index .Values .Values.appName "baseEnv") }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+          {{- end }}
+          {{- range $key, $value := (index .Values .Values.appName "env") }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+          {{- end }}
+          {{- if .Values.chainName }}
+          - name: NETWORK
+            value: '{{ (split "-" .Values.chainName)._0 }}'
+          - name: CHAIN_ID
+            value: '{{ (split "-" .Values.chainName)._1 }}'
+          {{- end }}
+        {{- end }}
+        imagePullPolicy: Always
+        {{- if index .Values .Values.appName "command" }}
+        command: {{ index .Values .Values.appName "command" }}
+        {{- end }}
+        {{- if index .Values .Values.appName "port" }}
+        ports:
+        - containerPort: {{ index .Values .Values.appName "port" }}
+          name: lbport
+          protocol: TCP
+        {{- end }}
+        resources:
+          limits:
+            cpu: {{ index .Values .Values.appName "limitsCpu" }}
+            memory: {{ index .Values .Values.appName "limitsMemory" }}
+          requests:
+            cpu: {{ index .Values .Values.appName "requestsCpu" }}
+            memory: {{ index .Values .Values.appName "requestsMemory" }}
+        {{- if (index .Values .Values.appName "readnessProbe" ) }}
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: {{ index .Values .Values.appName "readnessProbe" "path" }}
+            port: {{ index .Values .Values.appName "readnessProbe" "port" }}
+            scheme: HTTP
+          initialDelaySeconds: {{ index .Values .Values.appName "readnessProbe" "initialDelaySeconds" | default "15" }}
+          periodSeconds: {{ index .Values .Values.appName "readnessProbe" "periodSeconds" | default "60" }}
+          successThreshold: 1
+          timeoutSeconds: {{ index .Values .Values.appName "readnessProbe" "timeoutSeconds" | default "20" }}
+        {{- end }}
+        {{- if (index .Values .Values.appName "livenessProbe" ) }}
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: {{ index .Values .Values.appName "livenessProbe" "path" }}
+            port: {{ index .Values .Values.appName "livenessProbe" "port" }}
+            scheme: HTTP
+          initialDelaySeconds: {{ index .Values .Values.appName "livenessProbe" "initialDelaySeconds" | default "15" }}
+          periodSeconds: {{ index .Values .Values.appName "livenessProbe" "periodSeconds" | default "60" }}
+          successThreshold: 1
+          timeoutSeconds: {{ index .Values .Values.appName "livenessProbe" "timeoutSeconds" | default "20" }}
+        {{- end }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities: {}
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+        stdin: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        tty: true
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+      - name:  {{ .Values.registrySecretName }}
+      restartPolicy: Always
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+
+{{ if index .Values .Values.appName "port" }}
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  ports:
+    - name: default
+      protocol: TCP
+      port: {{ index .Values .Values.appName "port" }}
+      targetPort: {{ index .Values .Values.appName "port" }}
+      {{- if (index .Values .Values.appName "nodePort") }}
+      nodePort: {{ index .Values .Values.appName "nodePort" }}
+      {{- end }}
+  selector:
+    app: {{ .Release.Name }}
+  type: {{ index .Values .Values.appName "serviceType" | default "ClusterIP" }}
+{{ end }}
+
+{{if index .Values .Values.appName "maxReplicas" }}
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  maxReplicas: {{ index .Values .Values.appName "maxReplicas" }}
+  minReplicas: {{ index .Values .Values.appName "minReplicas" }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Release.Name }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 85
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Pods
+        value: 1
+        periodSeconds: 30
+    scaleUp:
+      stabilizationWindowSeconds: 120
+      policies:
+      - type: Pods
+        value: 1
+        periodSeconds: 60
+{{ end }}

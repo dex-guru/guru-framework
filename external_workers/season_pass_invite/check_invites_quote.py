@@ -44,5 +44,7 @@ def handle_task(task: ExternalTask):
 
 if __name__ == "__main__":
     ExternalTaskWorker(
-        worker_id="1", base_url=CAMUNDA_URL, config=CAMUNDA_CLIENT_CONFIG
+        worker_id="check_invite_quote",
+        base_url=CAMUNDA_URL,
+        config=CAMUNDA_CLIENT_CONFIG,
     ).subscribe(TOPIC_NAME, handle_task)

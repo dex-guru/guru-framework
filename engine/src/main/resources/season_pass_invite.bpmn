@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_05y5sr6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_05y5sr6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.2" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
   <bpmn:process id="season_pass_invite" name="Season Pass V2" isExecutable="true" camunda:historyTimeToLive="180">
     <bpmn:startEvent id="season_pass_invite_start" name="Season pass V2 Invite" camunda:initiator="camunda_user_id">
       <bpmn:extensionElements>
@@ -21,7 +21,7 @@
       <bpmn:incoming>Flow_0qkv0h8</bpmn:incoming>
       <bpmn:outgoing>Flow_13ds9oi</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:exclusiveGateway id="Gateway_1wpuobs" default="Flow_1udmu4h">
+    <bpmn:exclusiveGateway id="Gateway_1wpuobs">
       <bpmn:incoming>Flow_13ds9oi</bpmn:incoming>
       <bpmn:outgoing>Flow_1hhm2ud</bpmn:outgoing>
       <bpmn:outgoing>Flow_1udmu4h</bpmn:outgoing>
@@ -32,21 +32,19 @@
       <bpmn:outgoing>Flow_0cht41u</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_1hhm2ud" sourceRef="Gateway_1wpuobs" targetRef="quote_exceeded_form">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${available_invites == 0}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${available_invites &lt;= 0}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:endEvent id="Event_0ewflrk" name="exit">
       <bpmn:incoming>Flow_0cht41u</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0cht41u" sourceRef="quote_exceeded_form" targetRef="Event_0ewflrk" />
-    <bpmn:sequenceFlow id="Flow_1udmu4h" sourceRef="Gateway_1wpuobs" targetRef="invite_wallets_form" />
+    <bpmn:sequenceFlow id="Flow_1udmu4h" sourceRef="Gateway_1wpuobs" targetRef="invite_wallets_form">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:userTask id="invite_wallets_form" name="invite wallets" camunda:assignee="${camunda_user_id}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="wallet_1" label="Wallet Address 1" type="string" />
-          <camunda:formField id="wallet_2" label="Wallet Address 2" type="string" />
-          <camunda:formField id="wallet_3" label="Wallet Address 3" type="string" />
-          <camunda:formField id="wallet_4" label="Wallet Address 4" type="string" />
-          <camunda:formField id="wallet_5" label="Wallet Address 5" type="string" />
         </camunda:formData>
         <camunda:inputOutput>
           <camunda:inputParameter name="available_invites">${available_invites}</camunda:inputParameter>
@@ -189,14 +187,14 @@
           <dc:Bounds x="886" y="58" width="47" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Association_1fy1h6d_di" bpmnElement="Association_1fy1h6d">
-        <di:waypoint x="948" y="360" />
-        <di:waypoint x="1010" y="293" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_1h17mjo_di" bpmnElement="Association_1h17mjo">
-        <di:waypoint x="248" y="382" />
-        <di:waypoint x="241" y="329" />
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_1d2cxrs_di" bpmnElement="TextAnnotation_1d2cxrs">
+        <dc:Bounds x="1010" y="225" width="138" height="99" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0vwseu0_di" bpmnElement="TextAnnotation_0vwseu0">
+        <dc:Bounds x="160" y="219" width="150" height="110" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1kh1xx3_di" bpmnElement="Event_1kh1xx3">
         <dc:Bounds x="1112" y="382" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -254,14 +252,14 @@
         <di:waypoint x="1148" y="400" />
         <di:waypoint x="1262" y="400" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="TextAnnotation_1d2cxrs_di" bpmnElement="TextAnnotation_1d2cxrs">
-        <dc:Bounds x="1010" y="225" width="138" height="99" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_0vwseu0_di" bpmnElement="TextAnnotation_0vwseu0">
-        <dc:Bounds x="160" y="219" width="150" height="110" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1fy1h6d_di" bpmnElement="Association_1fy1h6d">
+        <di:waypoint x="948" y="360" />
+        <di:waypoint x="1010" y="293" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1h17mjo_di" bpmnElement="Association_1h17mjo">
+        <di:waypoint x="248" y="382" />
+        <di:waypoint x="241" y="329" />
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

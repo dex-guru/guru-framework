@@ -11,7 +11,6 @@ from config import (
     TOPIC_NAME,
     API_URL,
     SYS_KEY,
-    INVITES_LIMIT,
 )
 
 
@@ -19,18 +18,20 @@ def handle_task(task: ExternalTask):
     variables = task.get_variables()
     token_id = variables.get("token_id")
     chain_id = variables.get("chain_id", 8453)
-    wallets_to_invite = set()
-    for i in range(1, INVITES_LIMIT + 1):
-        wallet = variables.get(f"wallet_{i}")
-        if wallet:
-            wallets_to_invite.add(wallet)
-    invited_wallets = requests.post(
+    wallet = variables.get(f"wallet_1")
+    if not wallet:
+        return task.bpmn_error(
+            error_code="MISSING_WALLET",
+            error_message="Wallet is missing",
+            variables={"next_invite_date_iso": None},
+        )
+    resp = requests.post(
         f"{API_URL}/invites/chain/{chain_id}/token/{token_id}",
         headers={"X-SYS-KEY": SYS_KEY},
-        json=list(wallets_to_invite),
+        json=wallet,
     )
     try:
-        invited_wallets.raise_for_status()
+        resp.raise_for_status()
     except Exception as e:
         logging.error(e)
         return task.bpmn_error(
@@ -45,10 +46,18 @@ def handle_task(task: ExternalTask):
         next_invite_date.isoformat() + "Z"
     )  # Ensure it's in UTC and ISO8601 format
 
-    return task.complete({"next_invite_date_iso": next_invite_date_iso})
+    return task.complete(
+        {
+            "next_invite_date_iso": next_invite_date_iso,
+            "invite_hash": resp.json().get("id"),
+            "activation_ts": next_invite_date.timestamp(),
+        }
+    )
 
 
 if __name__ == "__main__":
     ExternalTaskWorker(
-        worker_id="2", base_url=CAMUNDA_URL, config=CAMUNDA_CLIENT_CONFIG
+        worker_id="write_invited_wallets_in_db",
+        base_url=CAMUNDA_URL,
+        config=CAMUNDA_CLIENT_CONFIG,
     ).subscribe(TOPIC_NAME, handle_task)

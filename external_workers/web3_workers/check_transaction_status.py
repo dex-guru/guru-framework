@@ -4,13 +4,16 @@ from web3 import Web3
 import os
 
 TOPIC_NAME = os.getenv('TOPIC_NAME', "CheckTransactionConfirmed")
-WEB3_URL = os.getenv('WEB3_URL', 'https://rpc.ankr.com/polygon_mumbai')
+WEB3_URL = os.getenv('WEB3_URL', 'http://new-rpc-gw-prod.dexguru.biz/archive/261')
 CAMUNDA_URL = os.getenv('CAMUNDA_URL', 'http://localhost:8080/engine-rest')
+CAMUNDA_USERNAME = os.getenv('CAMUNDA_USERNAME', 'demo')
+CAMUNDA_PASSWORD = os.getenv('CAMUNDA_PASSWORD', 'demo')
 
 w3 = Web3(Web3.HTTPProvider(WEB3_URL))
 
 # configuration for the Client
 default_config = {
+    "auth_basic": {"username": CAMUNDA_USERNAME, "password": CAMUNDA_PASSWORD},
     "maxTasks": 1,
     "lockDuration": 10000,
     "asyncResponseTimeout": 5000,

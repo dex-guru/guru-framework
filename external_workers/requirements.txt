@@ -3,3 +3,6 @@ pydantic==2.7.0
 web3==6.17.2
 ta==0.11.0
 redis==3.5.3
+
+boto3
+httpx

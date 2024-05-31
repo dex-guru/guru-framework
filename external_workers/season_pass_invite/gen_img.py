@@ -60,84 +60,95 @@ from nodes import (
     NODE_CLASS_MAPPINGS,
 )
 
-# Function for image generation
-def generate_image(image1: str, image2: str, output: str) -> None:
-    with torch.inference_mode():
-        checkpointloadersimple = CheckpointLoaderSimple()
-        checkpointloadersimple_1 = checkpointloadersimple.load_checkpoint(
-            ckpt_name="sd_xl_base_1.0.safetensors"
-        )
+
+class BlendImagesProcessor:
+    def __init__(self, gen_style_prompt: str = "Meditative character, vibrant hues, blue, green, orange,"
+                                               " swirling patterns, robots, stormtroopers, dynamic poses,"
+                                               " harmony, contrast, light, shadow, depth, tranquility,"
+                                               " wonder, high-value NFT art",):
+        self.checkpointloadersimple = CheckpointLoaderSimple()
         clipvisionloader = CLIPVisionLoader()
-        clipvisionloader_2 = clipvisionloader.load_clip(
-            clip_name="clip_vision_g.safetensors"
-        )
-        cliptextencode = CLIPTextEncode()
-        cliptextencode_3 = cliptextencode.encode(
-            text="Meditative character, vibrant hues, blue, green, orange, swirling patterns, robots, stormtroopers, dynamic poses, harmony, contrast, light, shadow, depth, tranquility, wonder, high-value NFT art",
-            clip=get_value_at_index(checkpointloadersimple_1, 1),
-        )
-        cliptextencode_4 = cliptextencode.encode(
-            text="", clip=get_value_at_index(checkpointloadersimple_1, 1)
-        )
-        loadimage = LoadImage()
-        loadimage_7 = loadimage.load_image(image=image1)
-        loadimage_8 = loadimage.load_image(image=image2)
-        clipvisionencode = CLIPVisionEncode()
-        clipvisionencode_9 = clipvisionencode.encode(
-            clip_vision=get_value_at_index(clipvisionloader_2, 0),
-            image=get_value_at_index(loadimage_7, 0),
-        )
-        clipvisionencode_10 = clipvisionencode.encode(
-            clip_vision=get_value_at_index(clipvisionloader_2, 0),
-            image=get_value_at_index(loadimage_8, 0),
-        )
+        self.cliptextencode = CLIPTextEncode()
+        self.loadimage = LoadImage()
+        self.clipvisionencode = CLIPVisionEncode()
         emptylatentimage = EmptyLatentImage()
-        emptylatentimage_16 = emptylatentimage.generate(
+        self.conditioningzeroout = ConditioningZeroOut()
+        self.unclipconditioning = unCLIPConditioning()
+        self.ksampler = KSampler()
+        self.vaedecode = VAEDecode()
+        self.saveimage = SaveImage()
+        self.loadimage = LoadImage()
+        self.gen_style_prompt = gen_style_prompt
+        self.emptylatentimage_16 = emptylatentimage.generate(
             width=1024, height=1024, batch_size=1
         )
-        conditioningzeroout = ConditioningZeroOut()
-        unclipconditioning = unCLIPConditioning()
-        ksampler = KSampler()
-        vaedecode = VAEDecode()
-        saveimage = SaveImage()
-        conditioningzeroout_5 = conditioningzeroout.zero_out(
-            conditioning=get_value_at_index(cliptextencode_3, 0)
+        self.clipvisionloader_2 = clipvisionloader.load_clip(
+            clip_name="clip_vision_g.safetensors"
         )
-        conditioningzeroout_6 = conditioningzeroout.zero_out(
-            conditioning=get_value_at_index(cliptextencode_4, 0)
-        )
-        unclipconditioning_11 = unclipconditioning.apply_adm(
-            strength=1,
-            noise_augmentation=0,
-            conditioning=get_value_at_index(conditioningzeroout_5, 0),
-            clip_vision_output=get_value_at_index(clipvisionencode_9, 0),
-        )
-        unclipconditioning_12 = unclipconditioning.apply_adm(
-            strength=1,
-            noise_augmentation=0,
-            conditioning=get_value_at_index(unclipconditioning_11, 0),
-            clip_vision_output=get_value_at_index(clipvisionencode_10, 0),
-        )
-        ksampler_13 = ksampler.sample(
-            seed=random.randint(1, 2**64),
-            steps=25,
-            cfg=8,
-            sampler_name="euler",
-            scheduler="normal",
-            denoise=1,
-            model=get_value_at_index(checkpointloadersimple_1, 0),
-            positive=get_value_at_index(unclipconditioning_12, 0),
-            negative=get_value_at_index(conditioningzeroout_6, 0),
-            latent_image=get_value_at_index(emptylatentimage_16, 0),
-        )
-        vaedecode_17 = vaedecode.decode(
-            samples=get_value_at_index(ksampler_13, 0),
-            vae=get_value_at_index(checkpointloadersimple_1, 2),
-        )
-        saveimage_18 = saveimage.save_images(
-            filename_prefix=output, images=get_value_at_index(vaedecode_17, 0)
-        )
-        return saveimage_18
+
+    def generate_image(self, image1: str, image2: str, output: str) -> None:
+        with torch.inference_mode():
+            self.checkpointloadersimple_1 = self.checkpointloadersimple.load_checkpoint(
+                ckpt_name="sd_xl_base_1.0.safetensors"
+            )
+
+            cliptextencode_3 = self.cliptextencode.encode(
+                text=self.gen_style_prompt,
+                clip=get_value_at_index(self.checkpointloadersimple_1, 1),
+            )
+            cliptextencode_4 = self.cliptextencode.encode(
+                text="", clip=get_value_at_index(self.checkpointloadersimple_1, 1)
+            )
+
+            conditioningzeroout_5 = self.conditioningzeroout.zero_out(
+                conditioning=get_value_at_index(cliptextencode_3, 0)
+            )
+            conditioningzeroout_6 = self.conditioningzeroout.zero_out(
+                conditioning=get_value_at_index(cliptextencode_4, 0)
+            )
+            loadimage_1 = self.loadimage.load_image(image=image1)
+            loadimage_2 = self.loadimage.load_image(image=image2)
+            clipvisionencode_1 = self.clipvisionencode.encode(
+                clip_vision=get_value_at_index(self.clipvisionloader_2, 0),
+                image=get_value_at_index(loadimage_1, 0),
+            )
+            clipvisionencode_2 = self.clipvisionencode.encode(
+                clip_vision=get_value_at_index(self.clipvisionloader_2, 0),
+                image=get_value_at_index(loadimage_2, 0),
+            )
+
+            unclipconditioning_11 = self.unclipconditioning.apply_adm(
+                strength=1,
+                noise_augmentation=0,
+                conditioning=get_value_at_index(conditioningzeroout_5, 0),
+                clip_vision_output=get_value_at_index(clipvisionencode_1, 0),
+            )
+            unclipconditioning_12 = self.unclipconditioning.apply_adm(
+                strength=1,
+                noise_augmentation=0,
+                conditioning=get_value_at_index(unclipconditioning_11, 0),
+                clip_vision_output=get_value_at_index(clipvisionencode_2, 0),
+            )
+            ksampler_13 = self.ksampler.sample(
+                seed=random.randint(1, 2 ** 64),
+                steps=25,
+                cfg=8,
+                sampler_name="euler",
+                scheduler="normal",
+                denoise=1,
+                model=get_value_at_index(self.checkpointloadersimple_1, 0),
+                positive=get_value_at_index(unclipconditioning_12, 0),
+                negative=get_value_at_index(conditioningzeroout_6, 0),
+                latent_image=get_value_at_index(self.emptylatentimage_16, 0),
+            )
+            vaedecode_17 = self.vaedecode.decode(
+                samples=get_value_at_index(ksampler_13, 0),
+                vae=get_value_at_index(self.checkpointloadersimple_1, 2),
+            )
+            saveimage_18 = self.saveimage.save_images(
+                filename_prefix=output, images=get_value_at_index(vaedecode_17, 0)
+            )
+            return saveimage_18
 
 # Main function with click for CLI
 @click.command()
@@ -145,7 +156,8 @@ def generate_image(image1: str, image2: str, output: str) -> None:
 @click.option('--image2', required=True, help='Second input image name')
 @click.option('--output', required=True, help='Output image name')
 def main(image1, image2, output):
-    generate_image(image1, image2, output)
+    model = BlendImagesProcessor()
+    model.generate_image(image1, image2, output)
 
 if __name__ == "__main__":
     main()

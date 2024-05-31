@@ -9,7 +9,7 @@ from camunda.external_task.external_task import ExternalTask, TaskResult
 from camunda.external_task.external_task_worker import ExternalTaskWorker
 
 from season_pass_invite.config import SYS_KEY, API_URL
-from season_pass_invite.gen_img import generate_image
+from season_pass_invite.gen_img import BlendImagesProcessor
 from season_pass_invite.utils import upload_file_to_s3_binary
 
 # Configure logging
@@ -33,6 +33,7 @@ default_config = {
     "sleepSeconds": 10
 }
 
+model = BlendImagesProcessor()
 
 async def fetch_image_url(art_id: str) -> Optional[str]:
     async with httpx.AsyncClient() as _client:
@@ -110,7 +111,7 @@ async def generate_and_upload_image(src1_art_id: str, src2_art_id: str) -> None 
         image2_filename = await download_image(image2_url, src2_art_id)
 
     output_filename = f"{uuid.uuid4()}"
-    generate_image(image1_filename, image2_filename, output_filename)
+    model.generate_image(image1_filename, image2_filename, output_filename)
 
     with open(f"./output/{output_filename}_00001_.png", 'rb') as f:
         image_bytes = f.read()

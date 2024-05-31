@@ -1,0 +1,36 @@
+0446 MB, total RAM 85468 MB
+pytorch version: 2.3.0+cu121
+Set vram state to: NORMAL_VRAM
+Device: cuda:0 NVIDIA A100-SXM4-40GB : native
+VAE dtype: torch.bfloat16
+Using pytorch cross attention
+Could not find the extra_model_paths config file.
+Starting Image Generation Worker
+model_type EPS
+Using pytorch attention in VAE
+Using pytorch attention in VAE
+Traceback (most recent call last):
+  File "/home/art_bespalov/ai/ComfyUI/./season_pass_invite/get_pass_image_new.py", line 36, in <module>
+    model = BlendImagesProcessor()
+            ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/art_bespalov/ai/ComfyUI/season_pass_invite/gen_img_new.py", line 83, in __init__
+    self.checkpointloadersimple_1 = self.checkpointloadersimple.load_checkpoint(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/art_bespalov/ai/ComfyUI/nodes.py", line 516, in load_checkpoint
+    out = comfy.sd.load_checkpoint_guess_config(ckpt_path, output_vae=True, output_clip=True, embedding_directory=folder_paths.get_folder_paths("embeddings"))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/art_bespalov/ai/ComfyUI/comfy/sd.py", line 486, in load_checkpoint_guess_config
+    clip = CLIP(clip_target, embedding_directory=embedding_directory)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/art_bespalov/ai/ComfyUI/comfy/sd.py", line 103, in __init__
+    self.cond_stage_model = clip(**(params))
+                            ^^^^^^^^^^^^^^^^
+  File "/home/art_bespalov/ai/ComfyUI/comfy/sdxl_clip.py", line 40, in __init__
+    self.clip_l = sd1_clip.SDClipModel(layer="hidden", layer_idx=-2, device=device, dtype=dtype, layer_norm_hidden_state=False)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/art_bespalov/ai/ComfyUI/comfy/sd1_clip.py", line 81, in __init__
+    self.transformer = model_class(config, dtype, device, comfy.ops.manual_cast)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/art_bespalov/ai/ComfyUI/comfy/clip_model.py", line 124, in __init__
+    self.text_projection.weight.copy_(torch.eye(embed_dim))
+RuntimeError: a leaf Variable that requires grad is being used in an in-place operation.

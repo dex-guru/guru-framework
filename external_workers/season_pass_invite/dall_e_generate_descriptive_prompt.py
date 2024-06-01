@@ -128,61 +128,6 @@ async def name_description_based_of_vision_description(image_type, vision_descri
         return False, error_message
 
 
-async def name_description_based_of_vision_description(image_type, vision_description, retries: int = 2) -> tuple[
-    bool, str]:
-    # Define prompt based on the image type
-    logging.info(f"Generating description for {image_type} description: {vision_description}")
-    if image_type == 'person':
-        prompt = (f"Generate 2 words name and short, brief description for SEO page metadata "
-                  f"sentences description of the person on portrait: {vision_description}")
-    elif image_type == 'generated_art':
-        prompt = (f"Generate 2 words name and short, brief description for SEO page metadata of AI generated art:"
-                  f" {vision_description}")
-    else:
-        prompt = (f"Generate 2 words name and short, brief description for SEO page metadata"
-                  f" sentences description of the artwork: {vision_description}")
-    response_format = ResponseFormat(type="json_object")
-    # Call the OpenAI API
-    try:
-        response = await client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            response_format=response_format,
-            max_tokens=300,
-            n=1,
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant designed to output JSON."},
-                {"role": "user", "content": prompt}
-            ],
-
-        )
-
-        # Process the response
-        if response.choices:
-            description_text = response.choices[0].message.content
-            try:
-                name_description_dict = json.loads(description_text)
-                if "name" not in name_description_dict or "description" not in name_description_dict:
-                    if retries > 0:
-                        return await name_description_based_of_vision_description(image_type,
-                                                                                  vision_description, retries - 1)
-                else:
-                    return True, name_description_dict
-            except Exception as e:
-                error_message = f"Error while processing response: {str(e)}"
-                logging.error(error_message)
-                return False, error_message
-
-            return True, description_text
-        else:
-            error_message = "No description generated."
-            logging.error(error_message)
-            return False, error_message
-    except Exception as e:
-        error_message = f"API request failed: {str(e)}"
-        logging.error(error_message)
-        return False, error_message
-
-
 async def post_based_of_video_description(image_type, vision_description, retries: int = 2) -> tuple[bool, dict]:
     # Define prompt based on the image type
     post_system_context = "Maximum 200 symbols. You are an assistant who describes the content and composition of images. \n                    Describe only what you see in the image, not what you think the image is about.Be factual and literal. \n                    Do not use metaphors or similes. \n                    Be concise."

@@ -59,7 +59,7 @@ from nodes import (
     CLIPTextEncode,
 )
 
-from nodes_ollama import NODE_CLASS_MAPPINGS
+# from nodes_ollama import NODE_CLASS_MAPPINGS
 
 
 class BlendImagesProcessor:
@@ -153,61 +153,61 @@ class BlendImagesProcessor:
                 filename_prefix=output, images=get_value_at_index(vaedecode_17, 0)
             )
 
-            llavadescriber = NODE_CLASS_MAPPINGS["LLaVaDescriber"]()
-
-            save_post = llavadescriber.ollama_image_describe(
-                model="llava:7b-v1.6",
-                api_host="http://0.0.0.0:11434",
-                timeout=300,
-                temperature=0.2,
-                seed_number=-1,
-                max_tokens=50,
-                keep_model_alive=-1,
-                system_context="Maximum 260 symbols. You are an assistant who describes the content and composition of images. \n                    Describe only what you see in the image, not what you think the image is about.Be factual and literal. \n                    Do not use metaphors or similes. \n                    Be concise.",
-                prompt="Maximum 260 symbols. Generate a tweet announcing the completion of a new digital artwork on Guru Network and the excitement of minting it soon. Use hashtags #NFTCommunity, #DigitalArt, and #GuruNetwork. Mention @xgurunetwork",
-                image=get_value_at_index(vaedecode_17, 0),
-            )
-
-            name_save = llavadescriber.ollama_image_describe(
-                model="llava:7b-v1.6",
-                api_host="http://0.0.0.0:11434",
-                timeout=300,
-                temperature=0.2,
-                seed_number=0,
-                max_tokens=200,
-                keep_model_alive=-1,
-                system_context="Maximum 15 symbols. You are an assistant who describes the content and composition of images. \n                    Describe only what you see in the image, not what you think the image is about.Be factual and literal. \n                    Do not use metaphors or similes. \n                    Be concise.",
-                prompt="Return a unique name of this image as summary. Maximum 2 words. Be creative. In the beginning add word Guru",
-                image=get_value_at_index(vaedecode_17, 0),
-            )
-
-            description_save = llavadescriber.ollama_image_describe(
-                model="llava:7b-v1.6",
-                api_host="http://0.0.0.0:11434",
-                timeout=300,
-                temperature=0.2,
-                seed_number=0,
-                max_tokens=200,
-                keep_model_alive=-1,
-                system_context="Maximum 15 symbols. You are an assistant who describes the content and composition of images. \n                    Describe only what you see in the image, not what you think the image is about.Be factual and literal. \n                    Do not use metaphors or similes. \n                    Be concise.",
-                prompt="Return a brief description for the generated art, which would go to NFT Descripption in collection.",
-                image=get_value_at_index(vaedecode_17, 0),
-            )
-
-            tags_save = llavadescriber.ollama_image_describe(
-                model="llava:7b-v1.6",
-                api_host="http://0.0.0.0:11434",
-                timeout=300,
-                temperature=0.2,
-                seed_number=0,
-                max_tokens=200,
-                keep_model_alive=-1,
-                system_context="You are an assistant who describes the content and composition of images. \n                    Describe only what you see in the image, not what you think the image is about.Be factual and literal. \n                    Do not use metaphors or similes. \n                    Be concise.",
-                prompt="Return a list of 10 danbooru tags for this image, formatted as lowercase, separated by commas.",
-                image=get_value_at_index(vaedecode_17, 0),
-            )
-
-            return name_save, description_save, tags_save, save_post
+            # llavadescriber = NODE_CLASS_MAPPINGS["LLaVaDescriber"]()
+            #
+            # save_post = llavadescriber.ollama_image_describe(
+            #     model="llava:7b-v1.6",
+            #     api_host="http://0.0.0.0:11434",
+            #     timeout=300,
+            #     temperature=0.2,
+            #     seed_number=-1,
+            #     max_tokens=50,
+            #     keep_model_alive=-1,
+            #     system_context="Maximum 260 symbols. You are an assistant who describes the content and composition of images. \n                    Describe only what you see in the image, not what you think the image is about.Be factual and literal. \n                    Do not use metaphors or similes. \n                    Be concise.",
+            #     prompt="Maximum 260 symbols. Generate a tweet announcing the completion of a new digital artwork on Guru Network and the excitement of minting it soon. Use hashtags #NFTCommunity, #DigitalArt, and #GuruNetwork. Mention @xgurunetwork",
+            #     image=get_value_at_index(vaedecode_17, 0),
+            # )
+            #
+            # name_save = llavadescriber.ollama_image_describe(
+            #     model="llava:7b-v1.6",
+            #     api_host="http://0.0.0.0:11434",
+            #     timeout=300,
+            #     temperature=0.2,
+            #     seed_number=0,
+            #     max_tokens=200,
+            #     keep_model_alive=-1,
+            #     system_context="Maximum 15 symbols. You are an assistant who describes the content and composition of images. \n                    Describe only what you see in the image, not what you think the image is about.Be factual and literal. \n                    Do not use metaphors or similes. \n                    Be concise.",
+            #     prompt="Return a unique name of this image as summary. Maximum 2 words. Be creative. In the beginning add word Guru",
+            #     image=get_value_at_index(vaedecode_17, 0),
+            # )
+            #
+            # description_save = llavadescriber.ollama_image_describe(
+            #     model="llava:7b-v1.6",
+            #     api_host="http://0.0.0.0:11434",
+            #     timeout=300,
+            #     temperature=0.2,
+            #     seed_number=0,
+            #     max_tokens=200,
+            #     keep_model_alive=-1,
+            #     system_context="Maximum 15 symbols. You are an assistant who describes the content and composition of images. \n                    Describe only what you see in the image, not what you think the image is about.Be factual and literal. \n                    Do not use metaphors or similes. \n                    Be concise.",
+            #     prompt="Return a brief description for the generated art, which would go to NFT Descripption in collection.",
+            #     image=get_value_at_index(vaedecode_17, 0),
+            # )
+            #
+            # tags_save = llavadescriber.ollama_image_describe(
+            #     model="llava:7b-v1.6",
+            #     api_host="http://0.0.0.0:11434",
+            #     timeout=300,
+            #     temperature=0.2,
+            #     seed_number=0,
+            #     max_tokens=200,
+            #     keep_model_alive=-1,
+            #     system_context="You are an assistant who describes the content and composition of images. \n                    Describe only what you see in the image, not what you think the image is about.Be factual and literal. \n                    Do not use metaphors or similes. \n                    Be concise.",
+            #     prompt="Return a list of 10 danbooru tags for this image, formatted as lowercase, separated by commas.",
+            #     image=get_value_at_index(vaedecode_17, 0),
+            # )
+            #
+            # return name_save, description_save, tags_save, save_post
 
 # Main function with click for CLI
 @click.command()

@@ -9,7 +9,7 @@ from camunda.external_task.external_task import ExternalTask, TaskResult
 from camunda.external_task.external_task_worker import ExternalTaskWorker
 
 from season_pass_invite.config import SYS_KEY, API_URL
-from season_pass_invite.gen_img import BlendImagesProcessor
+from season_pass_invite.gen_img_new_1 import BlendImagesProcessor
 from season_pass_invite.utils import upload_file_to_s3_binary
 
 # Configure logging
@@ -89,7 +89,7 @@ async def post_art_details(img_art_thumbnail: str, art_details: dict) -> None:
         return response.json()
 
 
-async def generate_and_upload_image(src1_art_id: str, src2_art_id: str) -> None | str:
+async def generate_and_upload_image(src1_art_id: str, src2_art_id: str, camunda_user_id: str) -> None | tuple:
     image1_filename = check_if_image_exists(src1_art_id)
     image2_filename = check_if_image_exists(src2_art_id)
 
@@ -111,7 +111,7 @@ async def generate_and_upload_image(src1_art_id: str, src2_art_id: str) -> None 
         image2_filename = await download_image(image2_url, src2_art_id)
 
     output_filename = f"{uuid.uuid4()}"
-    model.generate_image(image1_filename, image2_filename, output_filename)
+    name, description, tags, post = model.generate_image(image1_filename, image2_filename, output_filename)
 
     with open(f"./output/{output_filename}_00001_.png", 'rb') as f:
         image_bytes = f.read()
@@ -119,9 +119,10 @@ async def generate_and_upload_image(src1_art_id: str, src2_art_id: str) -> None 
     s3_file_name = f"generated_images/{uuid.uuid4()}.jpg"
     s3_url = upload_file_to_s3_binary(image_bytes, AWS_S3_BUCKET, s3_file_name)
     # Post the art details to the API
-    art_details = {"name": "Season 2 gen", "type": "generated_art", "description": "default",
-                   "user_id": "d122eb30-fae3-4947-bd6e-06847a02e1ba", "description_prompt": "Description Prompt"}
-    return await post_art_details(s3_url, art_details)
+    art_details = {"name": name, "type": "generated_art", "description": description,
+                   "user_id": "d122eb30-fae3-4947-bd6e-06847a02e1ba", "description_prompt": post}
+    generated_art = await post_art_details(s3_url, art_details)
+    return generated_art, name, description, tags, post
 
 
 # Function to handle tasks from Camunda
@@ -129,13 +130,19 @@ def handle_task(task: ExternalTask) -> TaskResult:
     variables = task.get_variables()
     src1_art_id = variables.get("src1_art_id")
     src2_art_id = variables.get("src2_art_id")
+    camunda_user_id = variables.get("camunda_user_id")
 
     loop = asyncio.get_event_loop()
     try:
-        generated_art = loop.run_until_complete(generate_and_upload_image(src1_art_id, src2_art_id))
+        generated_art, name, description, tags, post = loop.run_until_complete(generate_and_upload_image(src1_art_id, src2_art_id, camunda_user_id))
         if not generated_art:
             raise Exception("Empty generated Art")
         variables["generated_art_id"] = generated_art['id']
+        variables["gen_post"] = post
+        variables["gen_token_name"] = name
+        variables["gen_token_tags"] = tags
+        variables["gen_token_description"] = description
+
         return task.complete(variables)
     except Exception as e:
         logging.error(f"Error during image generation: {str(e)}")

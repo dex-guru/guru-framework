@@ -186,6 +186,12 @@
       <artifactId>spring-boot-starter-amqp</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>com.github.StephenOTT</groupId>
+      <artifactId>camunda-prometheus-process-engine-plugin</artifactId>
+      <version>1.8.0</version>
+    </dependency>
+
 
   </dependencies>
 
@@ -202,6 +208,11 @@
       <url>https://artifacts.camunda.com/artifactory/camunda-bpm-ee/</url>
     </repository>
     -->
+
+      <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+      </repository>
 
   </repositories>
 

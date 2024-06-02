@@ -1,0 +1,19 @@
+system:
+  - collector: io.digitalstate.camunda.prometheus.collectors.camunda.BpmnExecution
+    enable: true
+    startDate: 2015-10-03T17:59:38+00:00
+    endDate: now
+    startDelay: 0
+    frequency: 5000
+  - collector: io.digitalstate.camunda.prometheus.collectors.camunda.DmnExecution
+    enable: true
+    startDate: 2015-10-03T17:59:38+00:00
+    endDate: now
+    startDelay: 0
+    frequency: 5000
+  - collector: io.digitalstate.camunda.prometheus.collectors.camunda.JobExecutor
+    enable: true
+    startDate: 2015-10-03T17:59:38+00:00
+    endDate: now
+    startDelay: 0
+    frequency: 5000

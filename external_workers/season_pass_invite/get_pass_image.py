@@ -2,6 +2,8 @@ import asyncio
 import os
 import logging
 import uuid
+import re
+
 from typing import Optional
 
 import httpx
@@ -9,8 +11,11 @@ from camunda.external_task.external_task import ExternalTask, TaskResult
 from camunda.external_task.external_task_worker import ExternalTaskWorker
 
 from season_pass_invite.config import SYS_KEY, API_URL
-from season_pass_invite.gen_img import BlendImagesProcessor
+from season_pass_invite.dall_e_generate_descriptive_prompt import describe_image_with_openai_vision, \
+    name_description_based_of_vision_description
 from season_pass_invite.utils import upload_file_to_s3_binary
+
+from season_pass_invite.gen_img import BlendImagesProcessor
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -88,8 +93,7 @@ async def post_art_details(img_art_thumbnail: str, art_details: dict) -> None:
         logging.info(f"Art operation response body: {response.text}")
         return response.json()
 
-
-async def generate_and_upload_image(src1_art_id: str, src2_art_id: str, camunda_user_id: str) -> None | tuple:
+async def generate_and_upload_image(src1_art_id: str, src2_art_id: str) -> None | tuple:
     image1_filename = check_if_image_exists(src1_art_id)
     image2_filename = check_if_image_exists(src2_art_id)
 
@@ -109,22 +113,55 @@ async def generate_and_upload_image(src1_art_id: str, src2_art_id: str, camunda_
         if not image2_url:
             raise ValueError(f"Failed to fetch image for art ID {src2_art_id}")
         image2_filename = await download_image(image2_url, src2_art_id)
-
     output_filename = f"{uuid.uuid4()}"
     model.generate_image(image1_filename, image2_filename, output_filename)
-
-    name, description, tags, post =
 
     with open(f"./output/{output_filename}_00001_.png", 'rb') as f:
         image_bytes = f.read()
 
     s3_file_name = f"generated_images/{uuid.uuid4()}.jpg"
     s3_url = upload_file_to_s3_binary(image_bytes, AWS_S3_BUCKET, s3_file_name)
+
+    visual_description = await describe_image_with_openai_vision(s3_url, "default", "default",
+                                                                 "generated_art",)
+
+    status, name_description = await name_description_based_of_vision_description("generated_art",
+                                                                                  visual_description[1])
+    if not status:
+        raise Exception("Error while generating generate_picture_metadata")
+    name = name_description["name"]
+    short_description = name_description["short_description"]
+    full_story = name_description["full_story"]
+    tags = name_description["tags"]
+    # gen_post = await post_based_of_video_description("generated_art", full_story)
+    gen_post = name_description["tweet"]
     # Post the art details to the API
-    art_details = {"name": name, "type": "generated_art", "description": description,
-                   "user_id": "d122eb30-fae3-4947-bd6e-06847a02e1ba", "description_prompt": post}
-    generated_art = await post_art_details(s3_url, art_details)
-    return generated_art, name, description, tags, post
+    art_details = {"name": name, "type": "generated_art", "description": short_description,
+                   "user_id": "d122eb30-fae3-4947-bd6e-06847a02e1ba", "description_prompt": full_story}
+
+    art_details = await post_art_details(s3_url, art_details)
+    return art_details, tags, gen_post
+
+def clean_tweet(tweet):
+    # Remove hashtags
+    tweet_no_hashtags = re.sub(r'#\S+', '', tweet)
+
+    # Check if the tweet is longer than 200 characters
+    if len(tweet_no_hashtags) > 200:
+        tweet_no_hashtags = tweet_no_hashtags[:200]
+
+        # Find the last dot before the cutoff point
+        last_dot_index = tweet_no_hashtags.rfind('.')
+        if last_dot_index != -1:
+            tweet_no_hashtags = tweet_no_hashtags[:last_dot_index + 1]
+        else:
+            # If no dot is found, trim to the nearest word
+            last_space_index = tweet_no_hashtags.rfind(' ')
+            if last_space_index != -1:
+                tweet_no_hashtags = tweet_no_hashtags[:last_space_index]
+
+    # Return the cleaned tweet
+    return tweet_no_hashtags.strip()
 
 
 # Function to handle tasks from Camunda
@@ -132,18 +169,25 @@ def handle_task(task: ExternalTask) -> TaskResult:
     variables = task.get_variables()
     src1_art_id = variables.get("src1_art_id")
     src2_art_id = variables.get("src2_art_id")
-    camunda_user_id = variables.get("camunda_user_id")
 
     loop = asyncio.get_event_loop()
     try:
-        generated_art, name, description, tags, post = loop.run_until_complete(generate_and_upload_image(src1_art_id, src2_art_id, camunda_user_id))
+        generated_art = loop.run_until_complete(generate_and_upload_image(src1_art_id, src2_art_id))
         if not generated_art:
             raise Exception("Empty generated Art")
-        variables["generated_art_id"] = generated_art['id']
-        variables["gen_post"] = post
-        variables["gen_token_name"] = name
+        art_details, tags, gen_post = generated_art
+        variables["generated_art_id"] = art_details['id']
+        variables["gen_token_description"] = art_details['description']
+        variables["gen_token_name"] = art_details['name']
+        tweet = f"{clean_tweet(gen_post)}"
+
+        if "xgurunetwork" not in tweet:
+            tweet = f"{clean_tweet(gen_post)} @xgurunetwork "
+
+        tweet += f"Season 2 Pass https://v2.dex.guru/api/gen/{art_details['id']}.jpg"
+
+        variables["gen_post"] = tweet
         variables["gen_token_tags"] = tags
-        variables["gen_token_description"] = description
 
         return task.complete(variables)
     except Exception as e:

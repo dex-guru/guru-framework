@@ -9,7 +9,8 @@ CAMUNDA_USERNAME = os.getenv('CAMUNDA_USERNAME', 'demo')
 CAMUNDA_PASSWORD = os.getenv('CAMUNDA_PASSWORD', 'demo')
 
 # External service for prompt generation
-LANGCHAIN_API_URL = os.getenv('LANGCHAIN_API_URL', 'https://api.example.com')
+LANGCHAIN_API_URL = os.getenv('LANGCHAIN_API_URL', 'http://localhost:8000')
+LANGCHAIN_KEY = os.getenv('LANGCHAIN_KEY', 'langcorn-guru')
 
 # Default External Worker Configuration
 default_config = {
@@ -36,20 +37,26 @@ def handle_get_generated_prompts_task(task: ExternalTask) -> TaskResult:
         "parameters": parameters
     }
 
+    # Set headers with the API key
+    headers = {
+        'session': f'{LANGCHAIN_KEY}'
+    }
+
     # Make an HTTP request to fetch the generated prompts
     response = requests.post(
         f"{LANGCHAIN_API_URL}/prompts/",
-        json=body
+        json=body,
+        headers=headers
     )
 
     # Extract the generated prompts data from the response
     prompts_data = response.json()
-    if not prompts_data:
+    if not prompts_data or 'prompts' not in prompts_data:
         return task.failure("Failed to generate prompts",
                             f"Failed to generate prompts for dashboard: {dashboard_slug}",
                             3, 5000)
 
-    generated_prompts = prompts_data.get('prompts', [])
+    generated_prompts = prompts_data['prompts']
     variables['generated_prompts'] = generated_prompts
     return task.complete(global_variables=variables)
 

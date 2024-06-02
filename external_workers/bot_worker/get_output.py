@@ -9,8 +9,8 @@ CAMUNDA_USERNAME = os.getenv('CAMUNDA_USERNAME', 'demo')
 CAMUNDA_PASSWORD = os.getenv('CAMUNDA_PASSWORD', 'demo')
 
 # External service for response generation
-LANGCHAIN_API_URL = os.getenv('LANGCHAIN_API_URL', 'https://api.example.com')
-
+LANGCHAIN_API_URL = os.getenv('LANGCHAIN_API_URL', 'http://localhost:8000')
+LANGCHAIN_KEY = os.getenv('LANGCHAIN_KEY', 'langcorn-guru')
 
 # Default External Worker Configuration
 default_config = {
@@ -39,10 +39,16 @@ def handle_generate_response_task(task: ExternalTask) -> TaskResult:
         "parameters": parameters
     }
 
+    # Set headers with the API key
+    headers = {
+        'session': f'{LANGCHAIN_KEY}'
+    }
+
     # Make an HTTP request to generate the response
     response = requests.post(
         f"{LANGCHAIN_API_URL}/endpoints.dashboard_analyze_chain.sequential_chain/run",
-        json=body
+        json=body,
+        headers=headers
     )
 
     # Extract the response data from the response

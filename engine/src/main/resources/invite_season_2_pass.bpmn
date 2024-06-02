@@ -84,6 +84,7 @@
         <bpmn:extensionElements>
           <camunda:formData>
             <camunda:formField id="gen_post" label="gen_post" type="string" defaultValue="${gen_post}" />
+            <camunda:formField id="wallet_address" label="wallet address" type="string" />
           </camunda:formData>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_0aqnenh</bpmn:incoming>
@@ -106,6 +107,7 @@
             <camunda:formField id="gen_token_name" label="gen_token_name" type="string" defaultValue="${gen_token_name}" />
             <camunda:formField id="gen_token_tags" label="gen_token_tags" type="string" defaultValue="${gen_token_tags}" />
             <camunda:formField id="gen_post" label="gen_post" type="string" defaultValue="${gen_post}" />
+            <camunda:formField id="wallet_address" label="wallet address" type="string" />
           </camunda:formData>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_0mzmy51</bpmn:incoming>
@@ -162,7 +164,6 @@
         <camunda:formData>
           <camunda:formField id="invite_hash" label="invite_hash" type="string" defaultValue="null" />
           <camunda:formField id="activation_ts" label="activation_ts" type="long" defaultValue="1779736363" />
-          <camunda:formField id="wallet_address" label="wallet_address" type="string" defaultValue="wallet_address" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:outgoing>Flow_00l3m44</bpmn:outgoing>
@@ -172,7 +173,6 @@
         <camunda:formData>
           <camunda:formField id="src1_art_id" label="src1_art_id" type="string" defaultValue="8732b2e7-42a7-40aa-a109-5e6be1197d73	" />
           <camunda:formField id="src2_art_id" label="src2_art_id" type="string" defaultValue="364c9d64-9c5d-40b5-9cf2-14d04e37d551" />
-          <camunda:formField id="wallet_address" label="wallet_address" type="string" />
           <camunda:formField id="activation_ts" label="activation_ts" type="long">
             <camunda:properties />
             <camunda:validation>
@@ -195,10 +195,10 @@
         <camunda:in source="src2_art_id" target="src2_art_id" />
         <camunda:in source="wallet_address" target="wallet_address" />
         <camunda:out source="generated_art_id" target="gen_art_id" />
-        <camunda:out sourceExpression="This masterpiece melds the futuristic allure of a space thriller with the avant-garde elegance of Bauhaus design. Follow #xgurunetwork" target="gen_post" />
-        <camunda:out sourceExpression="Guru Robot" target="gen_token_name" />
-        <camunda:out sourceExpression="robot, technology, futurism" target="gen_token_tags" />
-        <camunda:out sourceExpression="A hyperrealistic, absurdist art piece featuring a person emerging from stone, with elements of shock art and high-resolution detail.	" target="gen_token_description" />
+        <camunda:out sourceExpression="${gen_post}" target="gen_post" />
+        <camunda:out sourceExpression="${gen_token_name}" target="gen_token_name" />
+        <camunda:out sourceExpression="${gen_token_tags}" target="gen_token_tags" />
+        <camunda:out sourceExpression="${gen_token_description}" target="gen_token_description" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0iu3jen</bpmn:incoming>
       <bpmn:outgoing>Flow_0wtr19b</bpmn:outgoing>
@@ -272,9 +272,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0jre9h4_di" bpmnElement="Gateway_0jre9h4" isMarkerVisible="true">
         <dc:Bounds x="1535" y="495" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0fhsgf4_di" bpmnElement="Event_0fhsgf4">
-        <dc:Bounds x="522" y="692" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0cbbops_di" bpmnElement="Activity_0cbbops" isExpanded="true">
         <dc:Bounds x="790" y="480" width="600" height="260" />
@@ -370,6 +367,9 @@
       <bpmndi:BPMNShape id="Event_1013xif_di" bpmnElement="Event_1013xif">
         <dc:Bounds x="1982" y="642" width="36" height="36" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0fhsgf4_di" bpmnElement="Event_0fhsgf4">
+        <dc:Bounds x="522" y="692" width="36" height="36" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1uuift7_di" bpmnElement="Event_1uuift7">
         <dc:Bounds x="1692" y="462" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -459,9 +459,9 @@
         <di:waypoint x="949" y="267" />
         <di:waypoint x="970" y="253" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_1b3mbm4_di" bpmnElement="Association_1b3mbm4">
-        <di:waypoint x="555" y="700" />
-        <di:waypoint x="580" y="682" />
+      <bpmndi:BPMNEdge id="Association_1l4il7g_di" bpmnElement="Association_1l4il7g">
+        <di:waypoint x="1195" y="480" />
+        <di:waypoint x="1283" y="370" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Group_02dxxtn_di" bpmnElement="Group_02dxxtn">
         <dc:Bounds x="790" y="850" width="630" height="170" />
@@ -485,16 +485,16 @@
         <dc:Bounds x="970" y="220" width="210" height="60" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_028lws8_di" bpmnElement="TextAnnotation_028lws8">
-        <dc:Bounds x="1410" y="395" width="240" height="110" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_0s5lc10_di" bpmnElement="TextAnnotation_0s5lc10">
         <dc:Bounds x="260" y="840" width="290" height="120" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_0ixknn4_di" bpmnElement="TextAnnotation_0ixknn4">
         <dc:Bounds x="610" y="410" width="180" height="110" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1h7anf6_di" bpmnElement="TextAnnotation_1h7anf6">
+        <dc:Bounds x="580" y="640" width="181" height="49" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Association_0ayccuz_di" bpmnElement="Association_0ayccuz">
@@ -505,16 +505,16 @@
         <di:waypoint x="700" y="137" />
         <di:waypoint x="570" y="130" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_1l4il7g_di" bpmnElement="Association_1l4il7g">
-        <di:waypoint x="1331" y="480" />
-        <di:waypoint x="1410" y="437" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_0g6dotb_di" bpmnElement="Association_0g6dotb">
         <di:waypoint x="573" y="530" />
         <di:waypoint x="610" y="485" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="TextAnnotation_1h7anf6_di" bpmnElement="TextAnnotation_1h7anf6">
-        <dc:Bounds x="580" y="640" width="181" height="49" />
+      <bpmndi:BPMNEdge id="Association_1b3mbm4_di" bpmnElement="Association_1b3mbm4">
+        <di:waypoint x="555" y="700" />
+        <di:waypoint x="580" y="682" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_028lws8_di" bpmnElement="TextAnnotation_028lws8">
+        <dc:Bounds x="1270" y="260" width="240" height="110" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>

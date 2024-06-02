@@ -119,7 +119,7 @@ async def generate_and_upload_image(src1_art_id: str, src2_art_id: str) -> None 
     with open(f"./output/{output_filename}_00001_.png", 'rb') as f:
         image_bytes = f.read()
 
-    s3_file_name = f"generated_images/{uuid.uuid4()}.jpg"
+    s3_file_name = f"generated_images/{output_filename}.png"
     s3_url = upload_file_to_s3_binary(image_bytes, AWS_S3_BUCKET, s3_file_name)
 
     visual_description = await describe_image_with_openai_vision(s3_url, "default", "default",
@@ -140,7 +140,7 @@ async def generate_and_upload_image(src1_art_id: str, src2_art_id: str) -> None 
                    "user_id": "d122eb30-fae3-4947-bd6e-06847a02e1ba", "description_prompt": full_story}
 
     art_details = await post_art_details(s3_url, art_details)
-    return art_details, tags, gen_post
+    return art_details, tags, gen_post, output_filename
 
 def clean_tweet(tweet):
     # Remove hashtags
@@ -175,7 +175,7 @@ def handle_task(task: ExternalTask) -> TaskResult:
         generated_art = loop.run_until_complete(generate_and_upload_image(src1_art_id, src2_art_id))
         if not generated_art:
             raise Exception("Empty generated Art")
-        art_details, tags, gen_post = generated_art
+        art_details, tags, gen_post, output_filename = generated_art
         variables["generated_art_id"] = art_details['id']
         variables["gen_token_description"] = art_details['description']
         variables["gen_token_name"] = art_details['name']
@@ -184,7 +184,7 @@ def handle_task(task: ExternalTask) -> TaskResult:
         if "xgurunetwork" not in tweet:
             tweet = f"{clean_tweet(gen_post)} @xgurunetwork "
 
-        tweet += f"Season 2 Pass https://v2.dex.guru/api/gen/{art_details['id']}.jpg"
+        tweet += f"Season 2 Pass https://v2.dex.guru/api/gen/{output_filename}.png"
 
         variables["gen_post"] = tweet
         variables["gen_token_tags"] = tags

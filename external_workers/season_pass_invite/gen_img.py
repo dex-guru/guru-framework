@@ -207,7 +207,7 @@ class BlendImagesProcessor:
             #     image=get_value_at_index(vaedecode_17, 0),
             # )
             #
-            # return name_save, description_save, tags_save, save_post
+
 
 # Main function with click for CLI
 @click.command()

@@ -1,4 +1,7 @@
+
+
 title: GURU Network – The AI Orchestration Network
+description: "GURU Network"
 author:
   name: guru_network
   email: evgeny@dex.guru
@@ -7,9 +10,9 @@ author:
 # If you want to omit the line-break after the end of text, use `>-` instead.
 
 # Build settings
-
-plugins:
-  - jekyll-seo-tag
+url: "https://gurunetwork.ai"
+#plugins:
+#  - jekyll-seo-tag
 #   - jekyll-feed
 
 partners:

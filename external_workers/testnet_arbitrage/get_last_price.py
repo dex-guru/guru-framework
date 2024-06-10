@@ -62,14 +62,20 @@ def handle_get_candles_task(task: ExternalTask) -> TaskResult:
     }
 
     # Make an HTTP request to fetch the current token price
-    response = requests.post(
-        f"{WAREHOUSE_REST_URL}/last_token_price_usd?api_key={WAREHOUSE_API_KEY}",
-        json=body
-    )
+    try:
+        response = requests.post(
+            f"{WAREHOUSE_REST_URL}/last_token_price_usd?api_key={WAREHOUSE_API_KEY}",
+            json=body
+        )
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        return task.failure("get last price failed",
+                            err,
+                            max_retries=3,
+                            retry_timeout=5000)
 
-    # Extract the current price data from response
     price_data = response.json()
-    if not price_data:
+    if not price_data or not price_data[0].get('last_price'):
         return task.failure("get last price failed",
                             f"failed to get last price in {network}, token: {token_address}",
                             3, 5000)
@@ -80,6 +86,7 @@ def handle_get_candles_task(task: ExternalTask) -> TaskResult:
 
 
 if __name__ == '__main__':
+    _ = get_supported_chains()
     worker = ExternalTaskWorker(
         worker_id="last_price_worker",
         base_url=CAMUNDA_URL,

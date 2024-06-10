@@ -94,13 +94,12 @@ menu:
     }
   - {
       title: Community,
-      url: "https://webforms.pipedrive.com/f/6rExdWpdC4j2tsyB09LRGHr6990s7NqeLfhIpT4vPjJOmddqhyIMu7dyvJFAjABNHd",
       dropdown:
         [
           {
             items:
               [
-                { title: "Twitter", url: "https://twitter.com/dexguru" },
+                { title: "X/Twitter", url: "https://x.com/xgurunetwork" },
                 { title: "Telegram", url: "https://t.me/dexguru" },
                 { title: "Discord", url: "https://discord.gg/dPW8fzwzz9" },
               ],
@@ -108,7 +107,7 @@ menu:
         ],
     }
   - {
-      title: Resources,
+      title: Developers,
       dropdown:
         [
           {
@@ -123,18 +122,41 @@ menu:
                   title: "Interoperability Architecture Whitepaper",
                   url: "/assets/img/guru_network_architecture_whitepaper.pdf",
                 },
+                 { title: Docs, url: https://docs.gurunetwork.ai/ }
               ],
           },
         ],
     }
-  - { title: Ecosytem, url: "#ecosystem" }
-  - { title: Docs, url: https://docs.gurunetwork.ai/ }
+  # - { title: Ecosytem, url: "#ecosystem" }
+  - { title: Blog, url: https://blog.dex.guru/ }
+  - { title: Season 2 Pass NFT, url: https://opensea.io/collection/guru-season-2-pass }
 
 aside:
-  - { title: Flow Orchestraror App, url: https://warehouse.dex.guru }
+  - { title: DexGuru V2, url: https://v2.dex.guru }
 
 # Generate social links in footer.
 social_links:
   - { platform: twitter, user_url: "https://twitter.com/xgurunetwork" }
   - { platform: telegram, user_url: "https://t.me/dexguru" }
   - { platform: discord, user_url: "https://discord.gg/dPW8fzwzz9" }
+
+team: 
+  - { name: 'Evgeny Vakhteev', position: 'CEO', description: 'Ex Hulu, Disney (video ingestions orchestration), CTO and Co-founder of DexGuru', img: 'ev' }
+  - { name: 'Alexey Volynshikov', position: 'Senior Backend Engineer', description: 'Architected DexGuru Data Warehouse, indexation pipelines, co authored Guru Network orchestration architecture.', img: 'av' }
+  - { name: 'Evgeny Shestakov', position: 'Backend Engineer', description: 'Developers Office Lead, indexation, price calculations and Web3', img: 'esh' }
+  - { name: 'Rodion Kharabet', position: 'Senior Frontend Engineer', description: 'Developed DexGuru MVP, Web3 wallets integrations, and led all DexGuru frontend teams', img: 'rk' }
+  - { name: 'Alexey Ilin', position: 'Frontend Engineer', description: 'Created pixel-perfect GUIs for DexGuru, Block Explorer, and Warehouse applications', img: 'ai' }
+  - { name: 'Gennady Omyshev', position: 'UI/UX Designer', description: 'All Guru applications, focusing on user experience and Web3 mechanics', img: 'go' }
+  - { name: 'Evgeny Sudlenkov', position: 'Lead DevOps Engineer', description: 'The hero behind our own Data Center', img: 'esu' }
+  - { name: 'Ivan Lylov', position: 'Manual/Automated QA', description: 'Specified regression test cases, executed manual and automated tests for DexGuru products', img: 'il' }
+  - { name: 'Roman', position: 'Head of Community', description: "Guru Network's community alchemist and marketing aficionado, transforming engagement into $GURU", img: 'rm' }
+  - { name: 'Nick Sawinyh', position: 'Advisor', description: 'Blockchain expert since 2017, Co-founder of Defiprime, Key Opinion Leader (KOL), ex-CEO of DexGuru', img: 'ns'}
+
+partners2: 
+  - {key: chainlink, url: https://chain.link/}
+  - {key: telcoin, url: https://www.telco.in/ }
+  - {key: uncx, url: https://uncx.network/}
+  - {key: paraswap, url: https://www.paraswap.io/}
+#  - {key: 3baseio, url: https://3base.org/ }
+  - {key: kybernetwork, url: https://kyber.network/}
+  - {key: crossfi, url: https://www.crossfimain.com/}

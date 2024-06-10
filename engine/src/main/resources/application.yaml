@@ -21,11 +21,14 @@ camunda.bpm:
 server.port: 8080
 
 # health check
+management.endpoints.web.exposure.include: prometheus,health
 management.health.defaults.enabled: false
-management.endpoints.enabled-by-default: false
+management.endpoints.enabled-by-default: true
 management.endpoint.health.enabled: true
-management.endpoints.web.base-path: /
-management.endpoints.web.path-mapping.health: health_check
+#management.endpoints.web.base-path: /
+#management.endpoints.web.path-mapping.health: health_check
+management.endpoint.health.show-details: always
+
 spring:
   mvc:
     pathmatch:

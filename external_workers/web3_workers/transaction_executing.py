@@ -10,7 +10,7 @@ from hexbytes import HexBytes
 from web3 import Web3
 from web3.exceptions import TimeExhausted
 
-from external_workers.web3_workers.errors import QuoteError
+from web3_workers.errors import QuoteError
 
 TOPIC_NAME = os.getenv("TOPIC_NAME", "web3_execution")
 CAMUNDA_URL = os.getenv("CAMUNDA_URL", "http://localhost:8080/engine-rest")

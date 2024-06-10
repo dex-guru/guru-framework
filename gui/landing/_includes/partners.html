@@ -14,8 +14,8 @@ else -%} {% assign partners = site.partners %} {%- endif -%}
     <ul class="partners__list">
       {%- for partner in partners -%}
       <li class="partners__item">
-        <a href="{{ partner.url }}" class="partners__link"
-          >{%- include partners/{{ partner.key }}.svg -%}</a
+        <span class="partners__link"
+          >{%- include partners/{{ partner.key }}.svg -%}</span
         >
       </li>
       {%- endfor -%}

@@ -35,7 +35,7 @@
       <bpmn:incoming>Flow_0yxnmxa</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0yxnmxa" sourceRef="Activity_04aays1" targetRef="Event_02yhpku" />
-    <bpmn:serviceTask id="Activity_04aays1" name="Update URL for Notebook In Warehouse API" camunda:class="ai.hhrdr.chainflow.engine.LoggerDelegate">
+    <bpmn:serviceTask id="Activity_04aays1" name="Update URL for Notebook In Warehouse API" camunda:class="ai.hhrdr.chainflow.engine.delegate.LoggerDelegate">
       <bpmn:incoming>Flow_19pzp3c</bpmn:incoming>
       <bpmn:outgoing>Flow_0yxnmxa</bpmn:outgoing>
     </bpmn:serviceTask>

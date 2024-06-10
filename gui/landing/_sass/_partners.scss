@@ -105,7 +105,7 @@
 
   &__link:focus > svg,
   &__link:hover > svg {
-    path {
+    path:not(.keep) {
       fill: $color-style-blue;
     }
   }

@@ -1,0 +1,1 @@
+return new Uint8Array(args[0].match(/.{1,2}/g).map(byte => parseInt(byte, 16)));

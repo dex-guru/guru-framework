@@ -12,7 +12,7 @@
       </bpmn:extensionElements>
       <bpmn:outgoing>Flow_18sgxn8</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:serviceTask id="Activity_0l2d8b6" name="Call Redash API on query details" camunda:class="ai.hhrdr.chainflow.engine.LoggerDelegate">
+    <bpmn:serviceTask id="Activity_0l2d8b6" name="Call Redash API on query details" camunda:class="ai.hhrdr.chainflow.engine.delegate.LoggerDelegate">
       <bpmn:incoming>Flow_18sgxn8</bpmn:incoming>
       <bpmn:outgoing>Flow_09p9nm6</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -29,7 +29,7 @@
       <bpmn:incoming>Flow_030eqxm</bpmn:incoming>
       <bpmn:outgoing>Flow_0qk4bg8</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:serviceTask id="Activity_04043ok" name="Call Redash API to change query status" camunda:class="ai.hhrdr.chainflow.engine.WarehouseDelegate">
+    <bpmn:serviceTask id="Activity_04043ok" name="Call Redash API to change query status" camunda:class="ai.hhrdr.chainflow.engine.delegate.WarehouseDelegate">
       <bpmn:incoming>Flow_08w9kd5</bpmn:incoming>
       <bpmn:outgoing>Flow_033hsjn</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -58,7 +58,7 @@
     <bpmn:endEvent id="Event_1qxk3ws" name="End Path">
       <bpmn:incoming>Flow_05fndjo</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:serviceTask id="Activity_0eok0jc" name="Mark rewards claimable" camunda:class="ai.hhrdr.chainflow.engine.LoggerDelegate">
+    <bpmn:serviceTask id="Activity_0eok0jc" name="Mark rewards claimable" camunda:class="ai.hhrdr.chainflow.engine.delegate.LoggerDelegate">
       <bpmn:incoming>Flow_033hsjn</bpmn:incoming>
       <bpmn:outgoing>Flow_0n05bhd</bpmn:outgoing>
     </bpmn:serviceTask>

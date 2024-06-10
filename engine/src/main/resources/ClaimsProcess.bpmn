@@ -55,7 +55,7 @@
       <bpmn:incoming>Flow_0js2fhz</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1qqbgew" sourceRef="UserClaimPointsTask" targetRef="Activity_1apilp1" />
-    <bpmn:serviceTask id="Activity_0byc6iy" name="Sync Points Variables from Warehouse" camunda:class="ai.hhrdr.chainflow.engine.WarehouseDelegate">
+    <bpmn:serviceTask id="Activity_0byc6iy" name="Sync Points Variables from Warehouse" camunda:class="ai.hhrdr.chainflow.engine.delegate.WarehouseDelegate">
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="command">sync_points_from_warehouse</camunda:inputParameter>
@@ -89,7 +89,7 @@
       <bpmn:outgoing>Flow_0gljfga</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_0gljfga" sourceRef="Activity_1a1cuje" targetRef="EventPointsUpdate" />
-    <bpmn:serviceTask id="Activity_1apilp1" name="Sync Points Variables to Warehouse" camunda:class="ai.hhrdr.chainflow.engine.WarehouseDelegate">
+    <bpmn:serviceTask id="Activity_1apilp1" name="Sync Points Variables to Warehouse" camunda:class="ai.hhrdr.chainflow.engine.delegate.WarehouseDelegate">
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="command">sync_points_to_warehouse</camunda:inputParameter>

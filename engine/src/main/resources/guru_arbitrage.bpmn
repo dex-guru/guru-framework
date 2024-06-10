@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1amw9xt" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.2" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <bpmn:process id="GuruArbitrage" name="GuruArbitrage" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:startEvent id="start_guru_testnet_arbitrage" name="Start GURU Testnet Arbitrage" camunda:initiator="camunda_user_id">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="token_address" label="Target token address" type="string" defaultValue="0xa3e9bf36ff51ce14a25a2cf4b4086cbcf1df781b" />
+          <camunda:formField id="pool_address" label="Pool address" type="string" defaultValue="0xfe0067c22fd4d58844399c4bb8e930aacbbd896e" />
+          <camunda:formField id="src_token_address" label="src_token_address" type="string" defaultValue="0x525574c899a7c877a11865339e57376092168258" />
+          <camunda:formField id="src_chain_id" label="src_chain_id" type="long" defaultValue="1" />
+          <camunda:formField id="arbitrage_delta" label="threshold delta" type="long" defaultValue="2" />
+          <camunda:formField id="tick_time" label="tick_time" type="long" defaultValue="15">
+            <camunda:properties />
+            <camunda:validation />
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_04o5ic0</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="guru_price_agent" name="Price Agent (source chain)" camunda:type="external" camunda:topic="get_target_price">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_100dcwl</bpmn:incoming>
+      <bpmn:outgoing>Flow_1cgsyqj</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="execute_guru_swap_arbitrage" name="Execute Liquidity Manage Transaction" camunda:type="external" camunda:topic="GuruCrossChainArbitrage">
+      <bpmn:incoming>Flow_1i8zen2</bpmn:incoming>
+      <bpmn:outgoing>Flow_0hv4d7q</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1qebca7" sourceRef="Gateway_asdfsadfasdf" targetRef="guru_calc_price_delta">
+      <bpmn:extensionElements />
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0hv4d7q" sourceRef="execute_guru_swap_arbitrage" targetRef="Event_0yssuiiii" />
+    <bpmn:intermediateCatchEvent id="Event_0yssuiiii" name="Tick Timer (default 15s)">
+      <bpmn:incoming>Flow_0hv4d7q</bpmn:incoming>
+      <bpmn:incoming>Flow_04o5ic0</bpmn:incoming>
+      <bpmn:incoming>Flow_02e3upy</bpmn:incoming>
+      <bpmn:outgoing>Flow_0y1rjni</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0kw84bf">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT${tick_time}S</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:serviceTask id="guru_reserves_agent" name="Reserves Agent (target chain)" camunda:type="external" camunda:topic="getGuruPriceFromReserves">
+      <bpmn:incoming>Flow_01wmhm8</bpmn:incoming>
+      <bpmn:outgoing>Flow_0t8ajho</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:parallelGateway id="Gateway_guru_123">
+      <bpmn:incoming>Flow_0y1rjni</bpmn:incoming>
+      <bpmn:outgoing>Flow_01wmhm8</bpmn:outgoing>
+      <bpmn:outgoing>Flow_100dcwl</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_01wmhm8" sourceRef="Gateway_guru_123" targetRef="guru_reserves_agent" />
+    <bpmn:sequenceFlow id="Flow_100dcwl" sourceRef="Gateway_guru_123" targetRef="guru_price_agent" />
+    <bpmn:sequenceFlow id="Flow_0t8ajho" sourceRef="guru_reserves_agent" targetRef="Gateway_asdfsadfasdf" />
+    <bpmn:sequenceFlow id="Flow_1cgsyqj" sourceRef="guru_price_agent" targetRef="Gateway_asdfsadfasdf" />
+    <bpmn:sequenceFlow id="Flow_0y1rjni" sourceRef="Event_0yssuiiii" targetRef="Gateway_guru_123" />
+    <bpmn:sequenceFlow id="Flow_04o5ic0" sourceRef="start_guru_testnet_arbitrage" targetRef="Event_0yssuiiii" />
+    <bpmn:scriptTask id="guru_calc_price_delta" name="Calculate price delta" scriptFormat="javascript">
+      <bpmn:incoming>Flow_1qebca7</bpmn:incoming>
+      <bpmn:outgoing>Flow_11gryoz</bpmn:outgoing>
+      <bpmn:script>var currentPrice = execution.getVariable('current_price');
+var targetPrice = execution.getVariable('target_price');
+
+if (currentPrice &lt; 0) {
+   currentPrice = targetPrice;
+}
+
+var priceDelta = Math.abs(((targetPrice - currentPrice) / currentPrice) * 100);
+execution.setVariable('price_delta', priceDelta);</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:inclusiveGateway id="Gateway_asdfsadfasdf">
+      <bpmn:incoming>Flow_1cgsyqj</bpmn:incoming>
+      <bpmn:incoming>Flow_0t8ajho</bpmn:incoming>
+      <bpmn:outgoing>Flow_1qebca7</bpmn:outgoing>
+    </bpmn:inclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_11gryoz" sourceRef="guru_calc_price_delta" targetRef="Gateway_45634fsdcsdc" />
+    <bpmn:exclusiveGateway id="Gateway_45634fsdcsdc" default="Flow_02e3upy">
+      <bpmn:incoming>Flow_11gryoz</bpmn:incoming>
+      <bpmn:outgoing>Flow_1i8zen2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_02e3upy</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1i8zen2" name="delta&#62;threshold" sourceRef="Gateway_45634fsdcsdc" targetRef="execute_guru_swap_arbitrage">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${price_delta &gt; arbitrage_delta}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_02e3upy" sourceRef="Gateway_45634fsdcsdc" targetRef="Event_0yssuiiii" />
+    <bpmn:textAnnotation id="TextAnnotation_0nuxj3r">
+      <bpmn:text>Requesting tGURU price on GURU Network and setting up context</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0b6aocx" associationDirection="None" sourceRef="guru_reserves_agent" targetRef="TextAnnotation_0nuxj3r" />
+    <bpmn:textAnnotation id="TextAnnotation_0kxk2db">
+      <bpmn:text>GURU price on Mainnet requested using https://warehouse.dex.guru/queries/202/source#-1</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_17u4yee" associationDirection="None" sourceRef="guru_price_agent" targetRef="TextAnnotation_0kxk2db" />
+    <bpmn:textAnnotation id="TextAnnotation_083xe73">
+      <bpmn:text>External Worker Executed in Secured Environment With EOA account pashprase attached in form of hardware key or from secured storage like 1password API. Non Castodial Execution</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_12hruwj" associationDirection="None" sourceRef="execute_guru_swap_arbitrage" targetRef="TextAnnotation_083xe73" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="GuruArbitrage">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start_guru_testnet_arbitrage">
+        <dc:Bounds x="192" y="82" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="171" y="125" width="83" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_17hjsn1_di" bpmnElement="guru_price_agent">
+        <dc:Bounds x="640" y="540" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0re019j_di" bpmnElement="execute_guru_swap_arbitrage">
+        <dc:Bounds x="1510" y="360" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0fu707s_di" bpmnElement="Event_0yssuiiii">
+        <dc:Bounds x="1292" y="202" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1229" y="236" width="62" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1as7vrs_di" bpmnElement="guru_reserves_agent">
+        <dc:Bounds x="640" y="360" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_01maz37_di" bpmnElement="Gateway_guru_123">
+        <dc:Bounds x="425" y="468" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1l3spku_di" bpmnElement="guru_calc_price_delta">
+        <dc:Bounds x="1010" y="360" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_00vbyqk_di" bpmnElement="Gateway_asdfsadfasdf">
+        <dc:Bounds x="845" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0ylm00v_di" bpmnElement="Gateway_45634fsdcsdc" isMarkerVisible="true">
+        <dc:Bounds x="1285" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0nuxj3r_di" bpmnElement="TextAnnotation_0nuxj3r">
+        <dc:Bounds x="510" y="271" width="170" height="58" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0kxk2db_di" bpmnElement="TextAnnotation_0kxk2db">
+        <dc:Bounds x="410" y="670" width="220" height="70" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_083xe73_di" bpmnElement="TextAnnotation_083xe73">
+        <dc:Bounds x="1640" y="210" width="290" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1qebca7_di" bpmnElement="Flow_1qebca7">
+        <di:waypoint x="895" y="400" />
+        <di:waypoint x="1010" y="400" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1392" y="393" width="76" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hv4d7q_di" bpmnElement="Flow_0hv4d7q">
+        <di:waypoint x="1560" y="360" />
+        <di:waypoint x="1560" y="220" />
+        <di:waypoint x="1328" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01wmhm8_di" bpmnElement="Flow_01wmhm8">
+        <di:waypoint x="450" y="468" />
+        <di:waypoint x="450" y="400" />
+        <di:waypoint x="640" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_100dcwl_di" bpmnElement="Flow_100dcwl">
+        <di:waypoint x="450" y="518" />
+        <di:waypoint x="450" y="580" />
+        <di:waypoint x="640" y="580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0t8ajho_di" bpmnElement="Flow_0t8ajho">
+        <di:waypoint x="740" y="400" />
+        <di:waypoint x="845" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1cgsyqj_di" bpmnElement="Flow_1cgsyqj">
+        <di:waypoint x="740" y="580" />
+        <di:waypoint x="870" y="580" />
+        <di:waypoint x="870" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0y1rjni_di" bpmnElement="Flow_0y1rjni">
+        <di:waypoint x="1292" y="220" />
+        <di:waypoint x="350" y="220" />
+        <di:waypoint x="350" y="493" />
+        <di:waypoint x="425" y="493" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04o5ic0_di" bpmnElement="Flow_04o5ic0">
+        <di:waypoint x="228" y="100" />
+        <di:waypoint x="1310" y="100" />
+        <di:waypoint x="1310" y="202" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11gryoz_di" bpmnElement="Flow_11gryoz">
+        <di:waypoint x="1110" y="400" />
+        <di:waypoint x="1285" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1i8zen2_di" bpmnElement="Flow_1i8zen2">
+        <di:waypoint x="1335" y="400" />
+        <di:waypoint x="1510" y="400" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1385" y="382" width="76" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02e3upy_di" bpmnElement="Flow_02e3upy">
+        <di:waypoint x="1310" y="375" />
+        <di:waypoint x="1310" y="238" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0b6aocx_di" bpmnElement="Association_0b6aocx">
+        <di:waypoint x="640" y="391" />
+        <di:waypoint x="595" y="347" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_17u4yee_di" bpmnElement="Association_17u4yee">
+        <di:waypoint x="646" y="619" />
+        <di:waypoint x="588" y="670" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_12hruwj_di" bpmnElement="Association_12hruwj">
+        <di:waypoint x="1591" y="360" />
+        <di:waypoint x="1645" y="290" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1267,6 +1267,9 @@ html.open-menu {
 .section__title .ai {
   color: #12b886;
 }
+.section__title--light {
+  color: #46A6FF;
+}
 .section__pretitle {
   display: block;
   color: #12b886;
@@ -1387,6 +1390,11 @@ s .section__img:only-child {
 .distribution {
   display: block;
   margin: 72px auto 0;
+}
+.distribution__title {
+  font-weight: 400;
+  text-align: center;
+  margin: 56px auto 48px auto;
 }
 
 .section-animate__ripples {
@@ -2290,7 +2298,7 @@ s .section__img:only-child {
 .partners__image path, .partners__link > svg path {
   transition: 0.25s ease;
 }
-.partners__link:focus > svg path, .partners__link:hover > svg path {
+.partners__link:focus > svg path:not(.keep), .partners__link:hover > svg path:not(.keep) {
   fill: #46a6ff;
 }
 
@@ -2663,6 +2671,190 @@ s .section__img:only-child {
   border-radius: 8px;
   visibility: visible;
   opacity: 0.5;
+}
+
+.chat-entry {
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 48px;
+  text-align: left;
+}
+.chat-entry:after, .chat-entry__avatar {
+  width: 186px;
+}
+@media (max-width: 576px) {
+  .chat-entry:after, .chat-entry__avatar {
+    width: 93px;
+  }
+}
+@media (min-width: 860.1px) {
+  .chat-entry:after, .chat-entry__avatar {
+    content: "";
+  }
+}
+.chat-entry__avatar {
+  display: flex;
+  margin-bottom: -16px;
+  align-items: flex-end;
+  justify-content: flex-end;
+  position: relative;
+}
+.chat-entry__avatar-img {
+  height: 158px;
+}
+@media (min-width: 576.1px) {
+  .chat-entry__avatar:after {
+    content: "";
+    position: absolute;
+    top: 20px;
+    border: 12px transparent solid;
+    border-top-color: #232A32;
+  }
+}
+@media (max-width: 576px) {
+  .chat-entry__avatar {
+    transform: scaleX(-1);
+  }
+  .chat-entry__avatar-img {
+    height: 79px;
+  }
+}
+.chat-entry__body {
+  flex: 1 0 0;
+  max-width: 688px;
+}
+.chat-entry--answer {
+  background: #2C353F;
+  text-align: right;
+  flex-direction: row-reverse;
+}
+@media (max-width: 576px) {
+  .chat-entry--answer {
+    flex-direction: row;
+  }
+}
+@media (max-width: 576px) {
+  .chat-entry--question {
+    flex-direction: row-reverse;
+  }
+}
+.chat-entry--question .chat-entry__avatar:after {
+  right: -48px;
+  border-right-color: #232A32;
+}
+@media (max-width: 576px) {
+  .chat-entry--question .chat-entry__avatar {
+    margin-left: -141px;
+    left: -16px;
+  }
+}
+.chat-entry--answer .chat-entry__avatar {
+  justify-content: flex-start;
+}
+.chat-entry--answer .chat-entry__avatar:after {
+  left: -48px;
+  border-left-color: #232A32;
+}
+@media (max-width: 576px) {
+  .chat-entry--answer .chat-entry__avatar {
+    margin-right: -141px;
+    right: -16px;
+  }
+}
+.chat-bubble {
+  display: inline-flex;
+  max-width: 100%;
+  flex-flow: column;
+  padding: 24px;
+  gap: 8px;
+  background: #232A32;
+  border-radius: 16px;
+}
+.chat-bubble__header {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  color: #9488F0;
+}
+.chat-bubble__body {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px;
+}
+.chat-bubble__body .date {
+  color: #12B886;
+}
+.chat-bubble__footer {
+  margin-top: 8px;
+}
+.chat-bubble__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 8px 16px;
+  font-family: Sora;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: center;
+  background: #46A6FF;
+  color: #fff;
+  border-radius: 8px;
+}
+.chat-bubble__link:focus-visible, .chat-bubble__link:hover {
+  color: #fff;
+  background: #afa5fb;
+}
+.chat-bubble__link--primary {
+  background: #12B886;
+}
+.chat-bubble__link--primary:focus-visible, .chat-bubble__link--primary:hover {
+  background: #3aeab5;
+}
+
+.team {
+  width: 100%;
+}
+.team__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 40px 24px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+.team-entry {
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
+}
+.team-entry__img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 320/360;
+  border-radius: 16px;
+  margin-bottom: 16px;
+}
+.team-entry__name {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+}
+.team-entry__position {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #46A6FF;
+}
+.team-entry__description {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #6B7A8A;
 }
 
 /*# sourceMappingURL=style.css.map */

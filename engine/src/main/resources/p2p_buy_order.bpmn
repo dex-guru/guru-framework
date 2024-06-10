@@ -89,7 +89,7 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${review_by == 'ai'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_063ylwi" name="Case review by Council" sourceRef="Gateway_1tebsut" targetRef="Activity_03umt1f" />
-    <bpmn:serviceTask id="Activity_1htfzk0" name="AI Deal Validation" camunda:class="ai.hhrdr.chainflow.engine.LoggerDelegate">
+    <bpmn:serviceTask id="Activity_1htfzk0" name="AI Deal Validation" camunda:class="ai.hhrdr.chainflow.engine.delegate.LoggerDelegate">
       <bpmn:incoming>Flow_1q80bt9</bpmn:incoming>
       <bpmn:outgoing>Flow_083pm54</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -130,11 +130,11 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1wl0gdx" sourceRef="Activity_13xg0rg" targetRef="Event_077qxuj" />
     <bpmn:sequenceFlow id="Flow_0qwye7u" sourceRef="Activity_0stojfc" targetRef="Gateway_1tebsut" />
-    <bpmn:serviceTask id="Activity_1pkf4fd" name="Confirmation of fee locked when Order initiated" camunda:class="ai.hhrdr.chainflow.engine.LoggerDelegate">
+    <bpmn:serviceTask id="Activity_1pkf4fd" name="Confirmation of fee locked when Order initiated" camunda:class="ai.hhrdr.chainflow.engine.delegate.LoggerDelegate">
       <bpmn:incoming>Flow_0z7jsjl</bpmn:incoming>
       <bpmn:outgoing>Flow_0cpfsb5</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_1m8kb34" name="Confirmation of Unlock in p2p_buy and claimable towards buyer" camunda:class="ai.hhrdr.chainflow.engine.LoggerDelegate">
+    <bpmn:serviceTask id="Activity_1m8kb34" name="Confirmation of Unlock in p2p_buy and claimable towards buyer" camunda:class="ai.hhrdr.chainflow.engine.delegate.LoggerDelegate">
       <bpmn:incoming>Flow_1isa6l3</bpmn:incoming>
       <bpmn:outgoing>Flow_0gj5te0</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -192,13 +192,13 @@
     <bpmn:sequenceFlow id="Flow_0vl9rbk" sourceRef="Gateway_1hwedxe" targetRef="Event_199btt9">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${cancel_order}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:serviceTask id="Activity_129b1aa" name="Check if it&#39;s canceled by owner or Claimed/transfered by Vendor" camunda:class="ai.hhrdr.chainflow.engine.LoggerDelegate">
+    <bpmn:serviceTask id="Activity_129b1aa" name="Check if it&#39;s canceled by owner or Claimed/transfered by Vendor" camunda:class="ai.hhrdr.chainflow.engine.delegate.LoggerDelegate">
       <bpmn:incoming>Flow_13z05b9</bpmn:incoming>
       <bpmn:outgoing>Flow_1ta2vft</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_1ta2vft" sourceRef="Activity_129b1aa" targetRef="Gateway_1hwedxe" />
     <bpmn:sequenceFlow id="Flow_1rz52kf" name="Actions Mismatch" sourceRef="Gateway_1hwedxe" targetRef="Activity_1jkjc0u" />
-    <bpmn:serviceTask id="Activity_0uxt6xc" name="Confirmation of fee locked when Order initiated" camunda:class="ai.hhrdr.chainflow.engine.LoggerDelegate" />
+    <bpmn:serviceTask id="Activity_0uxt6xc" name="Confirmation of fee locked when Order initiated" camunda:class="ai.hhrdr.chainflow.engine.delegate.LoggerDelegate" />
     <bpmn:group id="Group_17uzj5m" />
     <bpmn:textAnnotation id="TextAnnotation_0bi7cs6">
       <bpmn:text>Buy Order Created, Claimable by Vendor, Fee locked</bpmn:text>

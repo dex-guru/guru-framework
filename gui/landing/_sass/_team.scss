@@ -1,0 +1,46 @@
+.team {
+  width: 100%;
+
+  &__list {
+    margin:0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 40px 24px ;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  &-entry {
+    display: flex;
+    flex-flow: column;
+    gap: 8px;
+
+    &__img {
+      width: 100%;
+      height: auto;  
+      aspect-ratio: 320 / 360;
+      border-radius: 16px;
+      margin-bottom: 16px;
+    }
+
+    &__name {
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 32px;
+    }
+
+    &__position {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      color: #46A6FF
+    }
+
+    &__description {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      color: #6B7A8A
+    }
+  }
+}

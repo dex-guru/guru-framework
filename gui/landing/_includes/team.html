@@ -1,0 +1,23 @@
+<section class="section">
+  <div class="section__header">
+    <h2 class="section__title">
+      <span class="section__pretitle">Dream Team</span>
+    </h2>
+  </div>
+  <div class="section__body">
+    <div class="team">
+      <ul class="team__list">
+        {%- for person in site.team -%}
+        <li class="team__item">
+          <div class="team-entry">
+            <img src="/assets/img/team/{{ person.img }}.webp" alt="{{ person.name }}" class="team-entry__img" />
+            <strong class="team-entry__name">{{ person.name }}</strong>
+            <span class="team-entry__position">{{ person.position }}</span>
+            <div class="team-entry__description">{{ person.description }}</div>
+          </div>
+        </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</section>

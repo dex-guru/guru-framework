@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1cab6p0" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <bpmn:process id="automation_faucet" name="Guru Network Testnet faucet" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:userTask id="error_user_task" name="Handle error" camunda:assignee="${camunda_user_id}">
+      <bpmn:incoming>Flow_1d9npmi</bpmn:incoming>
+      <bpmn:outgoing>Flow_1r1dxew</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:subProcess id="Activity_0qr6z46">
+      <bpmn:incoming>Flow_0fefrzp</bpmn:incoming>
+      <bpmn:outgoing>Flow_1r0hjz8</bpmn:outgoing>
+      <bpmn:userTask id="success_form" name="get tx hash" camunda:assignee="${camunda_user_id}" camunda:dueDate="${next_faucet_date_iso}">
+        <bpmn:extensionElements>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="tx_hash">${tx_hash}</camunda:inputParameter>
+          </camunda:inputOutput>
+          <camunda:formData>
+            <camunda:formField id="ok" label="ok" type="boolean" />
+          </camunda:formData>
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_15r1ehe</bpmn:incoming>
+      </bpmn:userTask>
+      <bpmn:startEvent id="StartEvent_1" camunda:formRef="" camunda:formRefBinding="latest">
+        <bpmn:extensionElements />
+        <bpmn:outgoing>Flow_02pqlxj</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:boundaryEvent id="Event_0gtq8d3" attachedToRef="success_form">
+        <bpmn:outgoing>Flow_1ra0wxa</bpmn:outgoing>
+        <bpmn:timerEventDefinition id="TimerEventDefinition_0billoq">
+          <bpmn:timeDate xsi:type="bpmn:tFormalExpression">${next_faucet_date_iso}</bpmn:timeDate>
+        </bpmn:timerEventDefinition>
+      </bpmn:boundaryEvent>
+      <bpmn:endEvent id="Event_03bluya">
+        <bpmn:incoming>Flow_1ra0wxa</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_1ra0wxa" sourceRef="Event_0gtq8d3" targetRef="Event_03bluya" />
+      <bpmn:sequenceFlow id="Flow_15r1ehe" sourceRef="send_tokens" targetRef="success_form" />
+      <bpmn:sequenceFlow id="Flow_02pqlxj" sourceRef="StartEvent_1" targetRef="validate_wallet_address" />
+      <bpmn:sequenceFlow id="Flow_1jsefni" sourceRef="validate_wallet_address" targetRef="send_tokens" />
+      <bpmn:serviceTask id="send_tokens" name="send tokens" camunda:type="external" camunda:topic="send_tokens">
+        <bpmn:extensionElements>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="wallet_address">${wallet_address}</camunda:inputParameter>
+            <camunda:outputParameter name="tx_hash">${tx_hash}</camunda:outputParameter>
+          </camunda:inputOutput>
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_1jsefni</bpmn:incoming>
+        <bpmn:outgoing>Flow_15r1ehe</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:serviceTask id="validate_wallet_address" name="validate wallet address" camunda:type="external" camunda:topic="validate_wallet_address">
+        <bpmn:extensionElements>
+          <camunda:errorEventDefinition id="ErrorEventDefinition_0z7y2mp" />
+          <camunda:inputOutput>
+            <camunda:inputParameter name="wallet_address">${wallet_address}</camunda:inputParameter>
+            <camunda:outputParameter name="wallet_address">${wallet_address}</camunda:outputParameter>
+          </camunda:inputOutput>
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_02pqlxj</bpmn:incoming>
+        <bpmn:outgoing>Flow_1jsefni</bpmn:outgoing>
+      </bpmn:serviceTask>
+    </bpmn:subProcess>
+    <bpmn:boundaryEvent id="faucet_worker_error" attachedToRef="Activity_0qr6z46">
+      <bpmn:documentation>Global error handler for external workers</bpmn:documentation>
+      <bpmn:outgoing>Flow_1d9npmi</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_0dkljvu" camunda:errorCodeVariable="FAUCET_PROCESS_ERROR" />
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_1d9npmi" sourceRef="faucet_worker_error" targetRef="error_user_task" />
+    <bpmn:startEvent id="Event_0ul7cl6" camunda:initiator="camunda_user_id">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="wallet_address" label="wallet address" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0fefrzp</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0fefrzp" sourceRef="Event_0ul7cl6" targetRef="Activity_0qr6z46" />
+    <bpmn:endEvent id="Event_19zko5q" name="success">
+      <bpmn:incoming>Flow_1r0hjz8</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1r0hjz8" sourceRef="Activity_0qr6z46" targetRef="Event_19zko5q" />
+    <bpmn:endEvent id="Event_01nqm2e" name="fail exit&#10;">
+      <bpmn:incoming>Flow_1r1dxew</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:boundaryEvent id="Event_0n3448e" attachedToRef="error_user_task">
+      <bpmn:timerEventDefinition id="TimerEventDefinition_090bqou">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT30S</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_1r1dxew" sourceRef="error_user_task" targetRef="Event_01nqm2e" />
+  </bpmn:process>
+  <bpmn:error id="Error_0yhvjcc" name="INVALID_WALLET_ADDRESS" errorCode="429" camunda:errorMessage="INVALID_WALLET_ADDRESS" />
+  <bpmn:error id="Error_17rqb3z" name="Error_03bc7a6" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="automation_faucet">
+      <bpmndi:BPMNShape id="Activity_1vgqqvj_di" bpmnElement="error_user_task">
+        <dc:Bounds x="390" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0rei3zd" bpmnElement="Event_19zko5q">
+        <dc:Bounds x="882" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="880" y="78" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0xmdy7i_di" bpmnElement="Activity_0qr6z46" isExpanded="true">
+        <dc:Bounds x="160" y="250" width="830" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="232" y="332" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_17ijd4r_di" bpmnElement="validate_wallet_address">
+        <dc:Bounds x="340" y="310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1sy7xfa_di" bpmnElement="send_tokens">
+        <dc:Bounds x="530" y="310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1qf4m0g_di" bpmnElement="success_form">
+        <dc:Bounds x="700" y="310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_03bluya_di" bpmnElement="Event_03bluya">
+        <dc:Bounds x="882" y="332" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0gtq8d3_di" bpmnElement="Event_0gtq8d3">
+        <dc:Bounds x="782" y="332" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1ra0wxa_di" bpmnElement="Flow_1ra0wxa">
+        <di:waypoint x="818" y="350" />
+        <di:waypoint x="882" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15r1ehe_di" bpmnElement="Flow_15r1ehe">
+        <di:waypoint x="630" y="350" />
+        <di:waypoint x="700" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02pqlxj_di" bpmnElement="Flow_02pqlxj">
+        <di:waypoint x="268" y="350" />
+        <di:waypoint x="340" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1jsefni_di" bpmnElement="Flow_1jsefni">
+        <di:waypoint x="440" y="350" />
+        <di:waypoint x="530" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_0504iwh" bpmnElement="Event_0ul7cl6">
+        <dc:Bounds x="207" y="92" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_01nqm2e_di" bpmnElement="Event_01nqm2e">
+        <dc:Bounds x="592" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="593" y="145" width="35" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0n3448e_di" bpmnElement="Event_0n3448e">
+        <dc:Bounds x="472" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0e799zf_di" bpmnElement="faucet_worker_error">
+        <dc:Bounds x="422" y="232" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1d9npmi_di" bpmnElement="Flow_1d9npmi">
+        <di:waypoint x="440" y="232" />
+        <di:waypoint x="440" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0fefrzp_di" bpmnElement="Flow_0fefrzp">
+        <di:waypoint x="225" y="128" />
+        <di:waypoint x="225" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1r0hjz8_di" bpmnElement="Flow_1r0hjz8">
+        <di:waypoint x="900" y="250" />
+        <di:waypoint x="900" y="138" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1r1dxew_di" bpmnElement="Flow_1r1dxew">
+        <di:waypoint x="490" y="120" />
+        <di:waypoint x="592" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

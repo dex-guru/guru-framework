@@ -2,7 +2,7 @@ import os
 import unittest
 from unittest.mock import patch, MagicMock
 
-from external_workers.web3_workers import transaction_executing as te
+from web3_workers import transaction_executing as te
 
 
 class TestTransactionExecuting(unittest.TestCase):

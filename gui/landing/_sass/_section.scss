@@ -40,6 +40,10 @@
     .ai {
       color: #12b886;
     }
+
+    &--light {
+      color: #46A6FF
+    }
   }
 
   &__pretitle {
@@ -189,6 +193,11 @@
 .distribution {
   display: block;
   margin: 72px auto 0;
+  &__title{
+    font-weight: 400;
+    text-align: center;
+    margin: 56px auto 48px auto;
+  }
 }
 
 .section {

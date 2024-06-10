@@ -105,6 +105,132 @@ Make sure you have dependencies installed run the framework.
 Each component within the Guru Framework can be operated independently according to the setup instructions provided in
 their respective directories.
 
+#### Overview
+
+This guide provides quick start instructions for the GURU project, including setting up the application with Camunda, FastAPI, and a GUI. It also describes the development process using an arbitrage bot example.
+
+---
+
+#### Quick Start
+
+**Repository URL:** [GURU Framework](https://github.com/dex-guru/guru-framework)
+
+##### 1. Setting Up the Application
+
+**Subdirectories:**
+- `camunda`
+- `fastapi`
+- `gui`
+
+**Steps:**
+
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/dex-guru/guru-framework
+   cd dep-guru-framework
+   ```
+Engine:
+
+Ensure you have Docker installed.
+Start Camunda:
+```bash
+docker-compose up -d
+```
+Deploy using Helm:
+```bash
+export KUBECONFIG=~/Downloads/stage-k8s.yaml 
+helm upgrade --install chainflow-engine ./helm/engine --wait -n stage --set imageTag=1 --set appName=chainflow-engine --set kubeNamespace=stage
+```
+Available at:
+Application: http://localhost:8080/camunda/app/welcome/default/
+API: http://localhost:8080/engine-rest
+
+Navigate to the FastAPI directory and install dependencies:
+```bash
+cd fastapi
+pip install -r requirements.txt
+Start the FastAPI server:
+bash
+Copy code
+uvicorn main:app --reload
+```
+GUI:
+Navigate to the GUI directory and install dependencies:
+```bash
+cd gui
+npm install
+Start the GUI application:
+bash
+Copy code
+npm start
+```
+External Workers:
+
+Build and start the external workers using Docker:
+```bash
+cd external_worker
+docker build -t external-worker .
+docker run external-worker
+Development Process Example: Arbitrage Bot
+```
+
+
+### Step-by-Step Guide:
+
+Create Process in Camunda Modeler:
+
+Design your process in Camunda Modeler.
+Save the BPMN file to engine/resources directory.
+![image](https://github.com/dex-guru/guru-framework/assets/20139308/6a2b14c8-3d90-403b-8aa0-e27ee7d30db6)
+
+
+#### Create Non-Custodial External Worker in Python:
+
+Create a Python script for the external worker.
+Example code from external_workers/testnet_arbitrage/get_last_price.py:
+```python
+from camunda.external_task.external_task import ExternalTask, TaskResult
+from camunda.external_task.external_task_worker import ExternalTaskWorker
+import requests
+
+def handle_task(task: ExternalTask) -> TaskResult:
+    # Your task logic here
+    response = requests.get('https://api.example.com/get-price')
+    if response.status_code == 200:
+        price = response.json().get('price')
+        print(f"Retrieved price: {price}")
+        return task.complete({"price": price})
+    else:
+        return task.failure(error_message="Failed to fetch price")
+
+worker = ExternalTaskWorker(worker_id="worker-id", base_url="http://localhost:8080/engine-rest")
+worker.subscribe("get-last-price", handle_task)
+```
+
+### Create Postgres Model Code:
+
+Define your database models.
+Example code for an arbitrage bot model:
+```python
+Copy code
+from sqlalchemy import Column, Integer, String, Float, create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+Base = declarative_base()
+
+class ArbitrageBot(Base):
+    __tablename__ = 'arbitrage_bots'
+    id = Column(Integer, primary key=True, autoincrement=True)
+    name = Column(String)
+    profit = Column(Float)
+
+engine = create_engine('postgresql://user:password@localhost/dbname')
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+session = Session()
+```
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.

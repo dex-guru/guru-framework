@@ -18,7 +18,7 @@
       <bpmn:outgoing>Flow_10mj8ic</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_10mj8ic" sourceRef="StartEvent_1" targetRef="Activity_03utfqp" />
-    <bpmn:serviceTask id="Activity_15govpe" name="Request Warehouse Price for TEL on ChainId" camunda:class="ai.hhrdr.chainflow.engine.LoggerDelegate">
+    <bpmn:serviceTask id="Activity_15govpe" name="Request Warehouse Price for TEL on ChainId" camunda:class="ai.hhrdr.chainflow.engine.delegate.LoggerDelegate">
       <bpmn:incoming>Flow_1qzmzsb</bpmn:incoming>
       <bpmn:outgoing>Flow_076p2bg</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -46,7 +46,7 @@
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
     <bpmn:sequenceFlow id="Flow_132utzy" sourceRef="Gateway_0x8i6s6" targetRef="Event_0yssuii" />
-    <bpmn:serviceTask id="Activity_03utfqp" name="Update Process Variables and re-calculate therasholds" camunda:class="ai.hhrdr.chainflow.engine.LoggerDelegate">
+    <bpmn:serviceTask id="Activity_03utfqp" name="Update Process Variables and re-calculate therasholds" camunda:class="ai.hhrdr.chainflow.engine.delegate.LoggerDelegate">
       <bpmn:incoming>Flow_10mj8ic</bpmn:incoming>
       <bpmn:incoming>Flow_1e0kvxk</bpmn:incoming>
       <bpmn:outgoing>Flow_1qzmzsb</bpmn:outgoing>

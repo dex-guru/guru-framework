@@ -16,7 +16,7 @@
       <bpmn:outgoing>Flow_18sgxn8</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_18sgxn8" sourceRef="StartEvent_1" targetRef="Activity_0l2d8b6" />
-    <bpmn:serviceTask id="Activity_0l2d8b6" name="Call Redash API on dashboard details" camunda:class="ai.hhrdr.chainflow.engine.LoggerDelegate">
+    <bpmn:serviceTask id="Activity_0l2d8b6" name="Call Redash API on dashboard details" camunda:class="ai.hhrdr.chainflow.engine.delegate.LoggerDelegate">
       <bpmn:extensionElements />
       <bpmn:incoming>Flow_18sgxn8</bpmn:incoming>
       <bpmn:outgoing>Flow_09p9nm6</bpmn:outgoing>
@@ -74,7 +74,7 @@ execution.setVariable("user_id", user_id)</camunda:script>
       <bpmn:incoming>Flow_05fndjo</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_05fndjo" sourceRef="Gateway_1r7gy61" targetRef="Event_1qxk3ws" />
-    <bpmn:serviceTask id="Activity_0eok0jc" name="Mark rewards claimable" camunda:class="ai.hhrdr.chainflow.engine.LoggerDelegate">
+    <bpmn:serviceTask id="Activity_0eok0jc" name="Mark rewards claimable" camunda:class="ai.hhrdr.chainflow.engine.delegate.LoggerDelegate">
       <bpmn:incoming>Flow_033hsjn</bpmn:incoming>
       <bpmn:outgoing>Flow_0n05bhd</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -95,7 +95,7 @@ execution.setVariable("user_id", user_id)</camunda:script>
       <bpmn:incoming>Flow_077nfrs</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_077nfrs" sourceRef="web3_task" targetRef="Event_1rnqrld" />
-    <bpmn:serviceTask id="Activity_04043ok" name="Call Redash API to change dashboard status" camunda:class="ai.hhrdr.chainflow.engine.WarehouseDelegate">
+    <bpmn:serviceTask id="Activity_04043ok" name="Call Redash API to change dashboard status" camunda:class="ai.hhrdr.chainflow.engine.delegate.WarehouseDelegate">
       <bpmn:incoming>Flow_08w9kd5</bpmn:incoming>
       <bpmn:outgoing>Flow_033hsjn</bpmn:outgoing>
     </bpmn:serviceTask>

@@ -24,19 +24,29 @@ public class InscriptionSender implements DisposableBean {
     @Value("${inscription.enabled}")
     private Boolean enabled;
 
-    private final BlockingQueue<HistoryEvent> eventQueue = new LinkedBlockingQueue<>();
+
+    private BlockingQueue<HistoryEvent> eventQueue;
     private final Thread workerThread;
 
     private static final Logger LOG = LoggerFactory.getLogger(InscriptionSender.class);
 
-    public InscriptionSender() {
+    public InscriptionSender(
+            @Value("${inscription.queue.capacity}") Integer queueCapacity
+    ) {
+        // Initialize the queue with the specified capacity
+        this.eventQueue = new LinkedBlockingQueue<>(queueCapacity);
         workerThread = new Thread(this::processEvents);
         workerThread.start();
     }
 
     public void send(HistoryEvent event, String camundaEventType) {
         if (enabled) {
-            eventQueue.add(event);
+            if (!eventQueue.offer(event)) {
+                // If the queue is full, remove the oldest event to make space for the new one
+                eventQueue.poll();
+                eventQueue.offer(event);
+                LOG.warn("Event queue overflow. Oldest event removed to make space for new event: " + event);
+            }
         } else {
             LOG.info("Event skipped, inscriptions disabled, eventType = " + camundaEventType + ", msg = " + event);
         }

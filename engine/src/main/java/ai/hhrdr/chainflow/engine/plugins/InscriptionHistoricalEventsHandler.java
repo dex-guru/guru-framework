@@ -23,15 +23,12 @@ public class InscriptionHistoricalEventsHandler implements HistoryEventHandler {
     @EventListener
     public void handleEvent(HistoryEvent historyEvent) {
         inscriptionSender.send(historyEvent, historyEvent.getClass().getSimpleName());
-
     }
 
     @Override
     public void handleEvents(List<HistoryEvent> historyEvents) {
-
         for (HistoryEvent historyEvent : historyEvents) {
             handleEvent(historyEvent);
         }
     }
-
 }

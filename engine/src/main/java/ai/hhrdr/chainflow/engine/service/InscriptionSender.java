@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -24,45 +24,39 @@ public class InscriptionSender implements DisposableBean {
     @Value("${inscription.enabled}")
     private Boolean enabled;
 
-    @Value("${inscription.max_threads}")
-    private Integer max_threads;
-
-    private ExecutorService executorService;
+    private final BlockingQueue<HistoryEvent> eventQueue = new LinkedBlockingQueue<>();
+    private final Thread workerThread;
 
     private static final Logger LOG = LoggerFactory.getLogger(InscriptionSender.class);
 
-    @PostConstruct
-    public void init() {
-        executorService = Executors.newFixedThreadPool(max_threads);
+    public InscriptionSender() {
+        workerThread = new Thread(this::processEvents);
+        workerThread.start();
     }
 
     public void send(HistoryEvent event, String camundaEventType) {
         if (enabled) {
-            executorService.submit(() -> {
-                try {
-                    String jsonData = new ObjectMapper().writeValueAsString(event);
-                    inscriptionDataService.sendInscriptionData(jsonData);
-                    LOG.debug("Sent asynchronously, eventType = " + camundaEventType + ", msg = " + event);
-                } catch (Exception e) {
-                    LOG.error("Error sending inscriptions data asynchronously", e);
-                }
-            });
+            eventQueue.add(event);
         } else {
             LOG.info("Event skipped, inscriptions disabled, eventType = " + camundaEventType + ", msg = " + event);
         }
     }
 
-    @Override
-    public void destroy() throws Exception {
-        if (executorService != null && !executorService.isShutdown()) {
-            executorService.shutdown();
+    private void processEvents() {
+        while (true) {
             try {
-                if (!executorService.awaitTermination(800, TimeUnit.MILLISECONDS)) {
-                    executorService.shutdownNow();
-                }
-            } catch (InterruptedException e) {
-                executorService.shutdownNow();
+                HistoryEvent event = eventQueue.take();
+                String jsonData = new ObjectMapper().writeValueAsString(event);
+                inscriptionDataService.sendInscriptionData(jsonData);
+                LOG.debug("Sent asynchronously, eventType = " + event.getClass().getSimpleName() + ", msg = " + jsonData);
+            } catch (Exception e) {
+                LOG.error("Error sending inscriptions data asynchronously", e);
             }
         }
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        workerThread.interrupt();
     }
 }

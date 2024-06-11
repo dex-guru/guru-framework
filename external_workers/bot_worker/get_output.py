@@ -23,6 +23,7 @@ default_config = {
     "sleepSeconds": 30
 }
 
+
 def handle_generate_response_task(task: ExternalTask) -> TaskResult:
     """Handle tasks related to generating responses based on selected prompts."""
     variables = task.get_variables()
@@ -58,9 +59,15 @@ def handle_generate_response_task(task: ExternalTask) -> TaskResult:
                             f"Failed to generate response for prompt: {selected_prompt}",
                             3, 5000)
 
-    response_text = response_data.get('response_text', '')
-    variables['response_text'] = response_text
+    response_text = response_data['output']
+    variables['response'] = response_text
+    variables['chat_logs'] = (variables['chat_logs'] +
+                              "\nQuestion: " + variables['selected_prompt'] +
+                              "\nAnswer: " + response_text)
+    variables['selected_prompt'] = None
+    variables['generated_prompts'] = None
     return task.complete(global_variables=variables)
+
 
 if __name__ == '__main__':
     worker = ExternalTaskWorker(

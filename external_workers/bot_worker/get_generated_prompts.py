@@ -51,13 +51,20 @@ def handle_get_generated_prompts_task(task: ExternalTask) -> TaskResult:
 
     # Extract the generated prompts data from the response
     prompts_data = response.json()
-    if not prompts_data or 'prompts' not in prompts_data:
+    if not prompts_data:
         return task.failure("Failed to generate prompts",
                             f"Failed to generate prompts for dashboard: {dashboard_slug}",
                             3, 5000)
-
-    generated_prompts = prompts_data['prompts']
-    variables['generated_prompts'] = generated_prompts
+    combined_prompts = ""
+    if len(prompts_data) > 1:
+        for index in range(len(prompts_data)):
+            combined_prompts += prompts_data[index] + " "
+    else:
+        combined_prompts = prompts_data[0]
+    variables['generated_prompts'] = combined_prompts
+    if 'continue' in variables and 'response' in variables:
+        variables['continue'] = None
+        variables['response'] = None
     return task.complete(global_variables=variables)
 
 if __name__ == '__main__':

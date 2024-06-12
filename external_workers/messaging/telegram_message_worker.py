@@ -16,6 +16,7 @@ CAMUNDA_USERNAME = os.getenv('CAMUNDA_USERNAME', 'demo')
 CAMUNDA_PASSWORD = os.getenv('CAMUNDA_PASSWORD', 'demo')
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', 'your-telegram-bot-token')
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', 'your-telegram-chat-id')
+TELEGRAM_TOPIC_MESSAGE_ID = os.getenv('TELEGRAM_TOPIC_MESSAGE_ID')
 TOPIC_NAME = os.getenv("TOPIC_NAME", "send_tg_message")
 
 # Default External Worker Configuration
@@ -34,6 +35,7 @@ def handle_send_tg_message_task(task: ExternalTask) -> TaskResult:
     variables = task.get_variables()
     task_definition_key = variables.get('task_definition_key')
     alert_tasks = variables.get('tasks', [])
+    telegram_user_id = variables.get('telegram_user_id')  # Assuming this variable holds the Telegram user ID
 
     for alert in alert_tasks:
         name = alert.get('name')
@@ -49,16 +51,24 @@ def handle_send_tg_message_task(task: ExternalTask) -> TaskResult:
             f"Definition key: {task_definition_key} \n"
             f"Assignee: {assignee} \n"
             f"Create Time: {created} \n"
-            f"Process Instance URL \n"
+            f"Process Instance URL: \n"
             f"{camunda_cockpit_url} \n"
         )
+
+        # Tag the user if their Telegram user ID is provided
+        if telegram_user_id:
+            message += f"\nTagged user: @{telegram_user_id}"
 
         # Prepare the request body for the Telegram API
         telegram_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
         body = {
             "chat_id": TELEGRAM_CHAT_ID,
             "text": message,
+            "parse_mode": "HTML",  # To support HTML formatting
         }
+
+        if TELEGRAM_TOPIC_MESSAGE_ID:
+            body['reply_to_message_id'] = TELEGRAM_TOPIC_MESSAGE_ID
 
         try:
             response = requests.post(telegram_url, json=body)
@@ -73,7 +83,6 @@ def handle_send_tg_message_task(task: ExternalTask) -> TaskResult:
 
         logger.info("Message sent to Telegram successfully.")
         return task.complete()
-
 
 if __name__ == '__main__':
     logger.info("Starting the external task worker...")

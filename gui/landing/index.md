@@ -11,12 +11,12 @@ banner:
   title: Building a Multi-Chain AI Compute Layer
   subtitle: Base Layer 3 allows dApps and retail users to natively embed orchestrated AI Agents<br> into their routines and earn Network participant rewards.
 
-  actions:
-   - {
-       title: Participate in LBP,
-       url: https://app.fjordfoundry.com/pools/0xcd3deBf6D36212523EDF6e0e9804f0f62c91093c,
-       type: book,
-     }
+  # actions:
+  #  - {
+  #      title: Participate in LBP,
+  #      url: https://app.fjordfoundry.com/pools/0xcd3deBf6D36212523EDF6e0e9804f0f62c91093c,
+  #      type: book,
+  #    }
 
 partners:
   show: true

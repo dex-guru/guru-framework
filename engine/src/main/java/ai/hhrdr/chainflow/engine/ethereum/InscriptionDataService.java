@@ -5,14 +5,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.Credentials;
+import org.web3j.crypto.RawTransaction;
+import org.web3j.crypto.TransactionEncoder;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.BatchRequest;
+import org.web3j.protocol.core.BatchResponse;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.request.Transaction;
+import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.RawTransactionManager;
+import org.web3j.utils.Numeric;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 @Service
 public class InscriptionDataService {
@@ -35,48 +43,50 @@ public class InscriptionDataService {
         this.maxRetry = maxRetry;
     }
 
-    public void sendInscriptionData(String jsonData) {
+    public void sendInscriptionData(List<String> jsonDataList) {
         try {
-            String prefixedData = "data:application/json," + jsonData;
-            String hexData = "0x" + bytesToHex(prefixedData.getBytes(StandardCharsets.UTF_8));
-            sendRawTransactionWithRetries(hexData);
+            BatchRequest batchRequest = web3j.newBatch();
+            BigInteger gasPrice = web3j.ethGasPrice().send().getGasPrice();
+            gasPrice = gasPrice.add(gasPrice.divide(BigInteger.valueOf(5)));
+
+            String transactionAddress = credentials.getAddress();
+            BigInteger nonce = web3j.ethGetTransactionCount(transactionAddress, DefaultBlockParameterName.PENDING).send().getTransactionCount();
+
+            for (String jsonData : jsonDataList) {
+                String prefixedData = "data:application/json," + jsonData;
+                String hexData = "0x" + bytesToHex(prefixedData.getBytes(StandardCharsets.UTF_8));
+
+                RawTransaction rawTransaction = RawTransaction.createTransaction(
+                        nonce,
+                        gasPrice,
+                        gasLimit,
+                        transactionAddress,
+                        BigInteger.ZERO,
+                        hexData);
+
+                byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, chainId, credentials);
+                String hexValue = Numeric.toHexString(signedMessage);
+
+                batchRequest.add(web3j.ethSendRawTransaction(hexValue));
+                nonce = nonce.add(BigInteger.ONE); // Increment nonce for the next transaction
+            }
+
+            BatchResponse batchResponse = batchRequest.send();
+            handleBatchResponse(batchResponse);
         } catch (Exception e) {
             LOG.error("Error while sending inscription data: " + e.getMessage(), e);
         }
     }
 
-    private void sendRawTransactionWithRetries(String hexData) throws Exception {
-        BigInteger gasPrice = web3j.ethGasPrice().send().getGasPrice();
-        gasPrice = gasPrice.add(gasPrice.divide(BigInteger.valueOf(5)));
-
-        RawTransactionManager transactionManager = new RawTransactionManager(web3j, credentials, chainId);
-
-        boolean success = false;
-        int attempts = 0;
-
-        while (!success && attempts < maxRetry) {
-            try {
-                // Send transaction to self address
-                String transactionAddress = credentials.getAddress();
-                EthSendTransaction ethSendTransaction = transactionManager.sendTransaction(gasPrice, gasLimit, transactionAddress, hexData, BigInteger.ZERO);
-
-                if (ethSendTransaction.hasError()) {
-                    LOG.error("Transaction Error: " + ethSendTransaction.getError().getMessage());
-                    TimeUnit.SECONDS.sleep((long) Math.pow(2, attempts));  // Exponential backoff
-                } else {
-                    LOG.info("Transaction Hash: " + ethSendTransaction.getTransactionHash());
-                    success = true;
-                }
-            } catch (Exception e) {
-                LOG.error("Error sending transaction: " + e.getMessage(), e);
-                TimeUnit.SECONDS.sleep((long) Math.pow(2, attempts));  // Exponential backoff
+    private void handleBatchResponse(BatchResponse batchResponse) {
+        batchResponse.getResponses().forEach(response -> {
+            EthSendTransaction ethSendTransaction = (EthSendTransaction) response;
+            if (ethSendTransaction.hasError()) {
+                LOG.error("Transaction Error: " + ethSendTransaction.getError().getMessage());
+            } else {
+                LOG.info("Transaction Hash: " + ethSendTransaction.getTransactionHash());
             }
-            attempts++;
-        }
-
-        if (!success) {
-            LOG.error("Failed to send transaction after {} attempts", maxRetry);
-        }
+        });
     }
 
     private String bytesToHex(byte[] bytes) {

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_01kawlk" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.22.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
+  <bpmn:process id="generate_support_response" name="Generate Support Response" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="response" label="Response" type="string" />
+          <camunda:formField id="name" label="User Name" type="string" />
+          <camunda:formField id="request" label="User Request" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_1dhk8os</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity_080yx0o" name="Generate Response" camunda:type="external" camunda:topic="get_gen_response">
+      <bpmn:incoming>Flow_1dhk8os</bpmn:incoming>
+      <bpmn:incoming>Flow_0i796z3</bpmn:incoming>
+      <bpmn:outgoing>Flow_1jdwspb</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_1okg21p" name="End">
+      <bpmn:incoming>Flow_1utctj2</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="Gateway_1dwzjal">
+      <bpmn:incoming>Flow_0keglko</bpmn:incoming>
+      <bpmn:outgoing>Flow_1utctj2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0i796z3</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_1q3dzqu" name="Ask If Continue">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="continue" label="Continue?" type="boolean" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1jdwspb</bpmn:incoming>
+      <bpmn:outgoing>Flow_0keglko</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1jdwspb" sourceRef="Activity_080yx0o" targetRef="Activity_1q3dzqu" />
+    <bpmn:sequenceFlow id="Flow_1utctj2" sourceRef="Gateway_1dwzjal" targetRef="Event_1okg21p">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!continue}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0keglko" sourceRef="Activity_1q3dzqu" targetRef="Gateway_1dwzjal" />
+    <bpmn:sequenceFlow id="Flow_1dhk8os" sourceRef="StartEvent_1" targetRef="Activity_080yx0o" />
+    <bpmn:sequenceFlow id="Flow_0i796z3" sourceRef="Gateway_1dwzjal" targetRef="Activity_080yx0o" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="generate_support_response">
+      <bpmndi:BPMNShape id="BPMNShape_0zhiadi" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="158" y="78" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ls8i5r_di" bpmnElement="Activity_080yx0o">
+        <dc:Bounds x="220" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1okg21p_di" bpmnElement="Event_1okg21p">
+        <dc:Bounds x="582" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="590" y="145" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1dwzjal_di" bpmnElement="Gateway_1dwzjal" isMarkerVisible="true">
+        <dc:Bounds x="505" y="95" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0r6mm2e_di" bpmnElement="Activity_1q3dzqu">
+        <dc:Bounds x="360" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1jdwspb_di" bpmnElement="Flow_1jdwspb">
+        <di:waypoint x="320" y="120" />
+        <di:waypoint x="360" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1utctj2_di" bpmnElement="Flow_1utctj2">
+        <di:waypoint x="555" y="120" />
+        <di:waypoint x="582" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0keglko_di" bpmnElement="Flow_0keglko">
+        <di:waypoint x="460" y="120" />
+        <di:waypoint x="505" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1dhk8os_di" bpmnElement="Flow_1dhk8os">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="220" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0i796z3_di" bpmnElement="Flow_0i796z3">
+        <di:waypoint x="530" y="145" />
+        <di:waypoint x="530" y="200" />
+        <di:waypoint x="270" y="200" />
+        <di:waypoint x="270" y="160" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

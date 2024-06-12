@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1skkc1a" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.2" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
-  <bpmn:process id="alerts_user_task_telegram" name="User task telegram alerts" isExecutable="true" camunda:historyTimeToLive="180">
+  <bpmn:process id="alerts_user_task_telegram" name="User Task Alerts" isExecutable="true" camunda:historyTimeToLive="180">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:extensionElements>
         <camunda:formData />
@@ -14,6 +14,7 @@
           <camunda:formField id="task_definition_key" label="Task Definition Key" type="string" />
           <camunda:formField id="timer" label="Timer (in seconds)" type="long" defaultValue="3" />
           <camunda:formField id="assignee" label="Assigned to me only" type="boolean" defaultValue="true" />
+          <camunda:formField id="telegram_user_id" label="Telegram username" type="string" />
         </camunda:formData>
         <camunda:taskListener event="complete">
           <camunda:script scriptFormat="javascript">var now = new Date();

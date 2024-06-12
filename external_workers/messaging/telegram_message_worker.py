@@ -35,6 +35,7 @@ def handle_send_tg_message_task(task: ExternalTask) -> TaskResult:
     variables = task.get_variables()
     task_definition_key = variables.get('task_definition_key')
     alert_tasks = variables.get('tasks', [])
+    telegram_user_id = variables.get('telegram_user_id')  # Assuming this variable holds the Telegram user ID
 
     for alert in alert_tasks:
         name = alert.get('name')
@@ -51,9 +52,12 @@ def handle_send_tg_message_task(task: ExternalTask) -> TaskResult:
             f"Assignee: {assignee} \n"
             f"Create Time: {created} \n"
             f"Process Instance URL: \n"
-            f" \n"
             f"{camunda_cockpit_url} \n"
         )
+
+        # Tag the user if their Telegram user ID is provided
+        if telegram_user_id:
+            message += f"\nTagged user: @{telegram_user_id}"
 
         # Prepare the request body for the Telegram API
         telegram_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"

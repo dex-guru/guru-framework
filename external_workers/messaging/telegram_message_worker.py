@@ -16,6 +16,7 @@ CAMUNDA_USERNAME = os.getenv('CAMUNDA_USERNAME', 'demo')
 CAMUNDA_PASSWORD = os.getenv('CAMUNDA_PASSWORD', 'demo')
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', 'your-telegram-bot-token')
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', 'your-telegram-chat-id')
+TELEGRAM_TOPIC_MESSAGE_ID = os.getenv('TELEGRAM_TOPIC_MESSAGE_ID')
 TOPIC_NAME = os.getenv("TOPIC_NAME", "send_tg_message")
 
 # Default External Worker Configuration
@@ -49,7 +50,8 @@ def handle_send_tg_message_task(task: ExternalTask) -> TaskResult:
             f"Definition key: {task_definition_key} \n"
             f"Assignee: {assignee} \n"
             f"Create Time: {created} \n"
-            f"Process Instance URL \n"
+            f"Process Instance URL: \n"
+            f" \n"
             f"{camunda_cockpit_url} \n"
         )
 
@@ -58,7 +60,11 @@ def handle_send_tg_message_task(task: ExternalTask) -> TaskResult:
         body = {
             "chat_id": TELEGRAM_CHAT_ID,
             "text": message,
+            "parse_mode": "HTML",  # To support HTML formatting
         }
+
+        if TELEGRAM_TOPIC_MESSAGE_ID:
+            body['reply_to_message_id'] = TELEGRAM_TOPIC_MESSAGE_ID
 
         try:
             response = requests.post(telegram_url, json=body)
@@ -73,7 +79,6 @@ def handle_send_tg_message_task(task: ExternalTask) -> TaskResult:
 
         logger.info("Message sent to Telegram successfully.")
         return task.complete()
-
 
 if __name__ == '__main__':
     logger.info("Starting the external task worker...")

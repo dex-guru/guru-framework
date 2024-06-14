@@ -24,47 +24,22 @@ default_config = {
     "sleepSeconds": 30
 }
 
-def handle_get_generated_prompts_task(task: ExternalTask) -> TaskResult:
+
+def handle_quickwipe(task: ExternalTask) -> TaskResult:
     """Handle tasks related to generating prompts."""
     variables = task.get_variables()
-    user_name = variables.get('name')
-    support_request = variables.get('request')
-
-    # Prepare the request body for the prompt generation API
-    body = {
-        "user_name": user_name,
-        "prompt": support_request
-    }
-
-    # Set headers with the API key
-    headers = {
-        'session': f'{LANGCHAIN_KEY}'
-    }
-
-    # Make an HTTP request to fetch the generated prompts
-    response = requests.post(
-        f"{LANGCHAIN_API_URL}/responses/",
-        json=body,
-        headers=headers
-    )
-
-    # Extract the generated prompts data from the response
-    prompts_data = response.json()
-    if not prompts_data:
-        return task.failure("Failed to generate a response",
-                            f"Failed to generate a response for the request: {support_request}",
-                            3, 5000)
-    variables['response'] = prompts_data[0]
-    if 'continue' in variables:
-        variables['continue'] = None
+    if 'response' in variables:
+        variables['response'] = None
+    if 'request' in variables:
+        variables['request'] = None
     return task.complete(global_variables=variables)
+
 
 if __name__ == '__main__':
     worker = ExternalTaskWorker(
-        worker_id="response_generation_worker",
+        worker_id="quickwipe_worker",
         base_url=CAMUNDA_URL,
         config=default_config
     )
 
-    worker.subscribe(['get_gen_response'], handle_get_generated_prompts_task)
-
+    worker.subscribe(['quickwipe'], handle_quickwipe)

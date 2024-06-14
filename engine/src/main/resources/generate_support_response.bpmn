@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_01kawlk" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.22.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
   <bpmn:process id="generate_support_response" name="Generate Support Response" isExecutable="true">
-    <bpmn:startEvent id="StartEvent_1" name="Start">
+    <bpmn:startEvent id="StartEvent_1" name="Start" camunda:initiator="camunda_user_id">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="response" label="Response" type="string" />
@@ -13,7 +13,7 @@
     </bpmn:startEvent>
     <bpmn:serviceTask id="Activity_080yx0o" name="Generate Response" camunda:type="external" camunda:topic="get_gen_response">
       <bpmn:incoming>Flow_1dhk8os</bpmn:incoming>
-      <bpmn:incoming>Flow_0i796z3</bpmn:incoming>
+      <bpmn:incoming>Flow_0i3v253</bpmn:incoming>
       <bpmn:outgoing>Flow_1jdwspb</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:endEvent id="Event_1okg21p" name="End">
@@ -22,7 +22,7 @@
     <bpmn:exclusiveGateway id="Gateway_1dwzjal">
       <bpmn:incoming>Flow_0keglko</bpmn:incoming>
       <bpmn:outgoing>Flow_1utctj2</bpmn:outgoing>
-      <bpmn:outgoing>Flow_0i796z3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0ngbnx0</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:userTask id="Activity_1q3dzqu" name="Ask If Continue">
       <bpmn:extensionElements>
@@ -39,7 +39,17 @@
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0keglko" sourceRef="Activity_1q3dzqu" targetRef="Gateway_1dwzjal" />
     <bpmn:sequenceFlow id="Flow_1dhk8os" sourceRef="StartEvent_1" targetRef="Activity_080yx0o" />
-    <bpmn:sequenceFlow id="Flow_0i796z3" sourceRef="Gateway_1dwzjal" targetRef="Activity_080yx0o" />
+    <bpmn:userTask id="Activity_06ya6nm" name="Reenter Details">
+      <bpmn:incoming>Flow_0mjtk6f</bpmn:incoming>
+      <bpmn:outgoing>Flow_0i3v253</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0i3v253" sourceRef="Activity_06ya6nm" targetRef="Activity_080yx0o" />
+    <bpmn:sequenceFlow id="Flow_0mjtk6f" sourceRef="Activity_0wmf1cf" targetRef="Activity_06ya6nm" />
+    <bpmn:sequenceFlow id="Flow_0ngbnx0" sourceRef="Gateway_1dwzjal" targetRef="Activity_0wmf1cf" />
+    <bpmn:serviceTask id="Activity_0wmf1cf" name="Quickwipe for formatting" camunda:type="external" camunda:topic="quickwipe">
+      <bpmn:incoming>Flow_0ngbnx0</bpmn:incoming>
+      <bpmn:outgoing>Flow_0mjtk6f</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="generate_support_response">
@@ -65,6 +75,13 @@
       <bpmndi:BPMNShape id="Activity_0r6mm2e_di" bpmnElement="Activity_1q3dzqu">
         <dc:Bounds x="360" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_10ve8qx_di" bpmnElement="Activity_06ya6nm">
+        <dc:Bounds x="220" y="180" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1gtrxe1_di" bpmnElement="Activity_0wmf1cf">
+        <dc:Bounds x="360" y="180" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1jdwspb_di" bpmnElement="Flow_1jdwspb">
         <di:waypoint x="320" y="120" />
         <di:waypoint x="360" y="120" />
@@ -81,11 +98,18 @@
         <di:waypoint x="188" y="120" />
         <di:waypoint x="220" y="120" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0i796z3_di" bpmnElement="Flow_0i796z3">
-        <di:waypoint x="530" y="145" />
-        <di:waypoint x="530" y="200" />
-        <di:waypoint x="270" y="200" />
+      <bpmndi:BPMNEdge id="Flow_0i3v253_di" bpmnElement="Flow_0i3v253">
+        <di:waypoint x="270" y="180" />
         <di:waypoint x="270" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mjtk6f_di" bpmnElement="Flow_0mjtk6f">
+        <di:waypoint x="360" y="220" />
+        <di:waypoint x="320" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ngbnx0_di" bpmnElement="Flow_0ngbnx0">
+        <di:waypoint x="530" y="145" />
+        <di:waypoint x="530" y="220" />
+        <di:waypoint x="460" y="220" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -1,5 +1,16 @@
 # Chainflow Automation Platform
 
+## Table of Contents
+- [Introduction](#introduction)
+- [Guru Framework](#guru-framework)
+   - [Components](#components)
+   - [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [Development Process Example: Arbitrage Bot](#development-process-example-arbitrage-bot)
+- [License](#license)
+- [Contributing](#contributing)
+
+
 # Introduction
 
 Introducing our cutting-edge Web3 Automation platform, built on the robust Guru Network. This platform leverages
@@ -86,7 +97,7 @@ guru-framework/
 └── README.md # This file
 ```
 
-## Getting Started
+# Getting Started
 
 To begin using the Guru Framework, clone the repository and follow the setup instructions provided in each component's
 directory.
@@ -96,84 +107,94 @@ git clone https://github.com/dex-guru/guru-framework.git
 cd guru-framework
 ```
 
-## Prerequisites
-
-Make sure you have dependencies installed run the framework.
-
-## Running the Framework
-
-Each component within the Guru Framework can be operated independently according to the setup instructions provided in
-their respective directories.
-
-#### Overview
-
-This guide provides quick start instructions for the GURU project, including setting up the application with Camunda, FastAPI, and a GUI. It also describes the development process using an arbitrage bot example.
-
----
-
-#### Quick Start
-
 **Repository URL:** [GURU Framework](https://github.com/dex-guru/guru-framework)
 
-##### 1. Setting Up the Application
+### Prerequisites
+Make sure you have Docker and Docker Compose installed on your machine.
 
 **Subdirectories:**
-- `camunda`
-- `fastapi`
+- `engine`
 - `gui`
+- `external_workers`
 
 **Steps:**
 
 1. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/dex-guru/guru-framework
-   cd dep-guru-framework
-   ```
-Engine:
 
-Ensure you have Docker installed.
-Start Camunda:
-```bash
-docker-compose up -d
-```
-Deploy using Helm:
-```bash
-export KUBECONFIG=~/Downloads/stage-k8s.yaml 
-helm upgrade --install chainflow-engine ./helm/engine --wait -n stage --set imageTag=1 --set appName=chainflow-engine --set kubeNamespace=stage
-```
-Available at:
-Application: http://localhost:8080/camunda/app/welcome/default/
-API: http://localhost:8080/engine-rest
+    ```bash
+    git clone https://github.com/dex-guru/guru-framework
+    cd guru-framework
+    ```
 
-Navigate to the FastAPI directory and install dependencies:
-```bash
-cd fastapi
-pip install -r requirements.txt
-Start the FastAPI server:
-bash
-Copy code
-uvicorn main:app --reload
-```
-GUI:
-Navigate to the GUI directory and install dependencies:
-```bash
-cd gui
-npm install
-Start the GUI application:
-bash
-Copy code
-npm start
-```
-External Workers:
+2. **Create the `docker-compose.yaml` file:**
 
-Build and start the external workers using Docker:
+    ```yaml
+    version: '3.8'
+
+    services:
+      engine:
+        build:
+          context: ./engine
+        container_name: chainflow-engine
+        environment:
+          INSCRIPTIONS_HISTORY_ENABLED: 'false'
+          RABBITMQ_ENABLED: 'false'
+        ports:
+          - "8080:8080"
+        networks:
+          - chainflow-net
+
+      gui:
+        build:
+          context: ./gui
+        container_name: chainflow-gui
+        ports:
+          - "3000:3000"
+        networks:
+          - chainflow-net
+
+      external-workers:
+        build:
+          context: ./external_workers
+        container_name: chainflow-external-workers
+        environment:
+          - WORKER_SCRIPTS=messaging/telegram_message_worker.py,testnet_arbitrage/get_last_price.py  # Add more worker scripts as needed
+          - CAMUNDA_URL=http://engine:8080/engine-rest
+          - CAMUNDA_USER=demo
+          - CAMUNDA_PASSWORD=demo
+        networks:
+          - chainflow-net
+        volumes:
+          - ./external_workers/envs:/app/envs  # Mount the directory containing environment files
+        depends_on:
+          - engine
+
+    networks:
+      chainflow-net:
+        driver: bridge
+    ```
+
+3. **Run the Docker Compose setup:**
+
+    ```bash
+    docker-compose up -d --build
+    ```
+
+#### Check Services
+
+- **Engine:** Running on [http://localhost:8080](http://localhost:8080) - default user/pass is demo:demo
+- **GUI:** Running on [http://localhost:3000](http://localhost:3000)
+- **Workers:** Check workers running with `docker-compose ps`
 ```bash
-cd external_worker
-docker build -t external-worker .
-docker run external-worker
-Development Process Example: Arbitrage Bot
+➜  guru-framework git:(main) ✗ docker-compose ps
+           Name                         Command               State           Ports         
+--------------------------------------------------------------------------------------------
+chainflow-engine             java -jar chainflow-engine.jar   Up      0.0.0.0:8080->8080/tcp
+chainflow-external-workers   /app/entrypoint.sh               Up                            
+chainflow-gui                ./entrypoint.sh npm start        Up      0.0.0.0:3000->3000/tcp
 ```
 
+# Development Process Example: Arbitrage Bot
 
 ### Step-by-Step Guide:
 

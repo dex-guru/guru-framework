@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  engine:
+    build:
+      context: ./engine
+    container_name: chainflow-engine
+    environment:
+      INSCRIPTIONS_HISTORY_ENABLED: 'false'
+      RABBITMQ_ENABLED: 'false'
+    ports:
+      - "8080:8080"
+    networks:
+      - chainflow-net
+
+  gui:
+    build:
+      context: ./gui
+    container_name: chainflow-gui
+    ports:
+      - "3000:3000"
+    networks:
+      - chainflow-net
+
+  external-workers:
+    build:
+      context: ./external_workers
+    container_name: chainflow-external-workers
+    environment:
+      - WORKER_SCRIPTS=messaging/telegram_message_worker.py,testnet_arbitrage/get_last_price.py  # Add more worker scripts as needed
+      - CAMUNDA_URL=http://engine:8080/engine-rest
+      - CAMUNDA_USER=demo
+      - CAMUNDA_PASSWORD=demo
+    networks:
+      - chainflow-net
+    volumes:
+      - ./external_workers/envs:/app/envs  # Mount the directory containing environment files
+    depends_on:
+      - engine
+
+networks:
+  chainflow-net:
+    driver: bridge

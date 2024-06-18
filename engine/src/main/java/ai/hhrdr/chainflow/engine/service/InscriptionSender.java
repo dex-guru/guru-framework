@@ -30,6 +30,9 @@ public class InscriptionSender implements DisposableBean {
     private final Logger LOG = LoggerFactory.getLogger(InscriptionSender.class);
     private Thread workerThread;
 
+    @Value("${inscriptions.enabled:false}")
+    private boolean enabled;
+
     public InscriptionSender(
             @Value("${inscription.queue.capacity}") Integer queueCapacity,
             @Value("${inscription.batch.size}") Integer batchSize,
@@ -43,11 +46,19 @@ public class InscriptionSender implements DisposableBean {
 
     @PostConstruct
     public void init() {
-        workerThread = new Thread(this::processEvents);
-        workerThread.start();
+        if (enabled) {
+            workerThread = new Thread(this::processEvents);
+            workerThread.start();
+        } else {
+            LOG.info("Inscriptions are disabled. Worker thread not started.");
+        }
     }
 
     public void send(HistoryEvent event, String camundaEventType) {
+        if (!enabled) {
+            LOG.info("Inscriptions are disabled. Event not sent to queue.");
+            return;
+        }
         if (!eventQueue.offer(event)) {
             // If the queue is full, remove the oldest event to make space for the new one
             eventQueue.poll();

@@ -31,7 +31,11 @@ public class InscriptionDataService {
     private final Integer chainId;
     private final Integer maxRetry;
 
+    @Value("${inscriptions.enabled:false}")
+    private boolean enabled;
+
     private static final Logger LOG = LoggerFactory.getLogger(InscriptionDataService.class);
+
 
     public InscriptionDataService(@Value("${inscription.privateKey}") String privateKey,
                                   @Value("${inscription.rpcUrl}") String rpcUrl,
@@ -44,6 +48,10 @@ public class InscriptionDataService {
     }
 
     public void sendInscriptionData(List<String> jsonDataList) {
+        if (!enabled) {
+            LOG.info("Inscriptions are disabled. Skipping sendInscriptionData.");
+            return;
+        }
         try {
             BatchRequest batchRequest = web3j.newBatch();
             BigInteger gasPrice = web3j.ethGasPrice().send().getGasPrice();

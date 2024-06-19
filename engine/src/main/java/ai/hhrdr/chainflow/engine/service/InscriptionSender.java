@@ -30,7 +30,7 @@ public class InscriptionSender implements DisposableBean {
     private final Logger LOG = LoggerFactory.getLogger(InscriptionSender.class);
     private Thread workerThread;
 
-    @Value("${inscriptions.enabled:false}")
+    @Value("${inscription.enabled:false}")
     private boolean enabled;
 
     public InscriptionSender(

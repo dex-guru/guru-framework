@@ -31,7 +31,7 @@ public class InscriptionDataService {
     private final Integer chainId;
     private final Integer maxRetry;
 
-    @Value("${inscriptions.enabled:false}")
+    @Value("${inscription.enabled:false}")
     private boolean enabled;
 
     private static final Logger LOG = LoggerFactory.getLogger(InscriptionDataService.class);

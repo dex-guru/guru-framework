@@ -43,10 +43,10 @@ async def test_generate_picture_metadata():
     gen_post = name_description["tweet"]
     tweet = f"{clean_tweet(gen_post)}"
 
-    if "xgurunetwork" not in tweet:
-        tweet = f"{clean_tweet(gen_post)} @xgurunetwork "
+    if "pixelpactai" not in tweet:
+        tweet = f"{clean_tweet(gen_post)} @pixelpactai "
 
-    tweet += "Season 2 Pass https://v2.dex.guru/api/gen/40ac3829-cef6-474a-9d18-22a9454aece7.jpg"
+    tweet += "Season 2 Pass https://pixelpactai/api/gen/40ac3829-cef6-474a-9d18-22a9454aece7.jpg"
     # Post the art details to the API
     art_details = {"name": name, "type": "generated_art", "description": short_description,
                    "user_id": "d122eb30-fae3-4947-bd6e-06847a02e1ba", "description_prompt": full_story}

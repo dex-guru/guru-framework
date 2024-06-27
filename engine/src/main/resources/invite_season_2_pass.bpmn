@@ -21,7 +21,7 @@
     </bpmn:textAnnotation>
     <bpmn:association id="Association_1l4il7g" associationDirection="None" sourceRef="Activity_0cbbops" targetRef="TextAnnotation_028lws8" />
     <bpmn:textAnnotation id="TextAnnotation_0s5lc10">
-      <bpmn:text>User start the process by simply getting to https://v2.dex.guru/seasons/invite which can have additional params there if it was generated via invites mechanism by Season 1 holder. params: Invite hash, Invite activation time (mint button not active till then as Merkle Root is not updated by Chainlink Function yet in Another process</bpmn:text>
+      <bpmn:text>User start the process by simply getting to https://pixelpactai/seasons/invite which can have additional params there if it was generated via invites mechanism by Season 1 holder. params: Invite hash, Invite activation time (mint button not active till then as Merkle Root is not updated by Chainlink Function yet in Another process</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:textAnnotation id="TextAnnotation_0ixknn4">
       <bpmn:text>We can have another list there of user's already generated art, if he went re-generate route, so effectively he can choose his own generated art as one of two sources for next gen</bpmn:text>

@@ -7,7 +7,7 @@
           <camunda:formField id="wallet_address" label="Wallet address" type="string" />
           <camunda:formField id="token_id" label="Token Id" type="long" />
           <camunda:formField id="chain_id" label="Chain Id" type="long" defaultValue="8453" />
-          <camunda:formField id="invite_url" label="invite_url" type="string" defaultValue="https://v2.dex.guru/invites/season-pass/gen" />
+          <camunda:formField id="invite_url" label="invite_url" type="string" defaultValue="https://pixelpactai/invites/season-pass/gen" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:outgoing>Flow_0qkv0h8</bpmn:outgoing>

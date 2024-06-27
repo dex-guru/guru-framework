@@ -64,7 +64,7 @@ async def name_description_based_of_vision_description(image_type, vision_descri
     - short_description (a maximum of 60 symbols, serving as a catchy, condensed version of the full story)
     - full_story (a compelling and imaginative narrative that uses best practices in storytelling, as if a group of top marketers spent a month crafting it, targeting a progressive crypto and artist community. Ensure the story is engaging, concise, and formatted as a single paragraph without unnecessary line breaks or spaces)
     - tags (an array of 10 individual tags that are relevant to the story)
-    - tweet (a cool Twitter post that people would love to share about minting their unique NFT. The post must be 140 characters max and include @xgurunetwork. If the length is less than 140 characters, add a brief summary of the full story to reach the character limit)
+    - tweet (a cool Twitter post that people would love to share about minting their unique NFT. The post must be 140 characters max and include @pixelpactai. If the length is less than 140 characters, add a brief summary of the full story to reach the character limit)
     
     Example of art description: {vision_description}
     """
@@ -116,7 +116,7 @@ async def name_description_based_of_vision_description(image_type, vision_descri
 async def post_based_of_video_description(image_type, vision_description, retries: int = 2) -> tuple[bool, dict]:
     # Define prompt based on the image type
     post_system_context = "Maximum 200 symbols. You are an assistant who describes the content and composition of images. \n                    Describe only what you see in the image, not what you think the image is about.Be factual and literal. \n                    Do not use metaphors or similes. \n                    Be concise."
-    post_prompt = "Maximum 200 symbols. Generate a tweet announcing the completion of a new digital artwork on Guru Network and the excitement of minting it soon. Use hashtags #NFTCommunity, #DigitalArt, and #GuruNetwork. Mention @xgurunetwork. put it in gen_post field."
+    post_prompt = "Maximum 200 symbols. Generate a tweet announcing the completion of a new digital artwork on Guru Network and the excitement of minting it soon. Use hashtags #NFTCommunity, #DigitalArt, and #GuruNetwork. Mention @pixelpactai. put it in gen_post field."
     # Call the OpenAI API
     try:
         response = await client.chat.completions.create(

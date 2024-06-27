@@ -164,7 +164,7 @@ class BlendImagesProcessor:
             #     max_tokens=50,
             #     keep_model_alive=-1,
             #     system_context="Maximum 260 symbols. You are an assistant who describes the content and composition of images. \n                    Describe only what you see in the image, not what you think the image is about.Be factual and literal. \n                    Do not use metaphors or similes. \n                    Be concise.",
-            #     prompt="Maximum 260 symbols. Generate a tweet announcing the completion of a new digital artwork on Guru Network and the excitement of minting it soon. Use hashtags #NFTCommunity, #DigitalArt, and #GuruNetwork. Mention @xgurunetwork",
+            #     prompt="Maximum 260 symbols. Generate a tweet announcing the completion of a new digital artwork on Guru Network and the excitement of minting it soon. Use hashtags #NFTCommunity, #DigitalArt, and #GuruNetwork. Mention @pixelpactai",
             #     image=get_value_at_index(vaedecode_17, 0),
             # )
             #

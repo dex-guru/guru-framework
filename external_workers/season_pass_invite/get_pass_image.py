@@ -181,10 +181,10 @@ def handle_task(task: ExternalTask) -> TaskResult:
         variables["gen_token_name"] = art_details['name']
         tweet = f"{clean_tweet(gen_post)}"
 
-        if "xgurunetwork" not in tweet:
-            tweet = f"{clean_tweet(gen_post)} @xgurunetwork "
+        if "pixelpactai" not in tweet:
+            tweet = f"{clean_tweet(gen_post)} @pixelpactai "
 
-        tweet += f"Season 2 Pass https://v2.dex.guru/api/gen/{output_filename}.png"
+        tweet += f"Season 2 Pass https://pixelpactai/api/gen/{output_filename}.png"
 
         variables["gen_post"] = tweet
         variables["gen_token_tags"] = tags

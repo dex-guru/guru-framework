@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0c1sdwn" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.20.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0c1sdwn" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.21.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
   <bpmn:collaboration id="Collaboration_0l7446t">
     <bpmn:participant id="Participant_1a992mb" name="Guru" processRef="generate_invite_season_2_start_form" />
     <bpmn:textAnnotation id="TextAnnotation_0il41ek">
@@ -19,7 +19,6 @@
     <bpmn:textAnnotation id="TextAnnotation_028lws8">
       <bpmn:text>Review modal window is presented with results of pixelpact generation listed as samples and action items to share in socials, which boosting the rewards (allowing to mint season 2 NFT, same was as invite link does)</bpmn:text>
     </bpmn:textAnnotation>
-    <bpmn:association id="Association_1l4il7g" associationDirection="None" sourceRef="Activity_0cbbops" targetRef="TextAnnotation_028lws8" />
     <bpmn:textAnnotation id="TextAnnotation_0s5lc10">
       <bpmn:text>User start the process by simply getting to https://v2.dex.guru/seasons/invite which can have additional params there if it was generated via invites mechanism by Season 1 holder. params: Invite hash, Invite activation time (mint button not active till then as Merkle Root is not updated by Chainlink Function yet in Another process</bpmn:text>
     </bpmn:textAnnotation>
@@ -42,7 +41,6 @@
       </bpmn:lane>
       <bpmn:lane id="Lane_0asmgth" name="DexGuru V2 Invites Page">
         <bpmn:flowNodeRef>Gateway_0jre9h4</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_0cbbops</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1514wn9</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1nwu03i</bpmn:flowNodeRef>
@@ -51,6 +49,7 @@
         <bpmn:flowNodeRef>Event_1013xif</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_0fhsgf4</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_1uuift7</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0cbbops</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
     <bpmn:serviceTask id="Activity_1golbhl" name="Guru Network Transport Layer" camunda:class="ai.hhrdr.chainflow.engine.delegate.LoggerDelegate">
@@ -62,71 +61,6 @@
       <bpmn:outgoing>Flow_1k76t4f</bpmn:outgoing>
       <bpmn:outgoing>Flow_1o6z6gb</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:subProcess id="Activity_0cbbops" name="User Review, Share And Boost Rewards Flow Modal">
-      <bpmn:incoming>Flow_1344k37</bpmn:incoming>
-      <bpmn:incoming>Flow_07bwosv</bpmn:incoming>
-      <bpmn:outgoing>Flow_1p7yucm</bpmn:outgoing>
-      <bpmn:startEvent id="Event_16xr77w">
-        <bpmn:outgoing>Flow_00q7ofy</bpmn:outgoing>
-      </bpmn:startEvent>
-      <bpmn:parallelGateway id="Gateway_1nyu0sx">
-        <bpmn:incoming>Flow_00q7ofy</bpmn:incoming>
-        <bpmn:outgoing>Flow_0aqnenh</bpmn:outgoing>
-        <bpmn:outgoing>Flow_0mzmy51</bpmn:outgoing>
-      </bpmn:parallelGateway>
-      <bpmn:userTask id="review_modal_share_socials" name="Share socials and be able to mint" camunda:assignee="${camunda_user_id}">
-        <bpmn:extensionElements>
-          <camunda:formData>
-            <camunda:formField id="wallet_address" label="wallet address" type="string" />
-          </camunda:formData>
-        </bpmn:extensionElements>
-        <bpmn:incoming>Flow_0aqnenh</bpmn:incoming>
-        <bpmn:outgoing>Flow_0t4u4pp</bpmn:outgoing>
-      </bpmn:userTask>
-      <bpmn:sequenceFlow id="Flow_0aqnenh" name="share socials" sourceRef="Gateway_1nyu0sx" targetRef="review_modal_share_socials" />
-      <bpmn:userTask id="review_modal_season_pass_invite" name="Main Modal User Review Samples and Mint NFT" camunda:assignee="${camunda_user_id}">
-        <bpmn:extensionElements>
-          <camunda:formData>
-            <camunda:formField id="gen_art_id" label="gen_art_id" type="string" defaultValue="${gen_art_id}">
-              <camunda:validation>
-                <camunda:constraint name="readonly" />
-              </camunda:validation>
-            </camunda:formField>
-            <camunda:formField id="is_regenerate" label="is_regenerate" type="boolean" defaultValue="false" />
-            <camunda:formField id="transactionHash" label="Transaction Hash" type="string" />
-            <camunda:formField id="chain_id" label="Chain id" type="long" />
-            <camunda:formField id="gen_token_description" label="gen_token_description" type="string" defaultValue="${gen_token_description}" />
-            <camunda:formField id="gen_token_name" label="gen_token_name" type="string" defaultValue="${gen_token_name}" />
-            <camunda:formField id="gen_token_tags" label="gen_token_tags" type="string" defaultValue="${gen_token_tags}" />
-            <camunda:formField id="gen_post" label="gen_post" type="string" defaultValue="${gen_post}" />
-            <camunda:formField id="wallet_address" label="wallet address" type="string" />
-          </camunda:formData>
-        </bpmn:extensionElements>
-        <bpmn:incoming>Flow_0mzmy51</bpmn:incoming>
-        <bpmn:outgoing>Flow_1ydlr8b</bpmn:outgoing>
-      </bpmn:userTask>
-      <bpmn:sequenceFlow id="Flow_00q7ofy" sourceRef="Event_16xr77w" targetRef="Gateway_1nyu0sx" />
-      <bpmn:sequenceFlow id="Flow_0mzmy51" sourceRef="Gateway_1nyu0sx" targetRef="review_modal_season_pass_invite" />
-      <bpmn:endEvent id="Event_0aur9r4">
-        <bpmn:incoming>Flow_0z5pn5p</bpmn:incoming>
-      </bpmn:endEvent>
-      <bpmn:sequenceFlow id="Flow_1ydlr8b" sourceRef="review_modal_season_pass_invite" targetRef="Event_0kuji47" />
-      <bpmn:endEvent id="Event_0kuji47">
-        <bpmn:incoming>Flow_1ydlr8b</bpmn:incoming>
-        <bpmn:terminateEventDefinition id="TerminateEventDefinition_0yadzif" />
-      </bpmn:endEvent>
-      <bpmn:serviceTask id="UpdateMerkleTree" name="Update NFT Mercle Tree Through Chainlink Functions" camunda:type="external" camunda:topic="writeInvitedWallets">
-        <bpmn:extensionElements>
-          <camunda:inputOutput>
-            <camunda:inputParameter name="wallet_1">${wallet_address}</camunda:inputParameter>
-          </camunda:inputOutput>
-        </bpmn:extensionElements>
-        <bpmn:incoming>Flow_0t4u4pp</bpmn:incoming>
-        <bpmn:outgoing>Flow_0z5pn5p</bpmn:outgoing>
-      </bpmn:serviceTask>
-      <bpmn:sequenceFlow id="Flow_0t4u4pp" sourceRef="review_modal_share_socials" targetRef="UpdateMerkleTree" />
-      <bpmn:sequenceFlow id="Flow_0z5pn5p" sourceRef="UpdateMerkleTree" targetRef="Event_0aur9r4" />
-    </bpmn:subProcess>
     <bpmn:sequenceFlow id="Flow_1k76t4f" name="Re-Generate Image" sourceRef="Gateway_0jre9h4" targetRef="Event_0fhsgf4">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${is_regenerate}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
@@ -208,9 +142,80 @@
       <bpmn:incoming>Flow_1k76t4f</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_03gn7ax" sourceRef="Activity_1514wn9" targetRef="Activity_1golbhl" />
+    <bpmn:subProcess id="Activity_0cbbops" name="User Review, Share And Boost Rewards Flow Modal">
+      <bpmn:incoming>Flow_1344k37</bpmn:incoming>
+      <bpmn:incoming>Flow_07bwosv</bpmn:incoming>
+      <bpmn:outgoing>Flow_1p7yucm</bpmn:outgoing>
+      <bpmn:startEvent id="Event_16xr77w">
+        <bpmn:outgoing>Flow_00q7ofy</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:parallelGateway id="Gateway_1nyu0sx">
+        <bpmn:incoming>Flow_00q7ofy</bpmn:incoming>
+        <bpmn:outgoing>Flow_0aqnenh</bpmn:outgoing>
+        <bpmn:outgoing>Flow_0mzmy51</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:userTask id="review_modal_share_socials" name="Share socials and be able to mint" camunda:assignee="${camunda_user_id}">
+        <bpmn:extensionElements>
+          <camunda:formData>
+            <camunda:formField id="wallet_address" label="wallet address" type="string" />
+          </camunda:formData>
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_0aqnenh</bpmn:incoming>
+        <bpmn:outgoing>Flow_0t4u4pp</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:sequenceFlow id="Flow_0aqnenh" name="share socials" sourceRef="Gateway_1nyu0sx" targetRef="review_modal_share_socials" />
+      <bpmn:userTask id="review_modal_season_pass_invite" name="Main Modal User Review Samples and Mint NFT" camunda:assignee="${camunda_user_id}">
+        <bpmn:extensionElements>
+          <camunda:formData>
+            <camunda:formField id="gen_art_id" label="gen_art_id" type="string" defaultValue="${gen_art_id}">
+              <camunda:validation>
+                <camunda:constraint name="readonly" />
+              </camunda:validation>
+            </camunda:formField>
+            <camunda:formField id="is_regenerate" label="is_regenerate" type="boolean" defaultValue="false" />
+            <camunda:formField id="transactionHash" label="Transaction Hash" type="string" />
+            <camunda:formField id="chain_id" label="Chain id" type="long" />
+            <camunda:formField id="gen_token_description" label="gen_token_description" type="string" defaultValue="${gen_token_description}" />
+            <camunda:formField id="gen_token_name" label="gen_token_name" type="string" defaultValue="${gen_token_name}" />
+            <camunda:formField id="gen_token_tags" label="gen_token_tags" type="string" defaultValue="${gen_token_tags}" />
+            <camunda:formField id="gen_post" label="gen_post" type="string" defaultValue="${gen_post}" />
+            <camunda:formField id="wallet_address" label="wallet address" type="string" />
+          </camunda:formData>
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_0mzmy51</bpmn:incoming>
+        <bpmn:outgoing>Flow_1ydlr8b</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:sequenceFlow id="Flow_00q7ofy" sourceRef="Event_16xr77w" targetRef="Gateway_1nyu0sx" />
+      <bpmn:sequenceFlow id="Flow_0mzmy51" sourceRef="Gateway_1nyu0sx" targetRef="review_modal_season_pass_invite" />
+      <bpmn:endEvent id="Event_0aur9r4">
+        <bpmn:incoming>Flow_011egbb</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_1ydlr8b" sourceRef="review_modal_season_pass_invite" targetRef="Event_0kuji47" />
+      <bpmn:endEvent id="Event_0kuji47">
+        <bpmn:incoming>Flow_1ydlr8b</bpmn:incoming>
+        <bpmn:terminateEventDefinition id="TerminateEventDefinition_0yadzif" />
+      </bpmn:endEvent>
+      <bpmn:serviceTask id="UpdateMerkleTree" name="Update NFT Mercle Tree Through Chainlink Functions" camunda:type="external" camunda:topic="writeInvitedWallets">
+        <bpmn:extensionElements>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="wallet_1">${wallet_address}</camunda:inputParameter>
+          </camunda:inputOutput>
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_0t4u4pp</bpmn:incoming>
+        <bpmn:outgoing>Flow_0z5pn5p</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="Flow_0t4u4pp" sourceRef="review_modal_share_socials" targetRef="UpdateMerkleTree" />
+      <bpmn:sequenceFlow id="Flow_0z5pn5p" sourceRef="UpdateMerkleTree" targetRef="updateMerkleTree" />
+      <bpmn:sequenceFlow id="Flow_011egbb" sourceRef="updateMerkleTree" targetRef="Event_0aur9r4" />
+      <bpmn:serviceTask id="updateMerkleTree" name="Update NFT Mercle Tree" camunda:type="external" camunda:topic="updateMerkleTree">
+        <bpmn:incoming>Flow_0z5pn5p</bpmn:incoming>
+        <bpmn:outgoing>Flow_011egbb</bpmn:outgoing>
+      </bpmn:serviceTask>
+    </bpmn:subProcess>
     <bpmn:association id="Association_1pjdc80" associationDirection="None" sourceRef="StartEvent_1" targetRef="TextAnnotation_0s5lc10" />
     <bpmn:association id="Association_0o99o8m" associationDirection="None" sourceRef="StartEvent_1" targetRef="TextAnnotation_0il41ek" />
     <bpmn:association id="Association_1fd12rv" associationDirection="None" sourceRef="Activity_03au33a" targetRef="TextAnnotation_0brigzi" />
+    <bpmn:association id="Association_1l4il7g" associationDirection="None" sourceRef="Activity_0cbbops" targetRef="TextAnnotation_028lws8" />
   </bpmn:process>
   <bpmn:message id="Message_1aq4rjr" name="socials_shared" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -237,61 +242,6 @@
       <bpmndi:BPMNShape id="Gateway_0jre9h4_di" bpmnElement="Gateway_0jre9h4" isMarkerVisible="true">
         <dc:Bounds x="1535" y="495" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0cbbops_di" bpmnElement="Activity_0cbbops" isExpanded="true">
-        <dc:Bounds x="790" y="480" width="600" height="260" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_16xr77w_di" bpmnElement="Event_16xr77w">
-        <dc:Bounds x="812" y="562" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_19wiazs_di" bpmnElement="Gateway_1nyu0sx">
-        <dc:Bounds x="895" y="555" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0s3pfkg_di" bpmnElement="review_modal_share_socials">
-        <dc:Bounds x="1050" y="640" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_03mkw6j_di" bpmnElement="review_modal_season_pass_invite">
-        <dc:Bounds x="1050" y="540" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0ef56mp_di" bpmnElement="Event_0aur9r4">
-        <dc:Bounds x="1312" y="662" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0b148uf_di" bpmnElement="Event_0kuji47">
-        <dc:Bounds x="1212" y="562" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_09du2gc_di" bpmnElement="UpdateMerkleTree">
-        <dc:Bounds x="1170" y="640" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_0aqnenh_di" bpmnElement="Flow_0aqnenh">
-        <di:waypoint x="931" y="594" />
-        <di:waypoint x="990" y="680" />
-        <di:waypoint x="1050" y="680" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="987" y="662" width="65" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_00q7ofy_di" bpmnElement="Flow_00q7ofy">
-        <di:waypoint x="848" y="580" />
-        <di:waypoint x="895" y="580" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0mzmy51_di" bpmnElement="Flow_0mzmy51">
-        <di:waypoint x="945" y="580" />
-        <di:waypoint x="1050" y="580" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1ydlr8b_di" bpmnElement="Flow_1ydlr8b">
-        <di:waypoint x="1150" y="580" />
-        <di:waypoint x="1212" y="580" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0t4u4pp_di" bpmnElement="Flow_0t4u4pp">
-        <di:waypoint x="1150" y="680" />
-        <di:waypoint x="1170" y="680" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0z5pn5p_di" bpmnElement="Flow_0z5pn5p">
-        <di:waypoint x="1270" y="680" />
-        <di:waypoint x="1312" y="680" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="212" y="552" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -321,6 +271,75 @@
       <bpmndi:BPMNShape id="Event_0fhsgf4_di" bpmnElement="Event_0fhsgf4">
         <dc:Bounds x="522" y="692" width="36" height="36" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0cbbops_di" bpmnElement="Activity_0cbbops" isExpanded="true">
+        <dc:Bounds x="790" y="430" width="730" height="350" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_16xr77w_di" bpmnElement="Event_16xr77w">
+        <dc:Bounds x="812" y="512" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_19wiazs_di" bpmnElement="Gateway_1nyu0sx">
+        <dc:Bounds x="895" y="505" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0s3pfkg_di" bpmnElement="review_modal_share_socials">
+        <dc:Bounds x="1050" y="590" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_03mkw6j_di" bpmnElement="review_modal_season_pass_invite">
+        <dc:Bounds x="1050" y="490" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0b148uf_di" bpmnElement="Event_0kuji47">
+        <dc:Bounds x="1212" y="512" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_09du2gc_di" bpmnElement="UpdateMerkleTree">
+        <dc:Bounds x="1170" y="590" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ef56mp_di" bpmnElement="Event_0aur9r4">
+        <dc:Bounds x="1452" y="612" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1tk87if_di" bpmnElement="updateMerkleTree">
+        <dc:Bounds x="1310" y="590" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_00q7ofy_di" bpmnElement="Flow_00q7ofy">
+        <di:waypoint x="848" y="530" />
+        <di:waypoint x="895" y="530" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0aqnenh_di" bpmnElement="Flow_0aqnenh">
+        <di:waypoint x="931" y="544" />
+        <di:waypoint x="990" y="630" />
+        <di:waypoint x="1050" y="630" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="987" y="612" width="65" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mzmy51_di" bpmnElement="Flow_0mzmy51">
+        <di:waypoint x="945" y="530" />
+        <di:waypoint x="1050" y="530" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0t4u4pp_di" bpmnElement="Flow_0t4u4pp">
+        <di:waypoint x="1150" y="630" />
+        <di:waypoint x="1170" y="630" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ydlr8b_di" bpmnElement="Flow_1ydlr8b">
+        <di:waypoint x="1150" y="530" />
+        <di:waypoint x="1212" y="530" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0z5pn5p_di" bpmnElement="Flow_0z5pn5p">
+        <di:waypoint x="1220" y="590" />
+        <di:waypoint x="1220" y="570" />
+        <di:waypoint x="1360" y="570" />
+        <di:waypoint x="1360" y="590" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_011egbb_di" bpmnElement="Flow_011egbb">
+        <di:waypoint x="1410" y="630" />
+        <di:waypoint x="1452" y="630" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1l4il7g_di" bpmnElement="Association_1l4il7g">
+        <di:waypoint x="1395" y="430" />
+        <di:waypoint x="1410" y="424" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_1uuift7_di" bpmnElement="Event_1uuift7">
         <dc:Bounds x="1692" y="462" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -344,7 +363,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1344k37_di" bpmnElement="Flow_1344k37">
         <di:waypoint x="900" y="340" />
-        <di:waypoint x="900" y="480" />
+        <di:waypoint x="900" y="430" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0iu3jen_di" bpmnElement="Flow_0iu3jen">
         <di:waypoint x="600" y="260" />
@@ -352,7 +371,7 @@
         <di:waypoint x="700" y="140" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1p7yucm_di" bpmnElement="Flow_1p7yucm">
-        <di:waypoint x="1390" y="520" />
+        <di:waypoint x="1520" y="520" />
         <di:waypoint x="1535" y="520" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1o6z6gb_di" bpmnElement="Flow_1o6z6gb">
@@ -375,10 +394,14 @@
         <di:waypoint x="1830" y="660" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_07bwosv_di" bpmnElement="Flow_07bwosv">
-        <di:waypoint x="1710" y="462" />
-        <di:waypoint x="1710" y="442" />
-        <di:waypoint x="1100" y="442" />
-        <di:waypoint x="1100" y="480" />
+        <di:waypoint x="1710" y="498" />
+        <di:waypoint x="1710" y="560" />
+        <di:waypoint x="1520" y="560" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03gn7ax_di" bpmnElement="Flow_03gn7ax">
+        <di:waypoint x="420" y="570" />
+        <di:waypoint x="590" y="570" />
+        <di:waypoint x="590" y="340" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_1pjdc80_di" bpmnElement="Association_1pjdc80">
         <di:waypoint x="235" y="587" />
@@ -391,11 +414,6 @@
       <bpmndi:BPMNEdge id="Association_1fd12rv_di" bpmnElement="Association_1fd12rv">
         <di:waypoint x="949" y="267" />
         <di:waypoint x="970" y="253" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_03gn7ax_di" bpmnElement="Flow_03gn7ax">
-        <di:waypoint x="420" y="570" />
-        <di:waypoint x="590" y="570" />
-        <di:waypoint x="590" y="340" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="TextAnnotation_0il41ek_di" bpmnElement="TextAnnotation_0il41ek">
         <dc:Bounds x="290" y="410" width="170" height="80" />
@@ -436,10 +454,6 @@
       <bpmndi:BPMNEdge id="Association_1og488s_di" bpmnElement="Association_1og488s">
         <di:waypoint x="700" y="137" />
         <di:waypoint x="570" y="130" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_1l4il7g_di" bpmnElement="Association_1l4il7g">
-        <di:waypoint x="1331" y="480" />
-        <di:waypoint x="1410" y="437" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_1b3mbm4_di" bpmnElement="Association_1b3mbm4">
         <di:waypoint x="555" y="700" />

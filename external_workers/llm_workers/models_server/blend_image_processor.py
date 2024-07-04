@@ -46,27 +46,26 @@ add_comfyui_directory_to_sys_path()
 add_extra_model_paths()
 
 from nodes import (
-    CLIPVisionEncode,
-    CheckpointLoaderSimple,
+    ConditioningZeroOut,
+    CLIPTextEncode,
+    SaveImage,
     CLIPVisionLoader,
     LoadImage,
-    unCLIPConditioning,
-    VAEDecode,
-    ConditioningZeroOut,
+    CLIPVisionEncode,
     EmptyLatentImage,
-    SaveImage,
+    unCLIPConditioning,
+    CheckpointLoaderSimple,
+    VAEDecode,
     KSampler,
-    CLIPTextEncode,
+    NODE_CLASS_MAPPINGS,
 )
-
-# from nodes_ollama import NODE_CLASS_MAPPINGS
 
 
 class BlendImagesProcessor:
     def __init__(self, gen_style_prompt: str = "Meditative character, vibrant hues, blue, green, orange,"
                                                " swirling patterns, robots, stormtroopers, dynamic poses,"
                                                " harmony, contrast, light, shadow, depth, tranquility,"
-                                               " wonder, high-value NFT art"):
+                                               " wonder, high-value NFT art",):
         self.checkpointloadersimple = CheckpointLoaderSimple()
         clipvisionloader = CLIPVisionLoader()
         self.cliptextencode = CLIPTextEncode()
@@ -86,11 +85,8 @@ class BlendImagesProcessor:
         self.clipvisionloader_2 = clipvisionloader.load_clip(
             clip_name="clip_vision_g.safetensors"
         )
-        self.llavadescriber = NODE_CLASS_MAPPINGS["LLaVaDescriber"]()
-        self.if_displaytext = NODE_CLASS_MAPPINGS["IF_DisplayText"]()
-        self.if_savetext = NODE_CLASS_MAPPINGS["IF_SaveText"]()
 
-    def generate_image(self, image1: str, image2: str, output: str) -> tuple:
+    def generate_image(self, image1: str, image2: str, output: str) -> None:
         with torch.inference_mode():
             self.checkpointloadersimple_1 = self.checkpointloadersimple.load_checkpoint(
                 ckpt_name="sd_xl_base_1.0.safetensors"
@@ -149,10 +145,10 @@ class BlendImagesProcessor:
                 samples=get_value_at_index(ksampler_13, 0),
                 vae=get_value_at_index(self.checkpointloadersimple_1, 2),
             )
-            self.saveimage.save_images(
+            saveimage_18 = self.saveimage.save_images(
                 filename_prefix=output, images=get_value_at_index(vaedecode_17, 0)
             )
-
+            return saveimage_18
 
 # Main function with click for CLI
 @click.command()

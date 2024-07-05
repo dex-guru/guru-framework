@@ -16,7 +16,7 @@ from config import (
 def handle_task(task: ExternalTask):
     variables = task.get_variables()
     token_id = variables.get("token_id")
-    chain_id = variables.get("chain_id", 8453)
+    chain_id = variables.get("chain_id", 84532)
     wallet = variables.get(f"wallet_1")
     if not wallet:
         return task.bpmn_error(

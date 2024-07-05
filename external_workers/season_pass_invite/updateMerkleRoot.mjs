@@ -125,6 +125,10 @@ async function getExistingAddresses() {
 async function handleTask({task, taskService}) {
     try {
         const wallets = await getExistingAddresses();
+        if (!wallets || wallets.length === 0) {
+            console.log("No wallets to invite")
+            return await taskService.complete(task);
+        }
 
         const tx_hash = await makeRequest(wallets);
         await markWalletsAsInvited();

@@ -88,13 +88,13 @@ async function markWalletsAsInvited() {
     const queryParams = new URLSearchParams({
         "only_updated": "false"
     })
-    const response = await fetch(url + "?" + queryParams.toString(), {
+    const response = await fetch(`${url}/invites/chain/84532?${queryParams.toString()}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-SYS-KEY': sys_key
         },
-    })
+    });
     if (response.status !== 200) {
         console.log("Failed to mark wallets as invited. Status", response.status)
         throw new Error(`Failed to mark wallets as invited. Status ${response.status}`)
@@ -107,13 +107,13 @@ async function getExistingAddresses() {
     const queryParams = new URLSearchParams({
         "only_updated": "false"
     })
-    const response = await fetch(url + "?" + queryParams.toString(), {
+    const response = await fetch(`${url}/invites/chain/84532?${queryParams.toString()}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'X-SYS-KEY': sys_key
         },
-    })
+    });
     if (response.status !== 200) {
         console.log("Failed to mark wallets as invited. Status", response.status)
         throw new Error(`Failed to mark wallets as invited. Status ${response.status}`)
@@ -126,7 +126,7 @@ async function handleTask({task, taskService}) {
     try {
         const wallets = await getExistingAddresses();
         if (!wallets || wallets.length === 0) {
-            console.log("No wallets to invite")
+            console.log("No wallets to invite");
             return await taskService.complete(task);
         }
 
@@ -146,8 +146,14 @@ function generateMerkleRoot(walletAddresses) {
     return StandardMerkleTree.of(walletArrayOfArray, ['address']).root;
 }
 
-
 client.subscribe(
     "updateMerkleTree",
     handleTask
 );
+// const wallets = await getExistingAddresses();
+// console.log(wallets);
+// const merkleRoot = generateMerkleRoot(wallets);
+// console.log(merkleRoot);
+//
+// const tx_hash = await makeRequest(wallets);
+// await markWalletsAsInvited()

@@ -88,13 +88,13 @@ async function markWalletsAsInvited() {
     const queryParams = new URLSearchParams({
         "only_updated": "false"
     })
-    const response = await fetch(url + "?" + queryParams.toString(), {
+    const response = await fetch(`${url}/invites/chain/84532?${queryParams.toString()}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-SYS-KEY': sys_key
         },
-    })
+    });
     if (response.status !== 200) {
         console.log("Failed to mark wallets as invited. Status", response.status)
         throw new Error(`Failed to mark wallets as invited. Status ${response.status}`)

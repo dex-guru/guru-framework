@@ -102,7 +102,7 @@ async function markWalletsAsInvited() {
 }
 
 async function getExistingAddresses() {
-    const url = process.env.API_URL
+    const url = process.env.API_URL + "/invites/chain/84532"
     const sys_key = process.env.SYS_KEY
     const queryParams = new URLSearchParams({
         "only_updated": "false"

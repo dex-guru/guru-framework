@@ -4,6 +4,7 @@ from aiohttp import web
 from aiohttp.web_request import Request
 from aiohttp.web_response import Response
 
+from llm_workers.models_server.blend_image_processor import BlendImagesProcessor
 from llm_workers.models_server.generate_image import generate_and_upload_image
 
 # from llm_workers.models_server.generate_image import generate_and_upload_image
@@ -14,6 +15,7 @@ IMAGE_DIR = 'images'
 # Ensure the directory exists
 os.makedirs(IMAGE_DIR, exist_ok=True)
 
+model = BlendImagesProcessor()
 
 class GenImageView(web.View):
     def __init__(self, request: Request) -> None:
@@ -30,7 +32,7 @@ class GenImageView(web.View):
             return web.json_response({'error': 'src1_img_url and src2_img_url are required'}, status=400)
 
         # Call the generate_image method
-        generated_image = generate_and_upload_image(src1_img_url, src2_img_url)
+        generated_image = await generate_and_upload_image(src1_img_url, src2_img_url)
         # Assuming generate_image returns a path to the generated image
         return web.json_response({'generated_image_path': generated_image})
 

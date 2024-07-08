@@ -20,6 +20,7 @@ const engineConfig = {
 };
 const client = new Client(engineConfig);
 
+const chain_id = process.env.CHAIN_ID;
 
 const makeRequest = async (wallets) => {
     const explorerUrl = process.env.EXPLORER_URL;
@@ -88,7 +89,7 @@ async function markWalletsAsInvited() {
     const queryParams = new URLSearchParams({
         "only_updated": "false"
     })
-    const response = await fetch(`${url}/invites/chain/84532?${queryParams.toString()}`, {
+    const response = await fetch(`${url}/invites/chain/${chain_id}?${queryParams.toString()}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -107,7 +108,7 @@ async function getExistingAddresses() {
     const queryParams = new URLSearchParams({
         "only_updated": "false"
     })
-    const response = await fetch(`${url}/invites/chain/84532?${queryParams.toString()}`, {
+    const response = await fetch(`${url}/invites/chain/${chain_id}?${queryParams.toString()}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

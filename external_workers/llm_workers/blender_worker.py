@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 TOPIC_NAME = os.getenv('TOPIC_NAME', "comfy_season_blend")
 CAMUNDA_URL = os.getenv('CAMUNDA_URL', 'http://demo:demo@localhost:8080/engine-rest')
 AWS_S3_BUCKET = os.getenv('AWS_S3_BUCKET', 'pixelpact')
-X_ACCOUNT = os.getenv('X_ACCOUNT', 'xgurunetwork')
+X_ACCOUNT = os.getenv('X_ACCOUNT', '@xgurunetwork')
 X_LINK = os.getenv('X_LINK', 'https://v2.dex.guru/gen/')
 
 # Logging the script startup

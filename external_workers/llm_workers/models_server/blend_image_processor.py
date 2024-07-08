@@ -148,6 +148,7 @@ class BlendImagesProcessor:
             saveimage_18 = self.saveimage.save_images(
                 filename_prefix=output, images=get_value_at_index(vaedecode_17, 0)
             )
+            torch.cuda.empty_cache()
             return saveimage_18
 
 # Main function with click for CLI

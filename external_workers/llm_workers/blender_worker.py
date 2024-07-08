@@ -8,8 +8,8 @@ import httpx
 from camunda.external_task.external_task import ExternalTask, TaskResult
 from camunda.external_task.external_task_worker import ExternalTaskWorker
 
-from llm_workers.openai_describe import describe_image_with_openai_vision, name_description_based_of_vision_description
-from season_pass_invite.config import SYS_KEY, API_URL, GEN_IMG_URL, OLLAMA_URL
+from llm_workers.ollama_describe import describe_image_with_openai_vision, name_description_based_of_vision_description
+from season_pass_invite.config import SYS_KEY, API_URL, GEN_IMG_URL
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -152,7 +152,6 @@ async def generate_and_upload_image(src1_art_id: str, src2_art_id: str, camunda_
     short_description = name_description["short_description"]
     full_story = name_description["full_story"]
     tags = name_description["tags"]
-    # gen_post = await post_based_of_video_description("generated_art", full_story)
     gen_post = name_description["tweet"]
     tweet = f"{clean_tweet(gen_post)}"
 

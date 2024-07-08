@@ -1,20 +1,37 @@
+import base64
+import requests
+import asyncio
 import json
 import os
 import logging
+from ollama import AsyncClient
 
-from openai import AsyncOpenAI
 from openai.types.chat.completion_create_params import ResponseFormat
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Initialize the AsyncOpenAI client with an API key from environment variables
-client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 X_ACCOUNT = os.getenv('X_ACCOUNT', 'xgurunetwork')
 
-# Main function to describe images using OpenAI's model
+client = AsyncClient(host=os.getenv("OLLAMA_URL", "http://172.16.5.239:11434"))
+
+
+def download_image_to_base64(url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        base64_string = base64.b64encode(response.content).decode('utf-8')
+        logging.info(f"Image successfully downloaded and encoded.")
+        return base64_string
+    else:
+        logging.error("Failed to download image")
+        return None
+
 async def describe_image_with_openai_vision(image_url, name, description, image_type) -> tuple[bool, str]:
-    # Example of logging an operation
+    base64_string = download_image_to_base64(image_url)
+    if not base64_string:
+        return False, "Failed to download or encode image."
+
     logging.info(f"Generating description for {image_type} image: {image_url}")
     if image_type == 'person':
         prompt = "Generate a description of a person from a photograph. Focus on the individual's body type, facial features such as the shape of their face, the hair's length, style, and color, as well as any notable expressions or gestures they may be making. The description should serve to convey the person's likeness without revealing their personal identity. Maximum 250 words"
@@ -29,21 +46,10 @@ async def describe_image_with_openai_vision(image_url, name, description, image_
         prompt = f"{prompt} generate a name and description for the artwork."
 
     try:
-        response = await client.chat.completions.create(model="gpt-4-1106-vision-preview",
-                                                        messages=[
-                                                            {
-                                                                "role": "user",
-                                                                "content": [
-                                                                    {"type": "text", "text": prompt},
-                                                                    {"type": "image_url", "image_url": image_url}
-                                                                ],
-                                                            }
-                                                        ])
-
+        response = await client.generate(model="llava", prompt=prompt, images=[base64_string])
         # Process the response
-        if response.choices and len(response.choices) > 0:
-            choice = response.choices[0]
-            description_text = choice.message.content
+        if response['done']:
+            description_text = response['response']
             return True, description_text.strip()
         message = f"Error while generating description for image: {response}"
         logging.error(message)
@@ -64,21 +70,17 @@ async def name_description_based_of_vision_description(image_type, vision_descri
     - short_description (a maximum of 60 symbols, serving as a catchy, condensed version of the full story)
     - full_story (a compelling and imaginative narrative that uses best practices in storytelling, as if a group of top marketers spent a month crafting it, targeting a progressive crypto and artist community. Ensure the story is engaging, concise, and formatted as a single paragraph without unnecessary line breaks or spaces)
     - tags (an array of 10 individual tags that are relevant to the story)
-    - tweet (a cool Twitter post that people would love to share about minting their unique NFT. The post must be 140 characters max and include {X_ACCOUNT}. If the length is less than 140 characters, add a brief summary of the full story to reach the character limit)
+    - tweet (a cool Twitter post that people would love to share about minting their unique NFT. The post must be 140 characters max and mntion twitter account {X_ACCOUNT}. If the length is less than 140 characters, add a brief summary of the full story to reach the character limit)
 
     Example of art description: {vision_description}
     """
 
     system_content = "Maximum 15 symbols. You are an assistant who describes the content and composition of images Ffor NFT Listings. \n                    Describe only what you see in the image, not what you think the image is about.Be factual and literal. \n                    Do not use metaphors or similes. \n                    Be concise."
-    response_format = ResponseFormat(type="json_object")
-    model = "gpt-3.5-turbo-1106"
-    # model = "gpt-4-1106-preview"
     try:
-        response = await client.chat.completions.create(
-            model=model,
-            response_format=response_format,
-            max_tokens=300,
-            n=1,
+
+        response = await client.chat(
+            model="phi3:medium-128k",
+            format="json",
             messages=[
                 {"role": "system", "content": system_content},
                 {"role": "user", "content": prompt}
@@ -87,32 +89,34 @@ async def name_description_based_of_vision_description(image_type, vision_descri
         )
 
         # Process the response
-        if response.choices:
-            description_text = response.choices[0].message.content
-            try:
-                name_description_dict = json.loads(description_text)
-                for key in ['name', 'short_description', 'full_story', 'tags']:
-                    if not name_description_dict.get(key) and retries > 0:
-                        return await name_description_based_of_vision_description(image_type,
-                                                                                  vision_description, retries - 1)
-                else:
-                    return True, name_description_dict
-            except Exception as e:
-                error_message = f"Error while processing response: {str(e)}"
-                logging.error(error_message)
-                return False, error_message
 
-            return True, description_text
-        else:
-            error_message = "No description generated."
+        description_text = response["message"]["content"]
+        try:
+            name_description_dict = json.loads(description_text)
+            for key in ['name', 'short_description', 'full_story', 'tags']:
+                if not name_description_dict.get(key) and retries > 0:
+                    return await name_description_based_of_vision_description(image_type,
+                                                                              vision_description, retries - 1)
+            else:
+                return True, name_description_dict
+        except Exception as e:
+            error_message = f"Error while processing response: {str(e)}"
             logging.error(error_message)
             return False, error_message
+        return True, description_text
     except Exception as e:
         error_message = f"API request failed: {str(e)}"
         logging.error(error_message)
         return False, error_message
 
 
+
 if __name__ == '__main__':
     # Worker initialization with logging
     logging.info("Initializing Camunda External Task Worker")
+    # description = "This ultra-detailed digital art piece captures the essence of a high-speed journey on Japan's iconic Shinkansen (bullet train), blending the train's sleek design and efficiency with the vibrant and fleeting landscapes visible through its windows. The scene is interspersed with imaginative depictions of animals and geometric patterns, adding layers of complexity and intrigue. Crafted to emulate a 30-megapixel, 4k photograph taken with a CanonEOS 5D Mark IV DSLR using an 85mm lens, the artwork exhibits sharp focus, intricate detail, and the subtle interplay of light and shadow achieved through long exposure and diffuse backlighting. The composition's perfect contrast, high sharpness, face symmetry, and depth of field, alongside advanced techniques like ray tracing and global illumination, contribute to its lifelike and ultra-high-definition 8k quality, making it a masterpiece of digital artistry."
+    # image_type = "art"
+    # results = asyncio.run(name_description_based_of_vision_description(image_type, description))
+    results = asyncio.run(describe_image_with_openai_vision("https://pixelpact.s3.us-east-2.amazonaws.com/images/34a5f21c-b01c-4843-bbb0-2cbfb763dd99.jpg", "Symphony", "Symphony", "ART"))
+
+    print(results)

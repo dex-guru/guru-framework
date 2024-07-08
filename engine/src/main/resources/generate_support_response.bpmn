@@ -45,7 +45,9 @@
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_0i3v253" sourceRef="Activity_06ya6nm" targetRef="Activity_080yx0o" />
     <bpmn:sequenceFlow id="Flow_0mjtk6f" sourceRef="Activity_0wmf1cf" targetRef="Activity_06ya6nm" />
-    <bpmn:sequenceFlow id="Flow_0ngbnx0" sourceRef="Gateway_1dwzjal" targetRef="Activity_0wmf1cf" />
+    <bpmn:sequenceFlow id="Flow_0ngbnx0" sourceRef="Gateway_1dwzjal" targetRef="Activity_0wmf1cf">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${continue}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:serviceTask id="Activity_0wmf1cf" name="Quickwipe for formatting" camunda:type="external" camunda:topic="quickwipe">
       <bpmn:incoming>Flow_0ngbnx0</bpmn:incoming>
       <bpmn:outgoing>Flow_0mjtk6f</bpmn:outgoing>

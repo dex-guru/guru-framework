@@ -20,7 +20,7 @@ const engineConfig = {
 };
 const client = new Client(engineConfig);
 
-const chain_id = process.env.CHAIN_ID;
+const chain_id = process.env.CHAIN_ID || 8453;
 
 const makeRequest = async (wallets) => {
     const explorerUrl = process.env.EXPLORER_URL;

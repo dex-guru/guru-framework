@@ -6,3 +6,4 @@ redis==3.5.3
 
 boto3
 httpx
+openai

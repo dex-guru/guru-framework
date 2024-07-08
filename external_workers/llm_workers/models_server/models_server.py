@@ -32,7 +32,7 @@ class GenImageView(web.View):
             return web.json_response({'error': 'src1_img_url and src2_img_url are required'}, status=400)
 
         # Call the generate_image method
-        generated_image = await generate_and_upload_image(src1_img_url, src2_img_url)
+        generated_image = await generate_and_upload_image(src1_img_url, src2_img_url, model)
         # Assuming generate_image returns a path to the generated image
         return web.json_response({'generated_image_path': generated_image})
 

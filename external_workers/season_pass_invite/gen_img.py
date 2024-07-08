@@ -147,5 +147,6 @@ def generate_image(image1: str, image2: str, output: str) -> None:
 def main(image1, image2, output):
     generate_image(image1, image2, output)
 
+
 if __name__ == "__main__":
     main()

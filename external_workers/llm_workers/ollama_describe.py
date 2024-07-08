@@ -6,8 +6,6 @@ import os
 import logging
 from ollama import AsyncClient
 
-from openai.types.chat.completion_create_params import ResponseFormat
-
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 

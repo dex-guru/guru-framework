@@ -17,6 +17,7 @@ logger.setLevel(logging.INFO)
 
 CHAIN_ID_TO_CHAIN_NAME = {
     '8453': 'base',
+    '84532': 'base sepolia',
     '1': 'ethereum',
 }
 
@@ -44,6 +45,8 @@ def set_web3_by_chain_id(chain_id: int):
         url = "http://new-rpc-gw-prod.dexguru.biz/archive/261"
     elif chain_id == 8453:
         url = "https://base-rpc.publicnode.com"
+    elif chain_id == 84532:
+        url = "https://sepolia.base.org"
     else:
         url = f"http://rpc-gw-stage.dexguru.biz/full/{chain_id}"
     w3 = Web3(Web3.HTTPProvider(url))

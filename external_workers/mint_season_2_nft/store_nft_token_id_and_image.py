@@ -1,6 +1,5 @@
 import logging
 import os
-import requests
 from camunda.external_task.external_task import ExternalTask, TaskResult
 from camunda.external_task.external_task_worker import ExternalTaskWorker
 from web3 import Web3
@@ -22,7 +21,7 @@ CHAIN_ID_TO_CHAIN_NAME = {
     '1': 'ethereum',
 }
 
-# Configuration for the Client
+# configuration for the Client
 default_config = {
     "auth_basic": {"username": CAMUNDA_USERNAME, "password": CAMUNDA_PASSWORD},
     "maxTasks": 1,
@@ -56,24 +55,19 @@ def get_nft_token_id(tx_hash: str) -> int:
     receipt = w3.eth.get_transaction_receipt(tx_hash)
     logs = receipt["logs"]
     logger.debug(f"Transaction receipt logs: {logs}")
-
-    # Event signature for ERC-721 Transfer event
-    event_signature = "Transfer(address,address,uint256)"
-    event_signature_hash = keccak(text=event_signature)
-    event_signature_hash_hex = to_hex(event_signature_hash).lower()
-
     for log in logs:
         logger.debug(f"Log entry: {log}")
         if (
-            log["topics"][0].hex().lower() == event_signature_hash_hex
+            log["topics"][0].hex().lower()
+            == "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
             and log['address'].lower() in NFT_ADDRESSES
         ):
-            if len(log["topics"]) == 4:  # Ensure we have the correct number of topics
+            if len(log["topics"]) > 3:
                 token_id = int(log["topics"][3].hex(), 16)
                 logger.debug(f"Found NFT token id: {token_id}")
                 return token_id
             else:
-                logger.debug("Log entry does not have the correct number of topics")
+                logger.error(f"Log entry has {len(log['topics'])} topics, expected 4")
     logger.info("No NFT token id found in the transaction logs")
     return None
 
@@ -85,7 +79,7 @@ def store_token_id_and_art_id(token_id: int, art_id: str, chain_id: int) -> None
     resp.raise_for_status()
 
 def refresh_opensea_metadata(token_id: int, chain_id: int) -> None:
-    chain = CHAIN_ID_TO_CHAIN_NAME.get(str(chain_id), "base")
+    chain = "base"
     address = NFT_ADDRESS
     url = f'https://api.opensea.io/api/v2/chain/{chain}/contract/{address}/nfts/{token_id}/refresh'
     logger.debug(f"Refreshing OpenSea metadata: {url}")
@@ -162,6 +156,7 @@ if __name__ == "__main__":
         ],
         handle_task,
     )
+
 
 
 # import logging

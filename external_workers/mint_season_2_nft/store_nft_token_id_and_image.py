@@ -63,8 +63,8 @@ def get_nft_token_id(tx_hash: str) -> int:
             and log['address'].lower() in NFT_ADDRESSES
         ):
             if len(log["topics"]) > 3:
-                logger.debug(f"log['topics'][3]: {log['topics'][3]}")
-                logger.debug(f"log['topics'][3].hex(): {log['topics'][3].hex()}")
+                logger.debug(f"log['topics'][3]: {log[topics][3]}")
+                logger.debug(f"log['topics'][3].hex(): {log[topics][3].hex()}")
                 token_id = int(log["topics"][3].hex(), 16)
                 logger.debug(f"Found NFT token id: {token_id}")
                 return token_id
@@ -158,6 +158,7 @@ if __name__ == "__main__":
         ],
         handle_task,
     )
+
 
 
 

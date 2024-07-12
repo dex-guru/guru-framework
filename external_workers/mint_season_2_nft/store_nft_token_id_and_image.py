@@ -22,7 +22,7 @@ CHAIN_ID_TO_CHAIN_NAME = {
     '1': 'ethereum',
 }
 
-# configuration for the Client
+# Configuration for the Client
 default_config = {
     "auth_basic": {"username": CAMUNDA_USERNAME, "password": CAMUNDA_PASSWORD},
     "maxTasks": 1,
@@ -63,16 +63,17 @@ def get_nft_token_id(tx_hash: str) -> int:
     event_signature_hash_hex = to_hex(event_signature_hash).lower()
 
     for log in logs:
+        logger.debug(f"Log entry: {log}")
         if (
             log["topics"][0].hex().lower() == event_signature_hash_hex
             and log['address'].lower() in NFT_ADDRESSES
         ):
-            if len(log["topics"]) > 3:
+            if len(log["topics"]) == 4:  # Ensure we have the correct number of topics
                 token_id = int(log["topics"][3].hex(), 16)
                 logger.debug(f"Found NFT token id: {token_id}")
                 return token_id
             else:
-                logger.debug("Log entry does not have enough topics")
+                logger.debug("Log entry does not have the correct number of topics")
     logger.info("No NFT token id found in the transaction logs")
     return None
 

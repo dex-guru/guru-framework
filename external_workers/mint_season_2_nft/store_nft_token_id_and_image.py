@@ -62,6 +62,7 @@ def get_nft_token_id(tx_hash: str) -> int:
             == "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
             and log['address'].lower() in NFT_ADDRESSES
         ):
+            logger.debug(f"Log topics: {log['topics']}")
             if len(log["topics"]) > 3:
                 token_id = int(log["topics"][3].hex(), 16)
                 logger.debug(f"Found NFT token id: {token_id}")
@@ -70,6 +71,7 @@ def get_nft_token_id(tx_hash: str) -> int:
                 logger.error(f"Log entry has {len(log['topics'])} topics, expected 4")
     logger.info("No NFT token id found in the transaction logs")
     return None
+
 
 def store_token_id_and_art_id(token_id: int, art_id: str, chain_id: int) -> None:
     url = f"{API_URL}/seasons/2/chain/{chain_id}/token/{token_id}/art/{art_id}"

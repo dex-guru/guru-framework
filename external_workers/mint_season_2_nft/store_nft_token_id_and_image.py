@@ -33,9 +33,10 @@ default_config = {
 }
 
 NFT_ADDRESSES = (
-    '0xD31468bA1c75Dd1C8Ee56E180cF7960e1B2F8426',
-    '0xEeF313A0f4cdAf6439c919a51d2873D40EaA87F5',
+    '0xd31468ba1c75dd1c8ee56e180cf7960e1b2f8426',
+    '0xeef313a0f4cdaf6439c919a51d2873d40eaa87f5',
 )
+
 
 def set_web3_by_chain_id(chain_id: int):
     global w3
@@ -49,6 +50,7 @@ def set_web3_by_chain_id(chain_id: int):
         url = f"http://rpc-gw-stage.dexguru.biz/full/{chain_id}"
     w3 = Web3(Web3.HTTPProvider(url))
     logger.debug(f"Web3 provider set to {url} for chain_id {chain_id}")
+
 
 def get_nft_token_id(tx_hash: str) -> int:
     logger.debug(f"Fetching transaction receipt for tx_hash: {tx_hash}")
@@ -74,12 +76,16 @@ def get_nft_token_id(tx_hash: str) -> int:
     logger.info("No NFT token id found in the transaction logs")
     return None
 
+
 def store_token_id_and_art_id(token_id: int, art_id: str, chain_id: int) -> None:
     url = f"{API_URL}/seasons/2/chain/{chain_id}/token/{token_id}/art/{art_id}"
     logger.debug(f"Storing token id and art id: {url}")
     resp = requests.post(url, headers={"X-SYS-KEY": SYS_KEY})
-    logger.debug(f"Response from storing token id and art id: {resp.status_code} {resp.text}")
+    logger.debug(
+        f"Response from storing token id and art id: {resp.status_code} {resp.text}"
+    )
     resp.raise_for_status()
+
 
 def refresh_opensea_metadata(token_id: int, chain_id: int) -> None:
     chain = CHAIN_ID_TO_CHAIN_NAME.get(str(chain_id))
@@ -91,6 +97,7 @@ def refresh_opensea_metadata(token_id: int, chain_id: int) -> None:
     resp = requests.post(url, headers={"x-api-key": OPENSEA_API_KEY})
     logger.debug(f"OpenSea response: {resp.status_code} {resp.text}")
     resp.raise_for_status()
+
 
 def handle_task(task: ExternalTask) -> TaskResult:
     variables = task.get_variables()
@@ -147,6 +154,7 @@ def handle_task(task: ExternalTask) -> TaskResult:
     logger.info(f"Returning variables: {variables}")
     return task.complete(variables)
 
+
 if __name__ == "__main__":
     logger.info("Starting the worker...")
     ExternalTaskWorker(
@@ -159,9 +167,6 @@ if __name__ == "__main__":
         ],
         handle_task,
     )
-
-
-
 
 
 # import logging

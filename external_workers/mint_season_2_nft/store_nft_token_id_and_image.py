@@ -81,7 +81,7 @@ def store_token_id_and_art_id(token_id: int, art_id: str, chain_id: int) -> None
 
 def refresh_opensea_metadata(token_id: int, chain_id: int) -> None:
     chain = "base"
-    address = '0xeb8ae9ed9df8bff58f9d364eef3c4986f4331d1e'
+    address = NFT_ADDRESS
     url = f'https://api.opensea.io/api/v2/chain/{chain}/contract/{address}/nfts/{token_id}/refresh'
     logger.debug(f"Refreshing OpenSea metadata: {url}")
     resp = requests.post(url, headers={"x-api-key": OPENSEA_API_KEY})

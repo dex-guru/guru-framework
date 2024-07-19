@@ -1,0 +1,25 @@
+<section class="section additional-resources">
+    <div class="section__header">
+        <h2 class="section__title">Additional Resources</h2>
+    </div>
+    <div class="tokens">
+        <div class="subtitle">Token:</div>
+        <ul class="tokens__list">
+            {%- for token in site.tokens -%}
+            <li class="token__item">
+                <a href="{{ token.url }}"  class="token_link">{{token.name}}</a>
+            </li>
+            {%- endfor -%}
+          </ul>
+    </div>
+    <div class="links tokens">
+        <div class="subtitle">Our links</div>
+        <ul class="tokens__list">
+            {%- for link in site.links-resourse -%}
+            <li class="{{ link.class }}">
+                <a href="{{ link.url }}"  class="token_link">{{link.name}}</a>
+            </li>
+            {%- endfor -%}
+          </ul>
+    </div>
+</section>

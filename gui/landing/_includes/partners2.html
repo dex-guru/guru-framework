@@ -9,7 +9,7 @@
       <ul class="partners__list">
         {%- for partner in site.partners2 -%}
         <li class="partners__item">
-          <a class="partners__link" href="{{ partner.url }}" target="_blank" rel="noopener noreferrer"
+          <a class="partners__link short" href="{{ partner.url }}" target="_blank" rel="noopener noreferrer"
             >{%- include partners2/{{ partner.key }}.svg -%}</a
           >
         </li>

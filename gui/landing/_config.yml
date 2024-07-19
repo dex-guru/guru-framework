@@ -24,9 +24,11 @@ partners:
   - { key: legoscapital, url: "#" }
   - { key: nimacapital, url: "#" }
   - { key: supernova, url: "#" }
+  - { key: cadenza, url: "#" }
   - { key: paraficapital, url: "#" }
   - { key: divergenceventures, url: "#" }
   - { key: thelao, url: "#" }
+  - { key: daedalus, url: "#" }
   - { key: lemniscap, url: "#" }
   - { key: stakecapital, url: "#" }
   - { key: bitscalecapital, url: "#" }
@@ -99,9 +101,11 @@ menu:
           {
             items:
               [
-                { title: "X/Twitter", url: "https://x.com/xgurunetwork" },
+                { title: "Twitter", url: "https://twitter.com/xgurunetwork" },
                 { title: "Telegram", url: "https://t.me/dexguru" },
                 { title: "Discord", url: "https://discord.gg/dPW8fzwzz9" },
+                { title: "Warpcast", url: "https://warpcast.com/gurunetwork" },
+                { title: "Twitch", url: "https://www.twitch.tv/gurunetwork" },
               ],
           },
         ],
@@ -139,24 +143,47 @@ social_links:
   - { platform: twitter, user_url: "https://twitter.com/xgurunetwork" }
   - { platform: telegram, user_url: "https://t.me/dexguru" }
   - { platform: discord, user_url: "https://discord.gg/dPW8fzwzz9" }
+  - { platform: warpcast, user_url: "https://warpcast.com/gurunetwork" }
+  - { platform: twitch, user_url: "https://www.twitch.tv/gurunetwork" }
+
+tokens:
+  - {name: 'Contract', url: 'https://etherscan.io/token/0x525574C899A7c877a11865339e57376092168258#code'}
+  - {name: 'Uniswap', url: 'https://app.uniswap.org/explore/tokens/ethereum/0x525574c899a7c877a11865339e57376092168258'}
+  - {name: 'Dex.Guru', url: 'https://dex.guru/token/eth/0x525574c899a7c877a11865339e57376092168258'}
+  - {name: 'Dex.Guru V2', url: 'https://v2.dex.guru/token/eth/0x525574c899a7c877a11865339e57376092168258'}
+  - {name: 'CEX Listings', url: 'https://www.bitmart.com/trade/en-US?symbol=GURU_USDT&layout=basic'}
+
+links-resourse:
+  - {name: 'Framework Github', url: 'https://github.com/dex-guru/guru-framework.git', class: 'token__item'}
+  - {name: 'Opensea Season 1', url: 'https://opensea.io/collection/guru-season-pass-nft-v2', class: 'token__item'}
+  - {name: 'Opensea Season 2', url: 'https://opensea.io/collection/guru-season-2-pass', class: 'token__item'}
+  - {name: 'Docs', url: 'https://docs.gurunetwork.ai/', class:'token__item', class: 'token__item'}
+  - {name: 'Litepaper', url: 'https://gurunetwork.ai/assets/img/litepapper_dexguru_network.pdf', class: 'token__item'}
+  - {name: 'White paper', url: 'https://gurunetwork.ai/assets/img/guru_network_architecture_whitepaper.pdf', class: 'token__item'}
+  - {name: 'Overview', url: 'https://beincrypto.com/learn/guru-network/', class: 'token__item'}
+  - {name: 'AMA', url: ' https://beincrypto.com/guru-network-ama-session-beincrypto/', class: 'token__item'}
+  - {name: 'Guru Enlightenment Network Deck', url: 'https://docsend.com/view/ihpwaurpca366kpa', class: 'token__item big-item'}
+  - {name: 'AMA YT', url: 'https://youtube.com/live/nB3eCnk_cQw?feature=share', class: 'token__item'}
+  - {name: 'CTO’s Mirror', url: 'https://mirror.xyz/evahteev.eth', class: 'token__item'}
 
 team: 
   - { name: 'Evgeny Vakhteev', position: 'CEO', description: 'Ex Hulu, Disney (video ingestions orchestration), CTO and Co-founder of DexGuru', img: 'ev' }
-  - { name: 'Alexey Volynshikov', position: 'Senior Backend Engineer', description: 'Architected DexGuru Data Warehouse, indexation pipelines, co authored Guru Network orchestration architecture.', img: 'av' }
   - { name: 'Evgeny Shestakov', position: 'Backend Engineer', description: 'Developers Office Lead, indexation, price calculations and Web3', img: 'esh' }
-  - { name: 'Rodion Kharabet', position: 'Senior Frontend Engineer', description: 'Developed DexGuru MVP, Web3 wallets integrations, and led all DexGuru frontend teams', img: 'rk' }
+  - { name: 'Alexey Volynshikov', position: 'Senior Backend Engineer', description: 'Architected DexGuru Data Warehouse, indexation pipelines, co authored Guru Network orchestration architecture.', img: 'av' }
   - { name: 'Alexey Ilin', position: 'Frontend Engineer', description: 'Created pixel-perfect GUIs for DexGuru, Block Explorer, and Warehouse applications', img: 'ai' }
-  - { name: 'Gennady Omyshev', position: 'UI/UX Designer', description: 'All Guru applications, focusing on user experience and Web3 mechanics', img: 'go' }
   - { name: 'Evgeny', position: 'Lead DevOps Engineer', description: 'The hero behind our own Data Center', img: 'esu' }
+  - { name: 'Rodion Kharabet', position: 'Senior Frontend Engineer', description: 'Developed DexGuru MVP, Web3 wallets integrations, and led all DexGuru frontend teams', img: 'rk' }
+  - { name: 'Gennady Omyshev', position: 'UI/UX Designer', description: 'All Guru applications, focusing on user experience and Web3 mechanics', img: 'go' }
   - { name: 'Ivan Lylov', position: 'Manual/Automated QA', description: 'Specified regression test cases, executed manual and automated tests for DexGuru products', img: 'il' }
   - { name: 'Roman', position: 'Head of Community', description: "Guru Network's community alchemist and marketing aficionado, transforming engagement into $GURU", img: 'rm' }
-  - { name: 'Nick Sawinyh', position: 'Advisor', description: 'Blockchain expert since 2017, Co-founder of Defiprime, Key Opinion Leader (KOL), ex-CEO of DexGuru', img: 'ns'}
+  - { name: 'Nick Sawinyh', position: 'Advisor', description: 'Blockchain expert since 2017, Co-founder of <a href="https://defiprime.com/" class="violet">Defiprime</a>, Key Opinion Leader (KOL), ex-CEO of DexGuru', img: 'ns'}
 
 partners2: 
   - {key: chainlink, url: https://chain.link/}
   - {key: telcoin, url: https://www.telco.in/ }
   - {key: uncx, url: https://uncx.network/}
   - {key: paraswap, url: https://www.paraswap.io/}
-#  - {key: 3baseio, url: https://3base.org/ }
+  - {key: 3baseio, url: https://3base.org/ }
   - {key: kybernetwork, url: https://kyber.network/}
   - {key: crossfi, url: https://crossfi.org/}
+

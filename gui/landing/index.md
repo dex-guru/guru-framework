@@ -8,6 +8,8 @@ description: Base Layer 3 allows dApps and retail users to natively embed orches
 # start: Banner config
 banner:
   type: network
+  image: /assets/img/robot-yoga-base.svg
+  imageAlt: Yoga Robot
   title: Building a Multi-Chain AI Compute Layer
   subtitle: Base Layer 3 allows dApps and retail users to natively embed orchestrated AI Agents<br> into their routines and earn Network participant rewards.
 
@@ -25,21 +27,29 @@ banner:
        title: Buy $GURU,
        url: https://app.uniswap.org/explore/tokens/ethereum/0x525574c899a7c877a11865339e57376092168258,
        type: secondary,
-       width: main
+       width: main,
+       link: true
+     }
+   - {
+       title: $GURU Contract,
+       url: https://etherscan.io/token/0x525574C899A7c877a11865339e57376092168258#code,
+       type: ternary,
+       width: main,
      }
 
 partners:
   show: true
 
-chat: true
 
+# chat: true
 team: true
 ---
+{% include possibilities.html %}
+{% include section.html pretitle="GURU Framework and Network" title="Scaling dApps Ecosystem" img="/assets/img/content/scaling.svg" small-img="/assets/img/content/scaling-small.svg" bg="light" %}
+{% include guru-network.html %}
+{% include innovations.html %}
 
 {% include achievements.html %}
-
-{% include section.html pretitle="Guru Network(GEN) and Flow Orchestrator" title="Scaling dApps Ecosystem" img="/assets/img/content/scaling.svg" bg="light" %}
-
 <!-- REVOLUTION SECTION -->
 
 {% capture content %}
@@ -56,15 +66,17 @@ For Application developers it’s became expected that they embed GPT mechanics,
 
 <!-- / REVOLUTION SECTION -->
 
-{% include vision.html %}
-{% include innovations.html %}
 {% include tokenomics.html %}
-{% include section.html title="Roadmap" img="/assets/img/content/roadmap.svg" bg="roadmap"  %}
-
-
+{% include key-features.html %}
+{% include participants.html %}
+{% include section.html title="Roadmap" img="/assets/img/content/roadmap.svg" small-img="/assets/img/content/roadmap-small.svg" bg="roadmap"  %}
+<!-- {% include additional-resources.html %} -->
+{% include additional-resources.html %}
+{% include blogs.html %}
+{% include joinus.html %}
 {% include partners2.html %}
 {% include adopters.html %}
 
-{% include section.html title="GURU Network Ecosystem Markets" subtitle="Market Analysis for GURU Network" img="/assets/img/content/market.svg" %}
+{% include section.html title="GURU Network Ecosystem Markets" bg="ecosystem" subtitle="Market Analysis for GURU Network" img="/assets/img/content/market.svg" %}
 
 <!-- SDK SECTION -->

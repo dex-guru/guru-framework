@@ -1,0 +1,129 @@
+.additional-resources{
+    background: $color-bg-100;
+    position: relative;
+    padding-bottom: 0;
+
+
+    // &::after{
+    //     content:'';
+    //     position: absolute;
+    //     background-color:  #232A32;
+    //     bottom:0;
+    //     left:0;
+    //     width:100%;
+    //     height: 778px;
+    //     z-index:0;
+
+    //     @media(max-width:640px){
+    //         height: 1545px;
+    //     }
+    // }
+
+    .subtitle{
+        font-family: "IBM Plex Sans Condensed", sans-serif;
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 32px;
+        text-align: center;
+        margin-bottom:24px;
+
+        @media(max-width:640px){
+            font-size:20px;
+            line-height:28px;
+        }
+    }
+
+   
+
+    .section--community{
+        display: flex;
+        flex-flow: column;
+        gap: 64px;
+        grid-column: fullwidth;
+
+        &:after{
+            z-index: 1;
+            margin: -70px 0 -7px;
+            position: relative;
+        }
+
+        .section__subtitle{
+            max-width: 920px;
+            margin-top:40px;
+        }
+
+        .section__body{
+            z-index: 1;
+            margin-bottom:-14px;
+        }
+    }
+
+  
+}
+
+.tokens{
+    position: relative;
+    z-index: 1;
+}
+
+.tokens__list{
+    display: flex;
+    gap: 16px;
+    list-style: none;
+    padding:0;
+    margin:0;
+    flex-wrap: wrap;
+
+    @media(max-width:640px){
+       justify-content: space-between;
+    }
+
+    .token__item{
+        flex:1;
+        min-width:216px;
+
+        @media(max-width:640px){
+            flex: 1 1;
+            max-width: calc(50% - 8px);
+            min-width: 156px;
+            
+        }
+
+        a{
+            width: 100%;
+            display: inline-block;
+            color:#fff;
+            padding:13px 24px 15px;
+            font-family: "IBM Plex Sans Condensed", sans-serif;
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 28px;
+            text-align: center;
+            background-color: $color-style-black;
+            border: 1px solid $color-style-blue;
+            border-radius:16px;
+
+            &:hover{
+                background-color: $color-style-blue;
+                color:$color-bg-120;
+            }
+
+            @media(max-width:640px){
+                font-size:16px;
+                line-height: 24px;
+            }
+        }
+        
+
+    }
+
+    .big-item{
+        min-width:331px;
+    }
+}
+
+@media(max-width: 640px){
+    .links .tokens__list .token__item{
+        min-width:100%;
+    }
+}

@@ -47,8 +47,28 @@
   }
 }
 
+.section__header{
+  gap:64px;
+}
+
 .section--achievements {
   position: relative;
+  gap: 64px;
+
+  @media(max-width:640px){
+    gap: 40px;
+    padding:64px 16px;
+  }
+
+  .section__subtitle{
+    margin-top:64px;
+
+    @media(max-width:640px){
+      margin-top:40px;
+      font-size:16px;
+      line-height:24px;
+    }
+  }
 
   &:after {
     content: "";
@@ -61,11 +81,17 @@
 
     @media (min-width: 720.1px) {
       left: 50%;
-      margin: 0 0 0 126px;
+      margin: 0 0 0 165px;
     }
     @media (max-width: 720px) {
       margin: 0;
       right: 0;
+    }
+
+    @media(max-width:640px){
+      width:158px;
+      height:158px;
+      right:33px;
     }
   }
 }

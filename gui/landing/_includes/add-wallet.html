@@ -1,0 +1,39 @@
+<section class="section section--light add-wallet">
+    <h2 class="section__title">
+        <span class="green">Add</span> $GURU <span class="green">to your Wallet!</span>
+    </h2>
+    <div class="section__subtitle">Become a part of the Guru Network community! Connect with developers, innovators, and enthusiasts who are shaping the future of AI and blockchain integration. </div>
+
+    {%- if banner.actions -%}
+    <nav class="banner-actions">
+      <div class="actions">
+        <ul class="actions__list">
+          {%- for action in banner.actions -%}
+          <li class="actions__item">
+            {%- if action.button -%}
+              <button type="button" id="{{ action.id }}" class="actions__link actions__link--{{ action.type }} actions__link--{{ action.width }}">
+                <span>{{ action.title }} </span> 
+                {%- if action.iconPath -%}
+                  <img src="{{ action.iconPath }}" title="{{ action.iconAlt }}" alt="{{ action.iconAlt }}"/>
+                {%- endif -%}
+              </button>
+            {%- else if action.link  -%}
+              <a
+                href="{{ action.url }}"
+                class="actions__link actions__link--{{ action.type }} actions__link--{{ action.width }}"
+                ><span class="caption"> {{ action.title }} </span></a
+              >
+              {%- else -%}
+              <a
+              href="{{ action.url }}"
+              class="actions__link actions__link--{{ action.type }} actions__link--{{ action.width }}"
+              ><span class="caption"> {{ action.title }} </span></a
+            >
+            {%- endif -%}
+          </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </nav>
+    {%- endif -%}
+</section>

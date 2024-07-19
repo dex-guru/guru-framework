@@ -7,6 +7,10 @@
     justify-content: center;
     flex-flow: row wrap;
     gap: 24px;
+
+    @media(max-width:640px){
+      gap:16px;
+    }
   }
 
   &__item {
@@ -64,6 +68,15 @@
       &:focus,
       &:hover {
         background: $color-style-green-hover;
+      }
+    }
+
+    &--ternary {
+      background: $color-style-purple;
+
+      &:focus,
+      &:hover {
+        background: $color-style-purple-dark;
       }
     }
 

@@ -1,0 +1,116 @@
+.possibilities-section{
+    padding:80px 32px;
+    background-color:$color-bg-100;
+    position: relative;
+    display:flex;
+    flex-direction: column;
+    gap:64px;
+
+    @media (max-width: 640px) {
+        padding:64px 0;
+        gap:40px
+      }
+
+    .text-block{
+        max-width:688px;
+        text-align: center;
+        margin: auto;
+        p{
+            font-family: "IBM Plex Sans Condensed", sans-serif;
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 28px;
+            text-align: center;
+
+        }
+    }
+
+    .possibilities{ 
+        flex: 0 0 100%;
+        &__list {
+            display: flex;
+            gap: 24px;
+            flex-wrap:wrap;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+            @media (max-width: 640px) {
+                gap:16px;
+            }
+
+          }
+    
+          &__item{
+            flex:1;
+            @media (max-width: 640px) {
+                max-width: 156px;
+            }
+
+          }
+
+        .possibilities-entry{
+            min-height: 100%;
+            display: flex;
+            flex-flow: column;
+            gap: 16px;
+            background: #232a32;
+            padding: 24px;
+            border-radius: 16px;
+
+            @media (max-width: 640px) {
+                padding: 16px;
+                gap:8px;
+              }
+
+            &__title{
+                font-family: "IBM Plex Sans Condensed", sans-serif;
+                font-size: 20px;
+                font-weight: 400;
+                line-height: 28px;
+                text-align: left;
+                color: $color-text-ultralight;
+                
+                @media (max-width: 640px) {
+                    font-size: 16px;
+                    line-height: 24px;
+                  }
+
+            }
+            &__value{
+                font-family: "Sora", sans-serif;
+                font-size: 40px;
+                font-weight: 700;
+                line-height: 40px;
+                text-align: left;   
+
+                @media (max-width: 640px) {
+                    font-size: 28px;
+                    line-height: 28px;
+                  }
+            }
+        }
+        .gray{
+            color:rgb(70, 81, 96);
+            font-weight: normal;
+        }
+    }
+
+    &::after{
+        content:'';
+        display: block;
+        position:absolute;
+        background-image: url('/assets/img/robot-money.svg');
+        width:225px;
+        height:178px;
+        bottom:-23px;
+        right: 16%;
+
+        @media (max-width: 640px) {
+            width: 203px;
+            height: 160px;
+            background-size: 100%;
+            right: 19px;
+          }
+    }
+}

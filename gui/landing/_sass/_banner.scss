@@ -2,11 +2,15 @@
   display: flex;
   flex-flow: column;
   align-items: center;
-  gap: 112px;
+  gap: 114px;
   text-align: center;
   padding: 0 var(--page-side-padding, 16px);
   width: 100%;
-  margin: 0 0 80px;
+  margin: 0 0 56px;
+
+  @media (max-width: 640px) {
+    gap: 81px;
+  }
 
   &__header {
     display: flex;
@@ -14,7 +18,57 @@
     align-items: center;
     gap: 24px;
     font-family: "Sora", sans-serif;
+
+    .yoga-robot{
+      margin-bottom:18px;
+      position: relative;
+      width: 190px;
+      height: 219px;
+
+      .static-svg{
+        width:100%;
+        height:100%;
+      }
+
+      .moving-svg {
+        position: absolute;
+        top: 131px;
+        left: 30px;
+        width: 64px;
+        animation: moveUpDown 0.6s linear infinite alternate;
+        z-index:1;
+      }
+
+      @keyframes moveUpDown {
+          0% {
+              transform: translate(-50%, -60%);
+          }
+          100% {
+              transform: translate(-50%, -40%);
+          }
+      }
+
+      .scaling-svg {
+          position: absolute;
+          top: 165px;
+          left: 31px;
+          animation: scaleOpacity 0.6s infinite alternate;
+      }
+
+      @keyframes scaleOpacity {
+          0% {
+              transform: translate(-50%, -50%) scale(0.5);
+              opacity: 0;
+          }
+          100% {
+              transform: translate(-50%, -50%) scale(1.2);
+              opacity: 1;
+          }
+      }
+    }
   }
+
+  
 
   &__title {
   }
@@ -22,9 +76,16 @@
   &__subtitle {
     font-style: normal;
     font-weight: 400;
-    font-size: 18px;
+    font-size: 20px;
     line-height: 160%;
     color: $color-style-blue;
+    font-family: "IBM Plex Sans Condensed", sans-serif;
+
+    @media (max-width: 640px) {
+      br{
+        display: none;
+      }
+    } 
   }
 
   &__comment {
@@ -166,7 +227,7 @@
     &__ripple {
       position: absolute;
       left: 50%;
-      top: 50%;
+      top: 60%;
       width: var(--pulse-size);
       height: var(--pulse-size);
       border-radius: 100%;

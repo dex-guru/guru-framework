@@ -1,0 +1,96 @@
+.color-blocks-guru{
+    display:flex;
+    gap: 108px;
+    padding: 0 147px;
+    align-items: flex-start;
+    margin-bottom:-16px;
+    margin-top:24px;
+    position:relative;
+
+    @media(max-width:640px){
+        gap:50px;
+        padding:0;
+        flex-direction: column;
+        margin-top:0;
+        margin-bottom:64px;
+
+    }
+
+    &::after{
+        content: '';
+        position: absolute;
+        top: 79px;
+        left: 46.3%;
+        width: 102px;
+        height: 1px;
+        background: linear-gradient(to right, #9488F0, #12B886);
+
+        @media(max-width:640px){
+            top: 207px;
+            width:1px;
+            height:40px;
+            left:calc(50% - 1px);
+        }
+    }
+
+    .color-block{
+        padding:16px 24px;
+        border-radius:16px;
+        position:relative;
+        background-color: #12161C;
+        flex:1;
+        font-family: "IBM Plex Sans Condensed", sans-serif;
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 32px;
+        text-align: left;
+        box-sizing: border-box;
+        
+        @media(max-width:640px){
+            font-size:20px;
+            line-height:28px;
+        }
+    }
+
+    .violet-block{
+        border:1px solid $color-style-purple;
+
+        &::after{
+            content:'';
+            position:absolute;
+            width:12px;
+            height:12px;
+            border-radius: 6px;
+            background-color: $color-style-purple;
+            top:73px;
+            right:-6px;
+
+            @media(max-width:640px){
+                bottom:-6px;
+                left:calc(50% - 6px);
+                top:unset;
+                right:unset;
+            }
+        }
+    }
+
+    .green-block{
+        border:1px solid $color-style-green;
+
+        &::before{
+            content:'';
+            position:absolute;
+            width:12px;
+            height:12px;
+            border-radius: 6px;
+            background-color:$color-style-green;
+            top:73px;
+            left:-6px;
+
+            @media(max-width:640px){
+                top:-6px;
+                left:calc(50% - 6px);
+            }
+        }
+    }
+}

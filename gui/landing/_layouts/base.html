@@ -9,6 +9,7 @@
       <div class="page__header">{%- include header.html -%}</div>
       <div class="page__body">
         {%- if page.banner -%} {% include banner.html %} {%- endif -%}
+        {%- if page.possibilities -%} {% include possibilities.html %} {%- endif -%}
         {%- if page.chat -%} {% include chat.html %} {%- endif -%}
         {%- if page.features -%} {% include features.html %} {%- endif -%}
         {%- if page.chains -%} {% include chains.html %} {%- endif -%}
@@ -18,28 +19,8 @@
         {%- if page.chainsWidget -%} {% include chainsWidget.html %} {%- endif -%}
         {%- if page.partners -%} {% include partners.html %} {%- endif -%}
         {%- if site.team -%} {% include team.html %} {%- endif -%}
-
-        {%- if site.social_links -%}
-          <div class="section section--light section--community">
-            <div class="section__header">
-              <h2 class="section__title">Join Community</h2>
-              <span class="section__subtitle"
-                > Become a part of the Guru Network community! Connect with developers, innovators, and enthusiasts who are shaping the future of AI and blockchain integration. Join us to share ideas, collaborate on projects, and stay updated with the latest advancements.
-              </span>
-            </div>
-            <div class="section__body">
-              <div class="socials">
-                <ul class="socials__list">
-                  {%- for entry in site.social_links -%}
-                  <li class="socials__item">
-                    {%- include social-item.html item = entry -%}
-                  </li>
-                  {%- endfor -%}
-                </ul>
-              </div>
-            </div>
-          </div>
-        {%- endif -%}
+        {%- include add-wallet.html -%}
+        
     </div>
 
       {%- include footer.html -%}

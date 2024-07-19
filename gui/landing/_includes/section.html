@@ -1,5 +1,5 @@
 <section
-  class="section {% if include.align %}section--{{ include.align }}{% endif %} {% if include.bg %}section--{{ include.bg }}{% endif %} {% if include.animate %}section--animate{% endif %}"
+  class="section  {% if include.align %} section--{{ include.align }}{% endif %} {% if include.bg %} section--{{ include.bg }} {% endif %} {% if include.animate %}section--animate{% endif %}"
 >
   <div class="section__header">
     {% if include.title or include.pretitle %}
@@ -27,6 +27,8 @@
 
       {% endif %}
       <img class="section__img" src="{{ include.img }}" />
+      <img class="small__img" src="{{ include.small-img }}" />
+      
     </div>
     {% endif %} {% if include.text or include.include %}
     <div class="section__content">

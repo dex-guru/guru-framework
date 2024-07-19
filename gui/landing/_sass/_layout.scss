@@ -61,6 +61,11 @@
     background: #0b0f14;
     color: #fff;
     padding: 64px var(--page-side-padding, 16px) 40px;
+    
+    @media(max-width:640px){
+      padding:38px 95px;
+      gap:24px;
+    }
   }
 }
 

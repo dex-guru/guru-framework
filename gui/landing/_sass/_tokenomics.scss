@@ -1,5 +1,9 @@
 .section--tokenomics {
   background: #12161c;
+
+  @media(max-width:640px){
+    display: none;
+  }
 }
 
 .tokenomics {

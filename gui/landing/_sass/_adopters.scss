@@ -1,5 +1,13 @@
 .section--adopters {
   background: #12161c;
+
+  @media(max-width:640px){
+    display: none;
+  }
+
+  .section__subtitle{
+    margin-top:24px;
+  }
 }
 
 .adopters {
@@ -59,7 +67,7 @@
 
     &__comment {
       display: block;
-      margin-top: 8px;
+      margin-top: 16px;
       color: #6b7a8a;
     }
   }

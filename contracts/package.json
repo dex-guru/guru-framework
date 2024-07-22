@@ -1,14 +1,18 @@
 {
   "devDependencies": {
     "@nomicfoundation/hardhat-verify": "^1.1.1",
-    "hardhat": "^2.18.1",
-    "truffle-debugger": "^5.0.26"
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@nomiclabs/hardhat-waffle": "^2.0.6",
+    "hardhat": "^2.22.6",
+    "chai": "<5.0.0",
+    "ethers": "^5.7.2",
+    "truffle-debugger": "^5.0.26",
+    "mocha": "^10.7.0",
+    "@chainlink/functions-toolkit": "^0.2.5"
   },
   "dependencies": {
     "@chainlink/contracts": "^0.8.0",
-    "@openzeppelin/contracts": "^5.0.0",
     "@chainlink/env-enc": "^1.0.5",
-    "@chainlink/functions-toolkit": "^0.2.5",
-    "ethers": "^5.7.2"
+    "@openzeppelin/contracts": "^5.0.0"
   }
 }

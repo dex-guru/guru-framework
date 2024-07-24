@@ -144,9 +144,54 @@ def handle_check_model_status(task: ExternalTask) -> TaskResult:
 
 
 def handle_create_view(task: ExternalTask) -> TaskResult:
-    print(f"Handling create view for task: {task.get_variables()}")
-    # Not implemented
-    # return task.complete()
+    variables = task.get_variables()
+    camunda_user_id = variables.get('camunda_user_id')
+    data_source = variables.get('data_source')
+    engine = variables.get('engine')
+    token_address = variables.get('token_address')
+    timestamp_start = variables.get('timestamp_start')
+    project_name = MINDSDB_PROJECT_NAME
+    network = variables.get('network', 'ethereum')
+
+    view_name = f"{camunda_user_id}_{data_source}_{engine}_view"
+
+    query = f"""
+        SELECT 
+            *
+        FROM clickhouse_{network} (
+            SELECT 
+                toStartOfHour(FROM_UNIXTIME(timestamp), 'UTC') as time,
+                token_address as token_address,  
+                max(c_s).2 as price
+            FROM {data_source}
+            WHERE token_address = '{token_address}' AND timestamp >= {timestamp_start}
+            GROUP BY time, token_address
+        );
+    """
+
+    payload = {
+        "view": {
+            "name": view_name,
+            "query": query
+        }
+    }
+
+    try:
+        print(f"Creating view with name: {view_name}")
+        print(f"Query: {query}")
+        # Make the HTTP request to create the view
+        response = requests.post(
+            f"{MINDSDB_API_URL}/api/projects/{project_name}/views",
+            json=payload,
+            auth=(MINDSDB_USER, MINDSDB_PASS)
+        )
+        response.raise_for_status()
+        print(f"View {view_name} created successfully: {response.json()}")
+        return task.complete()
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to create view {view_name}: {e}")
+        return task.failure(error_message=str(e), error_details=str(e), retries=0)
+
 
 
 def handle_create_wh_query(task: ExternalTask) -> TaskResult:

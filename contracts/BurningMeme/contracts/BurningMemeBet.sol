@@ -1,13 +1,17 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.26;
 
-import {IBurningMeme} from "./IBurningMeme.sol";
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import {ERC20Pausable} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Pausable.sol";
+import { IBurningMemeBet } from "./IBurningMemeBet.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import { ERC20Pausable } from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Pausable.sol";
 
 
-contract BurningMeme is ERC20, ERC20Pausable, IBurningMeme, Ownable {
+// todo add fees to guru 2% of total supply.
+// deploy on other chains common erc20 with fee.
+//
+//this contract only for guru network
+contract BurningMemeBet is ERC20, ERC20Pausable, IBurningMemeBet, Ownable {
     mapping(address account => uint256) private _burnBalances;
     mapping(address account => uint256) private _mintBalances;
     uint256 private _burnTotalSupply = 0;
@@ -22,12 +26,21 @@ contract BurningMeme is ERC20, ERC20Pausable, IBurningMeme, Ownable {
     {
         BETTING_END_TIMESTAMP = block.timestamp + _trading_ttl;
     }
+
     function pause() public onlyOwner {
         _pause();
     }
 
     function unpause() public onlyOwner {
         _unpause();
+    }
+
+   // The following function is override required by Solidity.
+    function _update(address from, address to, uint256 value)
+        internal
+        override(ERC20, ERC20Pausable)
+    {
+        super._update(from, to, value);
     }
 
     function totalSupply() public view override  returns (uint256) {
@@ -39,7 +52,7 @@ contract BurningMeme is ERC20, ERC20Pausable, IBurningMeme, Ownable {
     }
 
     function defineWinners() public onlyOwner {
-         require(block.timestamp > BETTING_END_TIMESTAMP, "Betting still in progress");
+        require(block.timestamp > BETTING_END_TIMESTAMP, "Betting still in progress");
         require(!_isWinnersDefined, "Winners have been already defined");
         if (mintTotalSupply() > burnTotalSupply()) {
             _mintTotalSupply = mintTotalSupply() + burnTotalSupply();
@@ -95,7 +108,7 @@ contract BurningMeme is ERC20, ERC20Pausable, IBurningMeme, Ownable {
 
     function burn(uint256 amount_) external payable {
         require(block.timestamp < BETTING_END_TIMESTAMP, "Betting is closed");
-        uint256 proceeds = burnProceeds(amount_);
+        uint256 proceeds = burnCost(amount_);
         address sender = msg.sender;
 
         if (msg.value < proceeds) {
@@ -129,7 +142,7 @@ contract BurningMeme is ERC20, ERC20Pausable, IBurningMeme, Ownable {
         return sumPricesNewTotalSupply - sumPricesCurrentTotalSupply;
     }
 
-    function burnProceeds(uint256 amount_) public view override returns (uint256) {
+    function burnCost(uint256 amount_) public view override returns (uint256) {
         // The sum of the prices of all the tokens already minted
         uint256 sumBeforeBurn = _sumOfPriceToNTokens(burnTotalSupply());
         // The sum of the prices of all the tokens after burning amount_

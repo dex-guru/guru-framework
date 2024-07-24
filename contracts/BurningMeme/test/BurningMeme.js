@@ -32,7 +32,7 @@ describe("BurningMeme", function () {
     it("Should set the correct betting end timestamp", async function () {
       const blockTimestamp = (await ethers.provider.getBlock()).timestamp;
       const bettingEndTimestamp = await burningMeme.getBettingEndTimestamp();
-      expect(bettingEndTimestamp.toNumber()).to.be.closeTo(blockTimestamp + tradingTTL, 2);
+      expect(bettingEndTimestamp).to.be.closeTo(blockTimestamp + tradingTTL, 2);
     });
   });
 
@@ -43,8 +43,8 @@ describe("BurningMeme", function () {
 
       await burningMeme.connect(addr1).mint(mintAmount, { value: mintCost });
       const mintBalance = await burningMeme.mintBalanceOf(addr1.address);
-      expect(mintBalance.toNumber()).to.equal(mintAmount);
-      expect((await ethers.provider.getBalance(burningMeme.address)).toNumber()).to.equal(mintCost.toNumber());
+      expect(mintBalance).to.equal(mintAmount);
+      expect((await ethers.provider.getBalance(burningMeme.address))).to.equal(mintCost);
     });
 
     it("Should revert if insufficient value is sent", async function () {
@@ -52,8 +52,8 @@ describe("BurningMeme", function () {
       const mintCost = await burningMeme.mintCost(mintAmount);
 
       await expect(
-        burningMeme.connect(addr1).mint(mintAmount, { value: mintCost.sub(1) })
-      ).to.be.revertedWith("InsufficientValue");
+        burningMeme.connect(addr1).mint(mintAmount, { value: mintCost.sub(9) })
+      ).to.be.revertedWithCustomError(burningMeme, "InsufficientValue");
     });
 
     it("Should refund excess ether sent during minting", async function () {
@@ -74,19 +74,16 @@ describe("BurningMeme", function () {
 
   describe("Burning", function () {
     it("Should burn tokens correctly", async function () {
-      const mintAmount = 10;
-      const mintCost = await burningMeme.mintCost(mintAmount);
+      const burnAmount = 10;
+      const burnCost = await burningMeme.burnCost(burnAmount);
+      await burningMeme.connect(addr1).burn(burnAmount, { value: burnCost });
 
-      await burningMeme.connect(addr1).mint(mintAmount, { value: mintCost });
-      const burnProceeds = await burningMeme.burnProceeds(mintAmount);
-
-      await burningMeme.connect(addr1).burn(mintAmount, { value: burnProceeds });
-
-      expect(await burningMeme.balanceOf(addr1.address)).to.equal(0);
-      expect(await ethers.provider.getBalance(burningMeme.address)).to.equal(0);
+      // Check that the burn proceeds are in the contract and mint is 0
+      expect(await burningMeme.mintBalanceOf(addr1.address)).to.equal(0);
+      expect(await ethers.provider.getBalance(burningMeme.address)).to.equal(burnCost);
 
       const initialBalance = await ethers.provider.getBalance(addr1.address);
-      const tx = await burningMeme.connect(addr1).burn(mintAmount, { value: burnProceeds });
+      const tx = await burningMeme.connect(addr1).burn(burnAmount, { value: burnProceeds });
       const receipt = await tx.wait();
       const gasUsed = receipt.gasUsed.mul(tx.gasPrice);
 

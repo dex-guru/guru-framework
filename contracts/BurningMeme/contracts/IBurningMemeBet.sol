@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.26;
 
-interface IBurningMeme {
+interface IBurningMemeBet {
     // Event declarations
     event Mint(address indexed account, uint256 amount, uint256 totalSupply);
     event Burn(address indexed account, uint256 amount, uint256 totalSupply);
@@ -15,7 +15,7 @@ interface IBurningMeme {
     function mintTotalSupply() external view returns (uint256);
     function mintBalanceOf(address account) external view returns (uint256);
     function mintCost(uint256 amount) external view returns (uint256);
-    function burnProceeds(uint256 amount) external view returns (uint256);
+    function burnCost(uint256 amount) external view returns (uint256);
     function getBettingEndTimestamp() external view returns (uint256);
 
     // State-changing functions

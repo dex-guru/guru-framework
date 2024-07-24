@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
-import "./BurningMeme.sol";
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import "./BurningMemeBet.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract BurningMemeFactory is Ownable {
 
     uint256 public bettingTTL = 7 days;
+    address public burnCoin;
 
     constructor (address initialOwner) Ownable(initialOwner) {}
 
@@ -20,7 +21,7 @@ contract BurningMemeFactory is Ownable {
         string memory name,
         string memory symbol
     ) public onlyOwner returns (address) {
-        IBurningMeme newBurningMeme = new BurningMeme(initialOwner, name, symbol, bettingTTL);
+        IBurningMemeBet newBurningMeme = new BurningMemeBet(initialOwner, name, symbol, bettingTTL);
         deployedBurningMemes.push(address(newBurningMeme));
         emit BurningMemeCreated(address(newBurningMeme));
         return address(newBurningMeme);
@@ -30,10 +31,15 @@ contract BurningMemeFactory is Ownable {
         return deployedBurningMemes;
     }
 
+    function getDeployedTokensCount() public view returns (uint256) {
+        return deployedBurningMemes.length;
+    }
+
     function updateBettingTTL(uint256 _newBettingTTL) public onlyOwner {
         uint256 oldBettingTTL = bettingTTL;
         bettingTTL = _newBettingTTL;
         emit BettingTTLUpdated(oldBettingTTL, bettingTTL);
     }
+
 
 }

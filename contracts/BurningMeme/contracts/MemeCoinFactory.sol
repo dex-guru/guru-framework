@@ -34,8 +34,10 @@ contract MemeCoinFactory is Ownable {
         require(_burnCoinAddress == address(0), "BurnCoin already deployed");
         bytes memory bytecode = type(BurnCoin).creationCode;
         bytecode = abi.encodePacked(bytecode, abi.encode(owner(), supply));
+
+        // TODO: should we get salt from params?
         bytes32 salt = keccak256(abi.encodePacked(bytes1(0xff)));
-        
+
         address token;
         assembly {
             token := create2(0, add(bytecode, 0x20), mload(bytecode), salt)

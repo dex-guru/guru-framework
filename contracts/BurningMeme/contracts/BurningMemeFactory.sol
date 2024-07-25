@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.26;
+pragma solidity ^0.8.20;
 
 import "./BurningMemeBet.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
@@ -7,7 +7,6 @@ import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 contract BurningMemeFactory is Ownable {
 
     uint256 public bettingTTL = 7 days;
-    address public burnCoin;
 
     constructor (address initialOwner) Ownable(initialOwner) {}
 
@@ -40,6 +39,4 @@ contract BurningMemeFactory is Ownable {
         bettingTTL = _newBettingTTL;
         emit BettingTTLUpdated(oldBettingTTL, bettingTTL);
     }
-
-
 }

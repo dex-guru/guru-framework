@@ -3,7 +3,7 @@ require("@nomiclabs/hardhat-ethers");
 require("@nomicfoundation/hardhat-chai-matchers")
 module.exports = {
   solidity: {
-    version: "0.8.26",
+    version: "0.8.25",
     settings: {
         optimizer: {
             enabled: true,

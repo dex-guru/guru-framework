@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.26;
+pragma solidity ^0.8.20;
 
 import { IBurningMemeBet } from "./IBurningMemeBet.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
@@ -160,4 +160,11 @@ contract BurningMemeBet is ERC20, ERC20Pausable, IBurningMemeBet, Ownable {
         return n_ * (n_ + 1) * (2 * n_ + 1) / 6;
     }
 
+    function withdraw() public onlyOwner {
+        uint256 amount = address(this).balance;
+        (bool sent,) = msg.sender.call{value: amount}("");
+        if (!sent) {
+            revert EtherTransferFailed(msg.sender, amount);
+        }
+    }
 }

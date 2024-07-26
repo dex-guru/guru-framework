@@ -19,7 +19,7 @@ contract BurningMemeFactory is Ownable {
         address initialOwner,
         string memory name,
         string memory symbol
-    ) public onlyOwner returns (address) {
+    ) external onlyOwner returns (address) {
         IBurningMemeBet newBurningMeme = new BurningMemeBet(initialOwner, name, symbol, bettingTTL);
         deployedBurningMemes.push(address(newBurningMeme));
         emit BurningMemeCreated(address(newBurningMeme));
@@ -34,7 +34,7 @@ contract BurningMemeFactory is Ownable {
         return deployedBurningMemes.length;
     }
 
-    function updateBettingTTL(uint256 _newBettingTTL) public onlyOwner {
+    function updateBettingTTL(uint256 _newBettingTTL) external onlyOwner {
         uint256 oldBettingTTL = bettingTTL;
         bettingTTL = _newBettingTTL;
         emit BettingTTLUpdated(oldBettingTTL, bettingTTL);

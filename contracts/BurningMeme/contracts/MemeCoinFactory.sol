@@ -30,7 +30,7 @@ contract MemeCoinFactory is Ownable {
         return newTokenAddress;
     }
 
-    function deployBurnCoin(uint256 supply) public onlyOwner {
+    function deployBurnCoin(uint256 supply) external onlyOwner {
         require(_burnCoinAddress == address(0), "BurnCoin already deployed");
         bytes memory bytecode = type(BurnCoin).creationCode;
         bytecode = abi.encodePacked(bytecode, abi.encode(owner(), supply));

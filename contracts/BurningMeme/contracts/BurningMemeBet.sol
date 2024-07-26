@@ -27,60 +27,6 @@ contract BurningMemeBet is ERC20, ERC20Pausable, IBurningMemeBet, Ownable {
         BETTING_END_TIMESTAMP = block.timestamp + _trading_ttl;
     }
 
-    function pause() public onlyOwner {
-        _pause();
-    }
-
-    function unpause() public onlyOwner {
-        _unpause();
-    }
-
-   // The following function is override required by Solidity.
-    function _update(address from, address to, uint256 value)
-        internal
-        override(ERC20, ERC20Pausable)
-    {
-        super._update(from, to, value);
-    }
-
-    function totalSupply() public view override  returns (uint256) {
-        return _burnTotalSupply + _mintTotalSupply;
-    }
-
-    function getBettingEndTimestamp() public view returns (uint256) {
-        return BETTING_END_TIMESTAMP;
-    }
-
-    function defineWinners() public onlyOwner {
-        require(block.timestamp > BETTING_END_TIMESTAMP, "Betting still in progress");
-        require(!_isWinnersDefined, "Winners have been already defined");
-        if (mintTotalSupply() > burnTotalSupply()) {
-            _mintTotalSupply = mintTotalSupply() + burnTotalSupply();
-            _burnTotalSupply = 0;
-        }
-        else {
-            _burnTotalSupply = mintTotalSupply() + burnTotalSupply();
-            _mintTotalSupply = 0;
-        }
-        _isWinnersDefined = true;
-    }
-
-    function burnBalanceOf(address account) public view returns (uint256) {
-        return _burnBalances[account];
-    }
-
-    function burnTotalSupply() public view returns (uint256) {
-        return _burnTotalSupply;
-    }
-
-    function mintTotalSupply() public view returns (uint256) {
-        return _mintTotalSupply;
-    }
-
-    function mintBalanceOf(address account) public view returns (uint256) {
-        return _mintBalances[account];
-    }
-
     function mint(uint256 amount_) external payable override {
         require(block.timestamp < BETTING_END_TIMESTAMP, "Betting is closed");
         uint256 cost = mintCost(amount_);
@@ -150,6 +96,61 @@ contract BurningMemeBet is ERC20, ERC20Pausable, IBurningMemeBet, Ownable {
 
         return sumAfterBurn - sumBeforeBurn;
     }
+
+   // The following function is override required by Solidity.
+    function _update(address from, address to, uint256 value)
+        internal
+        override(ERC20, ERC20Pausable)
+    {
+        super._update(from, to, value);
+    }
+
+    function pause() public onlyOwner {
+        _pause();
+    }
+
+    function unpause() public onlyOwner {
+        _unpause();
+    }
+
+    function totalSupply() public view override  returns (uint256) {
+        return _burnTotalSupply + _mintTotalSupply;
+    }
+
+    function getBettingEndTimestamp() public view returns (uint256) {
+        return BETTING_END_TIMESTAMP;
+    }
+
+    function defineWinners() public onlyOwner {
+        require(block.timestamp > BETTING_END_TIMESTAMP, "Betting still in progress");
+        require(!_isWinnersDefined, "Winners have been already defined");
+        if (mintTotalSupply() > burnTotalSupply()) {
+            _mintTotalSupply = mintTotalSupply() + burnTotalSupply();
+            _burnTotalSupply = 0;
+        }
+        else {
+            _burnTotalSupply = mintTotalSupply() + burnTotalSupply();
+            _mintTotalSupply = 0;
+        }
+        _isWinnersDefined = true;
+    }
+
+    function burnBalanceOf(address account) public view returns (uint256) {
+        return _burnBalances[account];
+    }
+
+    function burnTotalSupply() public view returns (uint256) {
+        return _burnTotalSupply;
+    }
+
+    function mintTotalSupply() public view returns (uint256) {
+        return _mintTotalSupply;
+    }
+
+    function mintBalanceOf(address account) public view returns (uint256) {
+        return _mintBalances[account];
+    }
+
 
     function decimals() public pure override returns (uint8) {
         return 0;

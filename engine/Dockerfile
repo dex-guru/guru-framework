@@ -1,5 +1,5 @@
 # Step 1: Build the application in a Maven container with Corretto 11
-FROM docker-registry.dexguru.biz/dex.guru/utils/maven:3.8.1-jdk-11-slim AS build
+FROM maven:3.8.3-jdk-11-slim AS build
 
 # Set the working directory in the Docker container
 WORKDIR /app
@@ -12,7 +12,7 @@ COPY src ./src/
 RUN mvn clean package
 
 # Step 2: Use Amazon Corretto 11 base image to run the application
-FROM docker-registry.dexguru.biz/dex.guru/utils/amazoncorretto:11
+FROM amazoncorretto:11
 
 # Set the working directory in the Docker container
 WORKDIR /app

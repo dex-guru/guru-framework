@@ -1,4 +1,4 @@
-# Chainflow Automation Platform
+# Guru Framework
 
 ## Table of Contents
 - [Introduction](#introduction)
@@ -11,81 +11,42 @@
 - [Contributing](#contributing)
 
 
-# Introduction
+## Introduction
 
-Introducing our cutting-edge Web3 Automation platform, built on the robust Guru Network. This platform leverages
-advanced data warehouse feeds to empower users with data-rich decision-making capabilities for a variety of automation
-scenarios, including DeFi applications.
-Key Features
+Welcome to the Guru Framework, your ultimate toolkit for building sophisticated Web3 applications. Built on the robust Guru Network, our framework empowers developers with advanced tools for AI orchestration and Web3 automation. Whether you're working on DeFi applications, automated trading, or blockchain integration, the Guru Framework simplifies and enhances your development process.
 
-**Data-Driven Decision Making:** Utilize our comprehensive data warehouse feeds that aggregate and process vast amounts
-of information, ensuring your automation decisions are informed by the latest and most relevant data.
-Seamless Integration with DeFi: Specifically tailored for DeFi scenarios, our platform allows users to automate complex
-financial workflows, optimize investment strategies, and manage assets with precision and efficiency.
-User-Centric Automation: Design personalized automation flows that cater to individual or business needs, enabling
-better control over financial activities and operations.
-Advanced AI Orchestration: At the heart of our platform is AI-driven orchestration, which integrates seamlessly both
-on-chain and off-chain elements, ensuring smooth and intelligent operational flows.
-Benefits
+**Key Features:**
+- **Data-Driven Decision Making:** Leverage comprehensive data warehouse feeds for informed automation decisions.
+- **Seamless Integration with DeFi:** Automate complex financial workflows and optimize investment strategies.
+- **User-Centric Automation:** Create personalized automation flows for various financial activities and operations.
+- **Advanced AI Orchestration:** Integrate on-chain and off-chain elements seamlessly with AI-driven orchestration.
 
-**Enhanced Operational Efficiency:** Automate routine and complex tasks, reducing the need for manual intervention and
-allowing more time for strategic decision-making.
-Improved Accuracy and Speed: With data-driven insights at your disposal, make faster and more accurate decisions that
-align with market dynamics and your strategic goals.
-Scalability: Whether scaling operations, managing more assets, or integrating new tools, our platform grows with your
-needs, providing robust scalability and adaptability.
-Security and Reliability: Built on the secure and reliable Guru Network, our platform ensures that your data and
-automated processes are protected against threats and disruptions.
-Use Cases
-
-**Automated Trading**: Implement sophisticated trading strategies that react in real-time to market changes and optimize
-returns.
-Risk Management: Automate risk assessment and management protocols to maintain the health and security of your financial
-portfolios.
-Portfolio Rebalancing: Utilize AI-driven algorithms to adjust your asset allocations dynamically based on predefined
-criteria and market conditions
-
-# Guru Framework
-
-The Guru Framework is an advanced toolkit designed to facilitate the orchestration of complex Web3, Web2, and off-chain
-processes. It enables developers and startups to build applications that integrate seamlessly across various
-technological environments. The framework encompasses a Blockchain Business Process Automation (BBPA) Engine, Smart
-Contracts, a Landing and GUI page, and a unified Telegram bot composer, along with specialized External Workers for
-non-custodial execution and compute.
 
 ## Components
 
 ### BBPA Engine
-
-Located in the `engine` directory, the BBPA Engine is the cornerstone of the framework, managing the automation and
-orchestration of blockchain business processes. It allows for efficient integration and management of workflows across
-Web3 and Web2 infrastructures.
+Located in the `engine` directory, this is the core of the framework, managing the automation and orchestration of blockchain business processes.
 
 ### Smart Contracts
+Found in the `contracts` directory, these handle secure and efficient decentralized application operations.
 
-The `contracts` directory houses all the smart contracts used within the Guru Framework. These contracts are crucial for
-handling operations such as transactions, interactions, and protocol-specific functions, ensuring secure and efficient
-decentralized application operations.
+### GUI
+The `gui` directory contains the user interface components, offering an intuitive graphical interface for managing processes.
 
-### Landing and GUI Page
-
-Found under the `gui` directory, this component offers the user interface for the Guru Framework. It provides an
-intuitive graphical interface for users to easily interact with the underlying systems, facilitating the management and
-orchestration of complex processes.
-
-### External Workers
-
-External Workers are defined in the `external_workers` directory. These are individual agents that provide non-custodial
-execution and compute services, enabling secure and decentralized processing without requiring custody of user data or
-assets.
+### Flow API
+The Flow API in the `flow_api` directory provides endpoints for creating and managing workflows programmatically.
 
 ### Telegram Bot Unified Composer
+Integrated into the framework, this tool allows the creation of Telegram bots to control and manage processes.
 
-This tool, integrated into the framework, allows developers to create Telegram bots that can control and manage
-processes within the Guru Framework. It simplifies the development and integration of Telegram as an interactive layer
-for applications, enhancing user engagement and process management.
+### External Workers
+Defined in the `external_workers` directory, these provide non-custodial execution and compute services.
+
+### Orchestration Workers Contracts
+Located in the `orchestration_workers` directory, these contracts facilitate workflow orchestration.
 
 ## Project Structure
+
 
 ```
 guru-framework/
@@ -93,29 +54,18 @@ guru-framework/
 ├── contracts/ # Smart contracts for blockchain interactions
 ├── engine/ # Core BBPA engine for process automation
 ├── external_workers/ # Individual agents for non-custodial execution and compute
+├── flow_api/ # API for managing and integrating workflows
+├── bot/ # Telegram bot unified composer
 ├── gui/ # User interface components
 └── README.md # This file
 ```
 
-# Getting Started
+## Getting Started
 
-To begin using the Guru Framework, clone the repository and follow the setup instructions provided in each component's
-directory.
-
-```bash
-git clone https://github.com/dex-guru/guru-framework.git
-cd guru-framework
-```
-
-**Repository URL:** [GURU Framework](https://github.com/dex-guru/guru-framework)
+To begin using the Guru Framework, follow these steps:
 
 ### Prerequisites
-Make sure you have Docker and Docker Compose installed on your machine.
-
-**Subdirectories:**
-- `engine`
-- `gui`
-- `external_workers`
+Ensure you have Docker and Docker Compose installed.
 
 **Steps:**
 
@@ -198,7 +148,7 @@ chainflow-gui                ./entrypoint.sh npm start        Up      0.0.0.0:30
 
 ### Step-by-Step Guide:
 
-Create Process in Camunda Modeler:
+Create Process in [Camunda Modeler](https://camunda.com/download/modeler/):
 
 Design your process in Camunda Modeler.
 Save the BPMN file to engine/resources directory.
@@ -207,8 +157,10 @@ Save the BPMN file to engine/resources directory.
 
 #### Create Non-Custodial External Worker in Python:
 
-Create a Python script for the external worker.
-Example code from external_workers/testnet_arbitrage/get_last_price.py:
+**Create Non-Custodial External Worker in Python:**
+1. Create a Python script for the external worker.
+2. Example code from `external_workers/testnet_arbitrage/get_last_price.py`:
+
 ```python
 from camunda.external_task.external_task import ExternalTask, TaskResult
 from camunda.external_task.external_task_worker import ExternalTaskWorker
@@ -230,8 +182,8 @@ worker.subscribe("get-last-price", handle_task)
 
 ### Create Postgres Model Code:
 
-Define your database models.
-Example code for an arbitrage bot model:
+1. Define your database models.
+2. Example code for an arbitrage bot model:
 ```python
 Copy code
 from sqlalchemy import Column, Integer, String, Float, create_engine

@@ -1,0 +1,17 @@
+# ignore all files
+**
+
+# exclusion
+!/bot/
+!/camunda_client/
+!/admin/
+!/async_fastapi_jwt_auth/
+!/fa_admin/
+!/aioredis
+!/services
+!/scripts
+!/configs
+
+!/alembic.ini
+!/poetry.lock
+!/pyproject.toml

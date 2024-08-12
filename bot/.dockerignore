@@ -1,0 +1,11 @@
+# ignore all files
+**
+
+# exclusion
+!/bot_server/
+!/camunda_client/
+!/flow_client/
+
+!/alembic.ini
+!/requirements.txt
+

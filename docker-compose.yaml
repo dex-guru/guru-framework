@@ -20,7 +20,7 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - chainflow-net
+      - app
 
   external-workers:
     build:
@@ -33,12 +33,60 @@ services:
       - CAMUNDA_USER=demo
       - CAMUNDA_PASSWORD=demo
     networks:
-      - chainflow-net
+      - app
     volumes:
       - ./external_workers/envs:/app/envs  # Mount the directory containing environment files
     depends_on:
       - engine
 
+  postgres:
+    image: postgres:14-alpine
+    container_name: postgres
+    restart: always
+    env_file:
+      - ./flow_api/.env
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+      - PGDATA='/var/lib/postgresql/data/pgdata'
+    networks:
+      - app
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  pgbouncer:
+    image: edoburu/pgbouncer
+    container_name: pgbouncer
+    restart: always
+    env_file:
+      - ./flow_api/.env
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASS}
+      - DB_HOST=postgres
+      - POOL_MODE=session
+      - MAX_DB_CONNECTIONS=0
+      - DEFAULT_POOL_SIZE=40
+      - ADMIN_USERS=postgres,${DB_USER}
+      - AUTH_TYPE=scram-sha-256
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    depends_on:
+      - postgres
+    networks:
+      - app
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: always
+    env_file:
+      - ./flow_api/.env
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    networks:
+      - app
 networks:
-  chainflow-net:
+  app:
     driver: bridge

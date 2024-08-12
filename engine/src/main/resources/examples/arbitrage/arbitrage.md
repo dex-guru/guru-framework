@@ -20,7 +20,7 @@ Association [Testnet DEX](https://swap.telcoin.network/) for the native $TEL tok
 
 The process is executed on the DexGuru Web3 Automation engine.
 
-![telcoin_arbitrage_init_vars.png](telcoin_arbitrage_init_vars.png)
+![arbitrage_init_vars.png](telcoin_arbitrage_init_vars.png)
 
 It begins by reading price data from the Data Warehouse for
 the [TEL token on ETH Mainnet](https://dex.guru/token/eth/0x467bccd9d29f223bce8043b84e8c8b282827790f). Simultaneously,
@@ -45,11 +45,11 @@ at [https://flow.dex.guru](https://flow.dex.guru).
 
 ## BPMN Diagram
 
-![telcoin_arbitrage.png](telcoin_arbitrage.png)
+![arbitrage.png](arbitrage.png)
 
 The process is defined in a BPMN diagram, where pre-defined snippets are orchestrated and stitched together from
 different execution contexts like chains, tokens, pools, and compute along with the user's actions flow. The diagram can
 be viewed and edited through [Camunda Modeler](https://camunda.com/download/modeler/) or any BPMN-compliant editor
 like [bpmn.org](https://www.bpmn.org/).
 
-File link: [telcoin_arbitrage.bpmn](telcoin_arbitrage.bpmn)
+File link: [arbitrage.bpmn](arbitrage.bpmn)

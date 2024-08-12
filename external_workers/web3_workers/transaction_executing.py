@@ -61,7 +61,7 @@ def handle_task(task: ExternalTask) -> TaskResult:
         pass
         return task.complete(variables)
 
-    # Live trading logic
+    # Live defi logic
     if trading_signal == "buy":
         buy_token = token_address
         sell_token = token_address  # TODO: set the token address to sell

@@ -7,3 +7,5 @@ redis==3.5.3
 boto3
 httpx
 openai
+websocket-client==1.6.1
+Pillow==10.0.0

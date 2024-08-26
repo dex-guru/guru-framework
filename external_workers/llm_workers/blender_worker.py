@@ -193,27 +193,27 @@ def handle_task(task: ExternalTask) -> TaskResult:
     camunda_user_id = variables.get("camunda_user_id")
 
     loop = asyncio.get_event_loop()
-    # try:
-    generated_art = loop.run_until_complete(generate_and_upload_image(src1_art_id, src2_art_id, camunda_user_id))
-    if not generated_art:
-        raise Exception("Empty generated Art")
-    art_details, tags, tweet = generated_art
-    variables["generated_art_id"] = art_details['id']
-    variables["gen_token_description"] = art_details['description']
-    variables["gen_token_name"] = art_details['name']
+    try:
+        generated_art = loop.run_until_complete(generate_and_upload_image(src1_art_id, src2_art_id, camunda_user_id))
+        if not generated_art:
+            raise Exception("Empty generated Art")
+        art_details, tags, tweet = generated_art
+        variables["generated_art_id"] = art_details['id']
+        variables["gen_token_description"] = art_details['description']
+        variables["gen_token_name"] = art_details['name']
 
-    variables["gen_post"] = tweet
-    variables["gen_token_tags"] = tags
+        variables["gen_post"] = tweet
+        variables["gen_token_tags"] = tags
 
-    return task.complete(variables)
-    # except Exception as e:
-    #     logging.error(f"Error during image generation: {str(e)}")
-    #     return task.failure(
-    #         "ImageGenerationFailure",
-    #         f"Failed to generate image: {str(e)}",
-    #         max_retries=1,
-    #         retry_timeout=1000
-    #     )
+        return task.complete(variables)
+    except Exception as e:
+        logging.error(f"Error during image generation: {str(e)}")
+        return task.failure(
+            "ImageGenerationFailure",
+            f"Failed to generate image: {str(e)}",
+            max_retries=1,
+            retry_timeout=1000
+        )
 
 
 if __name__ == '__main__':

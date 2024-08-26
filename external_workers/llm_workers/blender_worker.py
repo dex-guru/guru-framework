@@ -9,7 +9,7 @@ import httpx
 from camunda.external_task.external_task import ExternalTask, TaskResult
 from camunda.external_task.external_task_worker import ExternalTaskWorker
 
-from llm_workers.get_image_workflow import ImageGenerator
+from llm_workers.gen_image_workflow import ImageGenerator
 from llm_workers.openai_describe import describe_image_with_openai_vision, name_description_based_of_vision_description
 from season_pass_invite.config import SYS_KEY, API_URL, GEN_IMG_URL, OLLAMA_URL
 

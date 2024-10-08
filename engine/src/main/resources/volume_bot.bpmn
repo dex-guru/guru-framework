@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1amw9xt" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.2" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <bpmn:process id="UniversalVolumeBot" name="Universal Volume Bot" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:subProcess id="Activity_047qqhf">
+      <bpmn:incoming>Flow_1kf3bfk</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ltts7y</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics camunda:collection="${address_list}" camunda:elementVariable="wallet_address" />
+      <bpmn:subProcess id="SwapExecuteCircle" name="Swap Execute Circle">
+        <bpmn:incoming>Flow_0kz3j9y</bpmn:incoming>
+        <bpmn:outgoing>Flow_10wsndj</bpmn:outgoing>
+        <bpmn:startEvent id="start" name="Start bot instance">
+          <bpmn:extensionElements>
+            <camunda:formData>
+              <camunda:formField id="pool_address" label="Pool address" type="string" defaultValue="0x2f734ea5474792513b4ec73b38a2a6c103a12a6f" />
+              <camunda:formField id="tick_time" label="tick_time" type="long" defaultValue="15">
+                <camunda:properties />
+                <camunda:validation />
+              </camunda:formField>
+              <camunda:formField id="chain_id" label="chain_id" type="long" defaultValue="614" />
+              <camunda:formField id="amm" label="Amm" type="enum" defaultValue="uniswap_v3">
+                <camunda:properties />
+                <camunda:validation />
+                <camunda:value id="uniswap_v3" name="uniswap_v3" />
+                <camunda:value id="uniswap_v2" name="uniswap_v2" />
+              </camunda:formField>
+            </camunda:formData>
+          </bpmn:extensionElements>
+          <bpmn:outgoing>Flow_1hes99b</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:serviceTask id="Activity_0r61j6a" name="Execute Liquidity Manage Transaction" camunda:type="external" camunda:topic="executeSwapUniswapV3">
+          <bpmn:incoming>Flow_1hes99b</bpmn:incoming>
+          <bpmn:incoming>Flow_0gcwd17</bpmn:incoming>
+          <bpmn:outgoing>Flow_0rc8jsl</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:intermediateCatchEvent id="Event_0ugodh6" name="Tick Timer (default 15s)">
+          <bpmn:incoming>Flow_0rc8jsl</bpmn:incoming>
+          <bpmn:outgoing>Flow_0gcwd17</bpmn:outgoing>
+          <bpmn:timerEventDefinition id="TimerEventDefinition_07f8pcc">
+            <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT${tick_time}S</bpmn:timeDuration>
+          </bpmn:timerEventDefinition>
+        </bpmn:intermediateCatchEvent>
+        <bpmn:sequenceFlow id="Flow_0rc8jsl" sourceRef="Activity_0r61j6a" targetRef="Event_0ugodh6" />
+        <bpmn:boundaryEvent id="Event_13nsmz3" attachedToRef="Activity_0r61j6a">
+          <bpmn:outgoing>Flow_126249y</bpmn:outgoing>
+          <bpmn:errorEventDefinition id="ErrorEventDefinition_0kpt5au" />
+        </bpmn:boundaryEvent>
+        <bpmn:endEvent id="Event_1hrgzvg">
+          <bpmn:incoming>Flow_126249y</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:sequenceFlow id="Flow_126249y" sourceRef="Event_13nsmz3" targetRef="Event_1hrgzvg" />
+        <bpmn:sequenceFlow id="Flow_1hes99b" sourceRef="start" targetRef="Activity_0r61j6a" />
+        <bpmn:sequenceFlow id="Flow_0gcwd17" sourceRef="Event_0ugodh6" targetRef="Activity_0r61j6a" />
+      </bpmn:subProcess>
+      <bpmn:userTask id="Activity_0kkruk8" name="Check bot process interrupted" camunda:assignee="${camunda_user_id}">
+        <bpmn:incoming>Flow_10wsndj</bpmn:incoming>
+        <bpmn:outgoing>Flow_19vphvq</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:endEvent id="Event_0yowhp3">
+        <bpmn:incoming>Flow_19vphvq</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_19vphvq" sourceRef="Activity_0kkruk8" targetRef="Event_0yowhp3" />
+      <bpmn:sequenceFlow id="Flow_10wsndj" sourceRef="SwapExecuteCircle" targetRef="Activity_0kkruk8" />
+      <bpmn:startEvent id="Event_0qha8xt">
+        <bpmn:outgoing>Flow_0kz3j9y</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:sequenceFlow id="Flow_0kz3j9y" name="Start Bots" sourceRef="Event_0qha8xt" targetRef="SwapExecuteCircle" />
+    </bpmn:subProcess>
+    <bpmn:startEvent id="Event_1b0hgik">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="tick_time" label="tick_time" type="long" defaultValue="15" />
+          <camunda:formField id="min_amount" label="min_amount" type="long" defaultValue="1" />
+          <camunda:formField id="max_amount" label="max_amount" type="long" defaultValue="10" />
+          <camunda:formField id="uniswap_v3_router_address" label="uniswap_v3_router_address" type="string" defaultValue="0x47AB4F709b5C250026C4DA83cde56fc2C81a311c" />
+          <camunda:formField id="chain_id" label="chain_id" type="long" defaultValue="614" />
+          <camunda:formField id="rpc_url" label="rpc_url" type="string" defaultValue="https://glq-dataseed.graphlinq.io" />
+          <camunda:formField id="token_out" label="token_out" type="string" defaultValue="0xbeed106d0f2e6950bfa1eec74e1253ca0a643442" />
+          <camunda:formField id="token_in" label="token_in" type="string" defaultValue="0xeb567ec41738c2bab2599a1070fc5b727721b3b6" />
+          <camunda:formField id="amount_in" label="amount_in" type="long" defaultValue="1" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0eubvro</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_1qj7qo7">
+      <bpmn:incoming>Flow_0ltts7y</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0ltts7y" sourceRef="Activity_047qqhf" targetRef="Event_1qj7qo7" />
+    <bpmn:sequenceFlow id="Flow_0eubvro" sourceRef="Event_1b0hgik" targetRef="Activity_1gkoqx3" />
+    <bpmn:sequenceFlow id="Flow_1kf3bfk" sourceRef="Activity_1gkoqx3" targetRef="Activity_047qqhf" />
+    <bpmn:userTask id="Activity_1gkoqx3" name="Get Address List">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="address_list">
+            <camunda:list>
+              <camunda:value>0x2E1001b5dFb5b1aa800060ADbf6732c6aE234626</camunda:value>
+            </camunda:list>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+        <camunda:formData />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0eubvro</bpmn:incoming>
+      <bpmn:outgoing>Flow_1kf3bfk</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmn:escalation id="Escalation_3uveh3c" name="Escalation_3uveh3c" escalationCode="GET_PRICE_ERROR" />
+  <bpmn:error id="Error_014stvs" name="Error_02bc074" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="UniversalVolumeBot">
+      <bpmndi:BPMNShape id="Activity_047qqhf_di" bpmnElement="Activity_047qqhf" isExpanded="true">
+        <dc:Bounds x="510" y="80" width="1120" height="550" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0qha8xt_di" bpmnElement="Event_0qha8xt">
+        <dc:Bounds x="582" y="322" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0epdxs7_di" bpmnElement="SwapExecuteCircle" isExpanded="true">
+        <dc:Bounds x="720" y="140" width="590" height="380" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
+        <dc:Bounds x="762" y="332" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="742" y="375" width="86" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0fw6gtf" bpmnElement="Activity_0r61j6a">
+        <dc:Bounds x="970" y="380" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1agdkjb_di" bpmnElement="Event_0ugodh6">
+        <dc:Bounds x="1142" y="292" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1129" y="254.5" width="62" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1hrgzvg_di" bpmnElement="Event_1hrgzvg">
+        <dc:Bounds x="1222" y="442" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0r6k0wp_di" bpmnElement="Event_13nsmz3">
+        <dc:Bounds x="1052" y="442" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0rc8jsl_di" bpmnElement="Flow_0rc8jsl">
+        <di:waypoint x="1070" y="420" />
+        <di:waypoint x="1160" y="420" />
+        <di:waypoint x="1160" y="328" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_126249y_di" bpmnElement="Flow_126249y">
+        <di:waypoint x="1088" y="460" />
+        <di:waypoint x="1222" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1hes99b_di" bpmnElement="Flow_1hes99b">
+        <di:waypoint x="798" y="350" />
+        <di:waypoint x="884" y="350" />
+        <di:waypoint x="884" y="420" />
+        <di:waypoint x="970" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0gcwd17_di" bpmnElement="Flow_0gcwd17">
+        <di:waypoint x="1142" y="310" />
+        <di:waypoint x="1020" y="310" />
+        <di:waypoint x="1020" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_0azlpot" bpmnElement="Activity_0kkruk8">
+        <dc:Bounds x="1380" y="315" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0yowhp3_di" bpmnElement="Event_0yowhp3">
+        <dc:Bounds x="1542" y="337" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_19vphvq_di" bpmnElement="Flow_19vphvq">
+        <di:waypoint x="1480" y="355" />
+        <di:waypoint x="1542" y="355" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10wsndj_di" bpmnElement="Flow_10wsndj">
+        <di:waypoint x="1310" y="355" />
+        <di:waypoint x="1380" y="355" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0kz3j9y_di" bpmnElement="Flow_0kz3j9y">
+        <di:waypoint x="618" y="340" />
+        <di:waypoint x="720" y="340" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="648" y="322" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1b0hgik_di" bpmnElement="Event_1b0hgik">
+        <dc:Bounds x="152" y="322" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1qj7qo7_di" bpmnElement="Event_1qj7qo7">
+        <dc:Bounds x="1742" y="337" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_08k2f8i_di" bpmnElement="Activity_1gkoqx3">
+        <dc:Bounds x="260" y="300" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0ltts7y_di" bpmnElement="Flow_0ltts7y">
+        <di:waypoint x="1630" y="355" />
+        <di:waypoint x="1742" y="355" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0eubvro_di" bpmnElement="Flow_0eubvro">
+        <di:waypoint x="188" y="340" />
+        <di:waypoint x="260" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1kf3bfk_di" bpmnElement="Flow_1kf3bfk">
+        <di:waypoint x="360" y="340" />
+        <di:waypoint x="510" y="340" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

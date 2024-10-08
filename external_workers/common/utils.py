@@ -4,7 +4,7 @@ from typing import Callable
 
 from camunda.external_task.external_task_worker import ExternalTaskWorker
 
-ENGINE_URL = os.getenv('ENGINE_URL')
+ENGINE_URL = os.getenv('ENGINE_URL', 'http://localhost:8080/engine-rest')
 
 
 def setup_worker(topic: str, handle_task: Callable, config: dict):

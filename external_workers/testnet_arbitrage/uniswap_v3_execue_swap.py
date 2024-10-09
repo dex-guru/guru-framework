@@ -15,11 +15,11 @@ TOPIC = 'executeSwapUniswapV3'
 VARIABLE_NOT_FOUND_ERR_CODE = "VARIABLE_NOT_FOUND"
 VARIABLE_NOT_FOUND_MSG = "Variable '{}' not found"
 
-WEB3_PK = os.environ.get('WEB3_PK', {'0x0000000000000000000000000000000000000000':
-                                     '0000000000000000000000000000000000000000000000000000000000000000'})
+WEB3_PK = os.environ.get(
+    'WEB3_PK',
+    '{"0x0000000000000000000000000000000000000000":"0000000000000000000000000000000000000000000000000000000000000000"}')
 
-if isinstance(WEB3_PK, str):
-    WEB3_PK = json.loads(WEB3_PK)
+WEB3_PK = json.loads(WEB3_PK)
 
 
 with open(Path(__file__).parent / 'uniswap_v3_router_abi.json') as f:

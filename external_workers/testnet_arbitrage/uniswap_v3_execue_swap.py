@@ -1,14 +1,15 @@
 import json
 import os
+import uuid
 from pathlib import Path
 from time import time
 
 from camunda.external_task.external_task import ExternalTask
+from camunda.external_task.external_task_worker import ExternalTaskWorker
 from pydantic import BaseModel, ValidationError
 from web3 import Web3
 
-from config import CAMUNDA_CLIENT_CONFIG
-from external_workers.common.utils import setup_worker
+from config import (CAMUNDA_CLIENT_CONFIG, CAMUNDA_URL)
 
 TOPIC = 'executeSwapUniswapV3'
 VARIABLE_NOT_FOUND_ERR_CODE = "VARIABLE_NOT_FOUND"
@@ -182,4 +183,7 @@ def handle_task(task: ExternalTask):
 
 
 if __name__ == '__main__':
-    setup_worker(TOPIC, handle_task, CAMUNDA_CLIENT_CONFIG)
+    worker_id = f"{TOPIC}_{uuid.uuid4().hex[:8]}"
+    ExternalTaskWorker(
+        worker_id="1", base_url=CAMUNDA_URL, config=CAMUNDA_CLIENT_CONFIG
+    ).subscribe([TOPIC], handle_task)

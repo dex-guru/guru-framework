@@ -1,6 +1,15 @@
-version: '3.8'
-
 services:
+  bot:
+    build:
+      context: ./bot
+    container_name: chainflow-bot
+    env_file:
+      - ./bot/.env
+    ports:
+      - "8081:8081"
+    networks:
+        - app
+
   engine:
     build:
       context: ./engine
@@ -10,15 +19,6 @@ services:
       RABBITMQ_ENABLED: 'false'
     ports:
       - "8080:8080"
-    networks:
-      - chainflow-net
-
-  gui:
-    build:
-      context: ./gui
-    container_name: chainflow-gui
-    ports:
-      - "3000:3000"
     networks:
       - app
 
@@ -39,6 +39,30 @@ services:
     depends_on:
       - engine
 
+  flow-api:
+    build:
+      context: ./flow_api
+    container_name: chainflow-flow-api
+    env_file:
+      - ./flow_api/.env
+    ports:
+      - "8000:8000"
+    networks:
+      - app
+    depends_on:
+      - postgres
+      - pgbouncer
+      - redis
+
+#  frontend:
+#    build:
+#      context: ./frontend
+#    container_name: chainflow-frontend
+#    ports:
+#      - "3000:3000"
+#    networks:
+#      - app
+
   postgres:
     image: postgres:14-alpine
     container_name: postgres
@@ -53,7 +77,7 @@ services:
     networks:
       - app
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - ./postgres-data:/var/lib/postgresql/data
 
   pgbouncer:
     image: edoburu/pgbouncer
@@ -87,6 +111,7 @@ services:
       - ${REDIS_PORT}:${REDIS_PORT}
     networks:
       - app
+
 networks:
   app:
     driver: bridge

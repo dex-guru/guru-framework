@@ -1,4 +1,4 @@
-FROM docker-registry.dexguru.biz/dex.guru/utils/python:3.10-alpine3.18
+FROM python:3.10-alpine3.18
 
 WORKDIR /usr/src/app
 

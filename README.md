@@ -30,8 +30,8 @@ Located in the `engine` directory, this is the core of the framework, managing t
 ### Smart Contracts
 Found in the `contracts` directory, these handle secure and efficient decentralized application operations.
 
-### GUI
-The `gui` directory contains the user interface components, offering an intuitive graphical interface for managing processes.
+### Frontend
+The `frontend` directory contains the user interface components, offering an intuitive graphical interface for managing processes.
 
 ### Flow API
 The Flow API in the `flow_api` directory provides endpoints for creating and managing workflows programmatically.
@@ -41,9 +41,6 @@ Integrated into the framework, this tool allows the creation of Telegram bots to
 
 ### External Workers
 Defined in the `external_workers` directory, these provide non-custodial execution and compute services.
-
-### Orchestration Workers Contracts
-Located in the `orchestration_workers` directory, these contracts facilitate workflow orchestration.
 
 ## Project Structure
 
@@ -56,7 +53,7 @@ guru-framework/
 ├── external_workers/ # Individual agents for non-custodial execution and compute
 ├── flow_api/ # API for managing and integrating workflows
 ├── bot/ # Telegram bot unified composer
-├── gui/ # User interface components
+├── frontend/ # User interface components
 └── README.md # This file
 ```
 
@@ -76,55 +73,9 @@ Ensure you have Docker and Docker Compose installed.
     cd guru-framework
     ```
 
-2. **Create the `docker-compose.yaml` file:**
+2. **Create .env files for each of the main folders.**
 
-    ```yaml
-    version: '3.8'
-
-    services:
-      engine:
-        build:
-          context: ./engine
-        container_name: chainflow-engine
-        environment:
-          INSCRIPTIONS_HISTORY_ENABLED: 'false'
-          RABBITMQ_ENABLED: 'false'
-        ports:
-          - "8080:8080"
-        networks:
-          - chainflow-net
-
-      gui:
-        build:
-          context: ./gui
-        container_name: chainflow-gui
-        ports:
-          - "3000:3000"
-        networks:
-          - chainflow-net
-
-      external-workers:
-        build:
-          context: ./external_workers
-        container_name: chainflow-external-workers
-        environment:
-          - WORKER_SCRIPTS=messaging/telegram_message_worker.py,testnet_arbitrage/get_last_price.py  # Add more worker scripts as needed
-          - CAMUNDA_URL=http://engine:8080/engine-rest
-          - CAMUNDA_USER=demo
-          - CAMUNDA_PASSWORD=demo
-        networks:
-          - chainflow-net
-        volumes:
-          - ./external_workers/envs:/app/envs  # Mount the directory containing environment files
-        depends_on:
-          - engine
-
-    networks:
-      chainflow-net:
-        driver: bridge
-    ```
-
-3. **Run the Docker Compose setup:**
+3. **Run the Docker Compose setup in the root of the repository:**
 
     ```bash
     docker-compose up -d --build
@@ -133,7 +84,7 @@ Ensure you have Docker and Docker Compose installed.
 #### Check Services
 
 - **Engine:** Running on [http://localhost:8080](http://localhost:8080) - default user/pass is demo:demo
-- **GUI:** Running on [http://localhost:3000](http://localhost:3000)
+- **Frontend:** Running on [http://localhost:3000](http://localhost:3000)
 - **Workers:** Check workers running with `docker-compose ps`
 ```bash
 ➜  guru-framework git:(main) ✗ docker-compose ps

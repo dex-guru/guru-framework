@@ -1,0 +1,13 @@
+.container {
+  display: grid;
+  gap: 16px;
+}
+
+.title {
+  color: var(--color-dark-20);
+}
+
+.users {
+  display: grid;
+  gap: 26px;
+}

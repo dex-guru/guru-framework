@@ -54,14 +54,16 @@ services:
       - pgbouncer
       - redis
 
-#  frontend:
-#    build:
-#      context: ./frontend
-#    container_name: chainflow-frontend
-#    ports:
-#      - "3000:3000"
-#    networks:
-#      - app
+  frontend:
+    build:
+      context: ./frontend
+    env_file:
+      - .env
+    container_name: chainflow-frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - app
 
   postgres:
     image: postgres:14-alpine

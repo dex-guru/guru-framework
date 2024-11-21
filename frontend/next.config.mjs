@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 
+const dotenv = require('dotenv');
+dotenv.config();
+console.log('Loaded Environment Variables:', process.env);
+
 const nextConfig = {
   experimental: { instrumentationHook: true, esmExternals: 'loose' },
   images: {
@@ -16,6 +20,29 @@ const nextConfig = {
       { protocol: 'https', hostname: '*.amazonaws.com' },
       { protocol: 'https', hostname: 'ipfs.io', pathname: '/ipfs/*' },
     ],
+  },
+  env: {
+    AUTH_SECRET: process.env.AUTH_SECRET,
+    FLOW_API_URL: process.env.FLOW_API_URL,
+    SYS_KEY: process.env.SYS_KEY,
+    AUTH_TRUST_HOST: process.env.AUTH_TRUST_HOST,
+    WAREHOUSE_API_HOST: process.env.WAREHOUSE_API_HOST,
+    WAREHOUSE_API_KEY: process.env.WAREHOUSE_API_KEY,
+    LANGCHAIN_API_URL: process.env.LANGCHAIN_API_URL,
+    LANGCHAIN_API_KEY: process.env.LANGCHAIN_API_KEY,
+    NEXT_PUBLIC_PROJECT_ID: process.env.NEXT_PUBLIC_PROJECT_ID,
+    NEXT_PUBLIC_API_HOST: process.env.NEXT_PUBLIC_API_HOST,
+    NEXT_PUBLIC_APP_INTRO: process.env.NEXT_PUBLIC_APP_INTRO,
+    NEXT_PUBLIC_APP_CURRENCY: process.env.NEXT_PUBLIC_APP_CURRENCY,
+    NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
+    NEXT_PUBLIC_APP_CHAIN_ID: process.env.NEXT_PUBLIC_APP_CHAIN_ID,
+    NEXT_PUBLIC_APP_RPC_URL: process.env.NEXT_PUBLIC_APP_RPC_URL,
+    NEXT_PUBLIC_APP_NATIVE_TOKEN_DECIMALS: process.env.NEXT_PUBLIC_APP_NATIVE_TOKEN_DECIMALS,
+    NEXT_PUBLIC_APP_NATIVE_TOKEN_SYMBOL: process.env.NEXT_PUBLIC_APP_NATIVE_TOKEN_SYMBOL,
+    NEXT_PUBLIC_APP_NATIVE_TOKEN_NAME: process.env.NEXT_PUBLIC_APP_NATIVE_TOKEN_NAME,
+    NEXT_PUBLIC_APP_BLOCK_EXPLORER_URL: process.env.NEXT_PUBLIC_APP_BLOCK_EXPLORER_URL,
+    NEXT_PUBLIC_APP_CHAIN_LABEL: process.env.NEXT_PUBLIC_APP_CHAIN_LABEL,
+    NEXT_PUBLIC_APP_COMMUNITY_NFT_ADDRESSES: process.env.NEXT_PUBLIC_APP_COMMUNITY_NFT_ADDRESSES,
   },
 }
 

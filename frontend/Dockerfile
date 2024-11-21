@@ -1,5 +1,5 @@
 # Step 1: Build the image using the official Node.js base image
-FROM docker-registry.dexguru.biz/dex.guru/utils/node:21-alpine as builder
+FROM node:21-alpine as builder
 
 RUN apk add --no-cache git
 
@@ -64,7 +64,7 @@ COPY . .
 RUN yarn build
 
 # Step 2: Run the built application using a lightweight Node.js image
-FROM docker-registry.dexguru.biz/dex.guru/utils/node:21-alpine
+FROM node:21-alpine
 
 WORKDIR /app
 

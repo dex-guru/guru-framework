@@ -23,4 +23,6 @@ RUN adduser -D appuser \
 
 USER appuser
 
+ENV PYTHONPATH=${PYTHONPATH}:/usr/src/app
+
 CMD [ "python", "./bot_server/__main__.py" ]

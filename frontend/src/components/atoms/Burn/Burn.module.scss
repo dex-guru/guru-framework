@@ -1,0 +1,11 @@
+.container {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+
+  & > canvas {
+    object-fit: contain;
+    height: auto !important;
+  }
+}

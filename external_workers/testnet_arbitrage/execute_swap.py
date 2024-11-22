@@ -77,17 +77,17 @@ def handle_task(task: ExternalTask) -> TaskResult:
     return task.complete({"transactionHash": tx_hash.hex()})
 
 
-def get_pool_reserves(pool_contract, target_token_address):
+def get_pool_reserves(pool_contract, target_token_address, decimals):
     Reserves = namedtuple("Reserves", ["target_token_reserve", "other_token_reserve"])
     reserves = pool_contract.functions.getReserves().call()
     token0, token1 = get_pool_tokens(pool_contract)
 
     if token0 == target_token_address:
-        target_token_reserve = reserves[0]
-        other_token_reserve = reserves[1]
+        target_token_reserve = reserves[0] / 10 ** decimals[0]
+        other_token_reserve = reserves[1] / 10 ** decimals[1]
     else:
-        target_token_reserve = reserves[1]
-        other_token_reserve = reserves[0]
+        target_token_reserve = reserves[1] / 10 ** decimals[1]
+        other_token_reserve = reserves[0] / 10 ** decimals[0]
 
     return Reserves(target_token_reserve, other_token_reserve)
 
@@ -125,18 +125,18 @@ def fix_price_to_target(
         raise ValueError("Token not in pool")
 
     decimals = [get_token_decimals(pool_tokens[0]), get_token_decimals(pool_tokens[1])]
-    reserves = get_pool_reserves(pool_contract, target_token_address)
-    current_price = (
-        reserves.other_token_reserve / 10 ** decimals[1 - target_token_index]
-    ) / (reserves.target_token_reserve / 10 ** decimals[target_token_index])
+    reserves = get_pool_reserves(pool_contract, target_token_address, decimals)
+    current_price = reserves.other_token_reserve / reserves.target_token_reserve
 
     if current_price < target_price:
         action = "buy"
         amount = calculate_swap_amounts(target_price, reserves, action)
+        amount = int(amount * 10 ** decimals[1 - target_token_index])
         path = [pool_tokens[1 - target_token_index], pool_tokens[target_token_index]]
     else:
         action = "sell"
         amount = calculate_swap_amounts(target_price, reserves, action)
+        amount = int(amount * 10 ** decimals[target_token_index])
         path = [pool_tokens[target_token_index], pool_tokens[1 - target_token_index]]
 
     tx_hash = execute_swap(target_token_address, amount, path, action)
@@ -202,4 +202,4 @@ def execute_swap(
 if __name__ == "__main__":
     ExternalTaskWorker(
         worker_id="1", base_url=CAMUNDA_URL, config=CAMUNDA_CLIENT_CONFIG
-    ).subscribe([TOPIC_NAME], handle_task)
+    ).subscribe(['GuruSepoliaCrossChainArbitrage'], handle_task)

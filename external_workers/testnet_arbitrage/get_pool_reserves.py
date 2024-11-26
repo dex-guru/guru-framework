@@ -48,6 +48,10 @@ def handle_task(task: ExternalTask) -> TaskResult:
             current_price = get_univ3_price(
                 pool_contract, target_token_address, decimals, target_token_index
             )
+        elif topic_name == 'getGuruSepoliaPriceFromReserves':
+            current_price = get_univ2_price(
+                pool_contract, target_token_address, decimals, target_token_index
+            )
         else:
             return task.bpmn_error('unknown_amm', 'unknown_amm')
         variables['current_price'] = current_price
@@ -68,10 +72,10 @@ def handle_task(task: ExternalTask) -> TaskResult:
 
 
 def get_univ2_price(pool_contract, target_token_address, decimals, target_token_index):
-    reserves = get_pool_reserves(pool_contract, target_token_address)
+    reserves = get_pool_reserves(pool_contract, target_token_address, decimals)
     current_price = (
-        reserves.other_token_reserve / 10 ** decimals[1 - target_token_index]
-    ) / (reserves.target_token_reserve / 10 ** decimals[target_token_index])
+        reserves.other_token_reserve
+    ) / (reserves.target_token_reserve)
     return current_price
 
 

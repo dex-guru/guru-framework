@@ -1,12 +1,12 @@
 import os
 import random
 import sys
-from typing import Sequence, Mapping, Any, Union
+from typing import Sequence, Mapping, Any
 import torch
 import click
 
 # Functions for setup and utility
-def get_value_at_index(obj: Union[Sequence, Mapping], index: int) -> Any:
+def get_value_at_index(obj, index: int) -> Any:
     """Returns the value at the given index of a sequence or mapping."""
     try:
         return obj[index]

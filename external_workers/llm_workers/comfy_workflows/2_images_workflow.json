@@ -1,0 +1,230 @@
+{
+  "1": {
+    "inputs": {
+      "ckpt_name": "sd_xl_base_1.0.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "2": {
+    "inputs": {
+      "clip_name": "clip_vision_g.safetensors"
+    },
+    "class_type": "CLIPVisionLoader",
+    "_meta": {
+      "title": "Load CLIP Vision"
+    }
+  },
+  "3": {
+    "inputs": {
+      "text": "Meditative character, vibrant hues, blue, green, orange, swirling patterns, robots, stormtroopers, dynamic poses, harmony, contrast, light, shadow, depth, tranquility, wonder, high-value NFT art",
+      "clip": [
+        "1",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "4": {
+    "inputs": {
+      "text": "",
+      "clip": [
+        "1",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "5": {
+    "inputs": {
+      "conditioning": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "ConditioningZeroOut",
+    "_meta": {
+      "title": "ConditioningZeroOut"
+    }
+  },
+  "6": {
+    "inputs": {
+      "conditioning": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "ConditioningZeroOut",
+    "_meta": {
+      "title": "ConditioningZeroOut"
+    }
+  },
+  "9": {
+    "inputs": {
+      "clip_vision": [
+        "2",
+        0
+      ],
+      "image": [
+        "31",
+        0
+      ]
+    },
+    "class_type": "CLIPVisionEncode",
+    "_meta": {
+      "title": "CLIP Vision Encode"
+    }
+  },
+  "10": {
+    "inputs": {
+      "clip_vision": [
+        "2",
+        0
+      ],
+      "image": [
+        "32",
+        0
+      ]
+    },
+    "class_type": "CLIPVisionEncode",
+    "_meta": {
+      "title": "CLIP Vision Encode"
+    }
+  },
+  "11": {
+    "inputs": {
+      "strength": 1,
+      "noise_augmentation": 0,
+      "conditioning": [
+        "5",
+        0
+      ],
+      "clip_vision_output": [
+        "9",
+        0
+      ]
+    },
+    "class_type": "unCLIPConditioning",
+    "_meta": {
+      "title": "unCLIPConditioning"
+    }
+  },
+  "12": {
+    "inputs": {
+      "strength": 1,
+      "noise_augmentation": 0,
+      "conditioning": [
+        "11",
+        0
+      ],
+      "clip_vision_output": [
+        "10",
+        0
+      ]
+    },
+    "class_type": "unCLIPConditioning",
+    "_meta": {
+      "title": "unCLIPConditioning"
+    }
+  },
+  "13": {
+    "inputs": {
+      "seed": 827367775199718,
+      "steps": 25,
+      "cfg": 8,
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "denoise": 1,
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "12",
+        0
+      ],
+      "negative": [
+        "6",
+        0
+      ],
+      "latent_image": [
+        "16",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "16": {
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Empty Latent Image"
+    }
+  },
+  "17": {
+    "inputs": {
+      "samples": [
+        "13",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "18": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "17",
+        0
+      ]
+    },
+    "class_type": "SaveImageWebsocket",
+    "_meta": {
+      "title": "SaveImageWebsocket"
+    }
+  },
+  "31": {
+    "inputs": {
+      "image_url": "https://assets-stage.dex.guru/season_2/maskots/maskots05.png",
+      "save_file_name_override": "",
+      "save_path": ""
+    },
+    "class_type": "🖼️ Download Image from URL",
+    "_meta": {
+      "title": "🖼️ Download Image from URL"
+    }
+  },
+  "32": {
+    "inputs": {
+      "image_url": "https://assets-stage.dex.guru/season_2/seasons/seasonpass_01.jpg",
+      "save_file_name_override": "",
+      "save_path": ""
+    },
+    "class_type": "🖼️ Download Image from URL",
+    "_meta": {
+      "title": "🖼️ Download Image from URL"
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import asyncio
 import os
 import logging
+import uuid
 from typing import Optional
 import re
 
@@ -8,6 +9,7 @@ import httpx
 from camunda.external_task.external_task import ExternalTask, TaskResult
 from camunda.external_task.external_task_worker import ExternalTaskWorker
 
+from llm_workers.gen_image_workflow import ImageGenerator
 from llm_workers.openai_describe import describe_image_with_openai_vision, name_description_based_of_vision_description
 from season_pass_invite.config import SYS_KEY, API_URL, GEN_IMG_URL, OLLAMA_URL
 
@@ -21,6 +23,10 @@ AWS_S3_BUCKET = os.getenv('AWS_S3_BUCKET', 'pixelpact')
 X_ACCOUNT = os.getenv('X_ACCOUNT', 'xgurunetwork')
 X_LINK = os.getenv('X_LINK', 'https://v2.dex.guru/gen/')
 
+COMFY_SERVER_HOST = os.getenv('COMFY_SERVER_HOST', 'localhost:8188')
+PROMPT_FILE_PATH = os.getenv('PROMPT_FILE_PATH', 'llm_workers/comfy_workflows/2_images_workflow.json')
+
+
 # Logging the script startup
 logging.info("Starting Image Generation Worker")
 
@@ -33,6 +39,10 @@ default_config = {
     "retryTimeout": 15000,
     "sleepSeconds": 10
 }
+
+image_gen = ImageGenerator(server_address=COMFY_SERVER_HOST,
+                           prompt_file_path=PROMPT_FILE_PATH)
+
 
 async def fetch_image_url(art_id: str) -> Optional[str]:
     async with httpx.AsyncClient() as _client:
@@ -138,8 +148,14 @@ async def generate_and_upload_image(src1_art_id: str, src2_art_id: str, camunda_
         fetch_image_url(src2_art_id),
         get_user_id_by_camunda_user_id(camunda_user_id)
     )
-    s3_url = await gen_image_client(image1_url, image2_url)
 
+    output_filename = f"gen_img/{uuid.uuid4()}.png"
+
+    result = await image_gen.gen_image(src_image_url_1=image1_url, src_image_url_2=image2_url,
+                                       image_name=output_filename)
+    if result.get("error"):
+        raise Exception("Error while generating images")
+    s3_url = result["image_url"]
 
     visual_description = await describe_image_with_openai_vision(s3_url, "default", "default",
                                                                  "generated_art",)

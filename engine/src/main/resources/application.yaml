@@ -37,3 +37,9 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:Ym9ZpC1VyZUU9svrmtrJGXZlAlMx5dW29qQwXUDYp50=} # Must be at least 32 bytes (256 bits) when decoded
+  expiration: ${JWT_EXPIRATION:3600} # 24 hours in milliseconds
+  algorithm: ${JWT_ALGORITHM:HS256} # Must match FastAPI's ENGINE_JWT_ALGORITHM

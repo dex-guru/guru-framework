@@ -24,6 +24,7 @@ hs_err_pid*
 replay_pid*
 
 .idea
+.vscode
 
 # DB File
 camunda-db*

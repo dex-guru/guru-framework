@@ -86,7 +86,7 @@ public class CamundaApplication extends SpringBootServletInitializer {
     registration.setFilter(myFilter);
     registration.addUrlPatterns("/engine-rest/*");
     registration.addInitParameter("authentication-provider",
-            "org.camunda.bpm.engine.rest.security.auth.impl.HttpBasicAuthenticationProvider");
+            "ai.hhrdr.chainflow.engine.config.JwtAuthenticationFilter");
     registration.setName("camunda-auth");
     registration.setOrder(1);
     return registration;

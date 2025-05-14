@@ -1,0 +1,33 @@
+camunda-external-task-client-python3==4.4.0
+pydantic-settings
+pydantic_core
+pydantic
+web3==6.17.2
+ta==0.11.0
+redis==3.5.3
+cryptography==41.0.5
+aniso8601==9.0.1
+boto3
+httpx
+openai==1.37.0
+websocket-client==1.6.1
+Pillow==10.0.0
+pydantic-settings==2.2.1 ; python_version >= "3.10" and python_version < "4.0"
+python-dotenv==1.0.1 ; python_version >= "3.10" and python_version < "4.0"
+aiogram==3.12.0
+langchain==0.2.16
+langchain-community==0.2.16
+langchain-core==0.2.38
+langchain-text-splitters==0.2.4
+pika
+aiolimiter==1.1.0
+clickhouse_driver
+
+requests
+ansible==10.7.0
+python-gitlab
+pytest
+
+web3
+eth-typing
+pytest-ethereum

@@ -31,3 +31,5 @@ pytest
 web3
 eth-typing
 pytest-ethereum
+
+clickhouse_connect

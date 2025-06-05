@@ -47,6 +47,7 @@ class WorkerSettings(EnvBaseSettings):
 class APISettings(EnvBaseSettings):
     FLOW_API_URL: str = "http://localhost:8000"
     FLOW_API_SYS_KEY: str = "secret"
+    RAPIDAPI_KEY: str = "RAPIDAPI_KEY"
 
 
 # Web3 Configuration
@@ -94,6 +95,17 @@ class ThirdWebAuthSettings(EnvBaseSettings):
     INTERNAL_NETWORKS: list[int] = [260, 261]\
 
 
+class ClickhouseSettings(EnvBaseSettings):
+    CLICKHOUSE_HOST: str = "localhost"  # ClickHouse server host
+    CLICKHOUSE_PORT: int = 8123          # ClickHouse server port
+    CLICKHOUSE_USER: str = "default"    # ClickHouse username
+    CLICKHOUSE_PASSWORD: str = ""       # ClickHouse password
+    CLICKHOUSE_DATABASE: str = "default" # ClickHouse database name
+
+
+class MindsDBSettings(EnvBaseSettings):
+    MINDS_DB_HOST: str = "http://localhost:47334"  # MindsDB API host
+
 
 class WorkerSettings(
     WorkerSettings,
@@ -102,7 +114,9 @@ class WorkerSettings(
     LoggingSettings,
     Web3Settings,
     RabbitMQSettings,
-    ThirdWebAuthSettings
+    ThirdWebAuthSettings,
+    ClickhouseSettings,
+    MindsDBSettings
 ):
     DEBUG: bool = False
 

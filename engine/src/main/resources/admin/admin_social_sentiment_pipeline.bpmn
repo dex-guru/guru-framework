@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.31.0">
+  <bpmn:process id="admin_social_sentiment_pipeline" name="Social Sentiment Score ETL" isExecutable="true">
+    <bpmn:documentation>{
+        "description": "Social sentiment pipeline Controls",
+        "img_picture": "",
+        "type": "admin_restart",
+        "reward": 0
+}</bpmn:documentation>
+    <bpmn:serviceTask id="Activity_1bis9jb" name="Get the Raws Messages from X" camunda:type="external" camunda:topic="social_sentiment_core">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="command">fetch_raw_messages</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1gkdyq0</bpmn:incoming>
+      <bpmn:outgoing>Flow_1gd8xmo</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:startEvent id="StartEvent_1" name="Start" camunda:initiator="camunda_user_id">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="ai.hhrdr.chainflow.engine.listener.SetStartVariablesListener" event="start" />
+        <camunda:properties>
+          <camunda:property name="config_knowledgeBaseName" value="mindshare_kaito_tweets_kb" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0junure</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0junure" sourceRef="StartEvent_1" targetRef="Gateway_0hll06w" />
+    <bpmn:sequenceFlow id="Flow_1gd8xmo" sourceRef="Activity_1bis9jb" targetRef="Activity_007ja81" />
+    <bpmn:intermediateCatchEvent id="Event_0im19b7">
+      <bpmn:incoming>Flow_0poy72o</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ob0vog</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0s1xj20">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT12H</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:userTask id="control_agentTerminate" name="Stop Social Sentiment Fetch" camunda:assignee="${camunda_user_id}">
+      <bpmn:documentation>Stop fetching Mindshare</bpmn:documentation>
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="action_stop" label="Stop Fetch" type="boolean" defaultValue="false" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0gkt0pf</bpmn:incoming>
+      <bpmn:outgoing>Flow_1au06dx</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_06pmdk9">
+      <bpmn:incoming>Flow_1au06dx</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition_0vzx0c7" />
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1au06dx" sourceRef="control_agentTerminate" targetRef="Event_06pmdk9" />
+    <bpmn:sequenceFlow id="Flow_0scid9h" sourceRef="Gateway_0hll06w" targetRef="Activity_1j1b5p5" />
+    <bpmn:parallelGateway id="Gateway_0hll06w">
+      <bpmn:incoming>Flow_0junure</bpmn:incoming>
+      <bpmn:outgoing>Flow_0scid9h</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0gkt0pf</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_0gkt0pf" sourceRef="Gateway_0hll06w" targetRef="control_agentTerminate" />
+    <bpmn:userTask id="human_reply" name="Mindshare Updated" camunda:assignee="${camunda_user_id}">
+      <bpmn:documentation>Got xx Tokens scanned, and XX rows updated</bpmn:documentation>
+      <bpmn:extensionElements>
+        <camunda:taskListener class="ai.hhrdr.chainflow.engine.listener.TaskCompleteListener" event="create" />
+        <camunda:formData />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_15vdjus</bpmn:incoming>
+      <bpmn:outgoing>Flow_0b517bu</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0b517bu" sourceRef="human_reply" targetRef="Activity_0k0l80n" />
+    <bpmn:sequenceFlow id="Flow_0ob0vog" sourceRef="Event_0im19b7" targetRef="Activity_1j1b5p5" />
+    <bpmn:userTask id="Activity_1j1b5p5" name="Mindshare Update Started" camunda:assignee="${camunda_user_id}">
+      <bpmn:documentation>Started Mindshare Update</bpmn:documentation>
+      <bpmn:extensionElements>
+        <camunda:taskListener class="ai.hhrdr.chainflow.engine.listener.TaskCompleteListener" event="create" />
+        <camunda:formData />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0scid9h</bpmn:incoming>
+      <bpmn:incoming>Flow_0ob0vog</bpmn:incoming>
+      <bpmn:outgoing>Flow_1gkdyq0</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1gkdyq0" sourceRef="Activity_1j1b5p5" targetRef="Activity_1bis9jb" />
+    <bpmn:serviceTask id="Activity_007ja81" name="Process Messages, add sentiment" camunda:type="external" camunda:topic="social_sentiment_core">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="command">process_sentiment</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1gd8xmo</bpmn:incoming>
+      <bpmn:outgoing>Flow_15vdjus</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_15vdjus" sourceRef="Activity_007ja81" targetRef="human_reply" />
+    <bpmn:sequenceFlow id="Flow_0poy72o" sourceRef="Activity_0k0l80n" targetRef="Event_0im19b7" />
+    <bpmn:serviceTask id="Activity_0k0l80n" name="Update Sentiment Knowledge Base" camunda:class="ai.hhrdr.chainflow.engine.delegate.KaitoAdvancedSearchToKBDelegate">
+      <bpmn:incoming>Flow_0b517bu</bpmn:incoming>
+      <bpmn:outgoing>Flow_0poy72o</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmn:escalation id="Escalation_SendMessage" name="Send Message Escalation" escalationCode="SEND_MESSAGE" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="admin_social_sentiment_pipeline">
+      <bpmndi:BPMNShape id="Activity_1ujitrq_di" bpmnElement="Activity_1bis9jb">
+        <dc:Bounds x="450" y="360" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0grzlwc" bpmnElement="StartEvent_1">
+        <dc:Bounds x="122" y="382" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="130" y="425" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0sidtlz_di" bpmnElement="Event_0im19b7">
+        <dc:Bounds x="1052" y="382" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0vr6adq" bpmnElement="control_agentTerminate">
+        <dc:Bounds x="310" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0g5e4wc" bpmnElement="Event_06pmdk9">
+        <dc:Bounds x="682" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_03n9lxl_di" bpmnElement="Gateway_0hll06w">
+        <dc:Bounds x="235" y="365" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1naewtw" bpmnElement="human_reply">
+        <dc:Bounds x="710" y="360" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0av7lu0" bpmnElement="Activity_1j1b5p5">
+        <dc:Bounds x="330" y="360" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1gas4lu" bpmnElement="Activity_007ja81">
+        <dc:Bounds x="580" y="360" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1442tss_di" bpmnElement="Activity_0k0l80n">
+        <dc:Bounds x="850" y="360" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0junure_di" bpmnElement="Flow_0junure">
+        <di:waypoint x="158" y="400" />
+        <di:waypoint x="212" y="400" />
+        <di:waypoint x="212" y="390" />
+        <di:waypoint x="235" y="390" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gd8xmo_di" bpmnElement="Flow_1gd8xmo">
+        <di:waypoint x="550" y="400" />
+        <di:waypoint x="580" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_0rdkf95" bpmnElement="Flow_1au06dx">
+        <di:waypoint x="410" y="120" />
+        <di:waypoint x="682" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0scid9h_di" bpmnElement="Flow_0scid9h">
+        <di:waypoint x="285" y="390" />
+        <di:waypoint x="308" y="390" />
+        <di:waypoint x="308" y="400" />
+        <di:waypoint x="330" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0gkt0pf_di" bpmnElement="Flow_0gkt0pf">
+        <di:waypoint x="260" y="365" />
+        <di:waypoint x="260" y="120" />
+        <di:waypoint x="310" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0b517bu_di" bpmnElement="Flow_0b517bu">
+        <di:waypoint x="810" y="400" />
+        <di:waypoint x="850" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ob0vog_di" bpmnElement="Flow_0ob0vog">
+        <di:waypoint x="1070" y="382" />
+        <di:waypoint x="1070" y="290" />
+        <di:waypoint x="380" y="290" />
+        <di:waypoint x="380" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gkdyq0_di" bpmnElement="Flow_1gkdyq0">
+        <di:waypoint x="430" y="400" />
+        <di:waypoint x="450" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15vdjus_di" bpmnElement="Flow_15vdjus">
+        <di:waypoint x="680" y="400" />
+        <di:waypoint x="710" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0poy72o_di" bpmnElement="Flow_0poy72o">
+        <di:waypoint x="950" y="400" />
+        <di:waypoint x="1052" y="400" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

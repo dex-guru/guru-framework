@@ -1,5 +1,5 @@
-# Step 1: Build the application in a Maven container with Corretto 11
-FROM docker-registry.dexguru.biz/dex.guru/utils/maven:3.8.1-jdk-11-slim AS build
+# Step 1: Build the application in a Maven container with Corretto 17
+FROM docker-registry.dexguru.biz/dex.guru/utils/maven:3.8.1-jdk-17-slim AS build
 
 # Set the working directory in the Docker container
 WORKDIR /app
@@ -11,13 +11,13 @@ COPY src ./src/
 # Build the application
 RUN mvn clean package
 
-# Step 2: Use Amazon Corretto 11 base image to run the application
-FROM docker-registry.dexguru.biz/dex.guru/utils/amazoncorretto:11
+# Step 2: Use Amazon Corretto 17 base image to run the application
+FROM docker-registry.dexguru.biz/dex.guru/utils/amazoncorretto:17
 
 # Set the working directory in the Docker container
 WORKDIR /app
 
-# Copy the built application from the Maven container to the Corretto 11 container
+# Copy the built application from the Maven container to the Corretto 17 container
 COPY --from=build /app/target/chainflow-engine.jar /app/
 
 # Set the entry point to run the application
